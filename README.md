@@ -14,7 +14,7 @@ For the **Restaurant Reviews** projects, you will incrementally convert a static
 2. Go to the folder
 3. Run `npm install`
 
-_[ In my Computer i have installed [ImageMagick](http://www.imagemagick.org/script/download.php "Go to Download page"), so if you are experiencing issues in `images-tasks` probably you'll need to install it. ]_
+_[ In my computer i have installed [ImageMagick](http://www.imagemagick.org/script/download.php "Go to Download page"), so if you are experiencing issues in `images-tasks` probably you'll need to install it. ]_
 
 ### Run && Watch
 
