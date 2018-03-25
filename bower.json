@@ -1,0 +1,30 @@
+{
+	"name": "mws-restaurant-stage-2",
+	"description": "RESTAURANT REVIEWS",
+	"version": "2.0.0",
+	"main": "./dist/index.html",
+	"keywords": [
+		"google",
+		"udacity",
+		"restaurant",
+		"nanodegree"
+	],
+	"license": "ISC",
+	"author": "Luca Iaconelli <lucabelli9@gmail.com> (https://github.com/luxdamore)",
+	"private": true,
+	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-1/",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"tests"
+	],
+	"dependencies": {
+		"vanilla-lazyload": "^10.5.1"
+	},
+	"overrides": {
+		"vanilla-lazyload": {
+			"main": "dist/lazyload.js"
+		}
+	}
+}
