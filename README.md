@@ -1,6 +1,6 @@
 # Mobile Web Specialist Certification Course
 
-## Project Overview: Stage 1
+## Project Overview: Stage 2
 
 For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
 
@@ -42,3 +42,33 @@ _It watch files under the `dist/` folder, on port `4000`, to changing it check `
 **Main configurations are in the `gulpfile.js` in a variable called `options`;**
 **For Github Pages, you should read the documentation setting branch `master` with `docs/` folder and you should check `var options.github` in the `gulpfile.js`**
 **This building tool is compatible with [Netlify](https://www.netlify.com/ "Netlify").**
+
+--
+
+## Local Development API Server
+
+### Usage
+
+#### Get Restaurants
+
+`curl "http://localhost:1337/restaurants"`
+
+#### Get Restaurants by id
+
+`curl "http://localhost:1337/restaurants/{3}"`
+
+### Architecture
+
+Local server:
+
+- Node.js
+- Sails.js
+
+--
+
+#### Start the server
+
+`npm run start`
+
+Environment : development
+Port        : 1337
