@@ -2,7 +2,7 @@
 dist
 
 # Temp
-.tmp
+.tmp/public
 .sass-cache
 .gitattributes
 Thumbs.db

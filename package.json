@@ -9,8 +9,7 @@
 		"start": "node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
-		"local-dev": "npm run start | npm run serve",
-		"local-production": "cross-env NODE_ENV=production npm run start | npm run production",
+		"sailsjs": "npm run build:sailsjs && cross-env NODE_ENV=production npm run start",
 		"serve": "cross-env NODE_ENV=development gulp serve",
 		"dev": "cross-env NODE_ENV=development gulp serve",
 		"staging": "cross-env NODE_ENV=staging gulp serve:staging",
@@ -22,13 +21,14 @@
 		"build:staging": "cross-env NODE_ENV=staging gulp build:staging",
 		"build:production": "cross-env NODE_ENV=production gulp build:production",
 		"build": "cross-env NODE_ENV=production gulp build --silent --no-warnings",
+		"build:sailsjs": "cross-env NODE_ENV=production gulp sailsjs --silent --no-warnings",
 		"build:github:pages": "cross-env NODE_ENV=production gulp github:pages --silent --no-warnings",
 		"bower": "bower install",
 		"gulp": "gulp",
-		"preclean": "npm cache verify",
-		"preclear": "npm cache verify",
 		"prebower": "bower cache clean",
 		"predev": "npm install",
+		"presailsjs": "npm install",
+		"prebuild:sailsjs": "npm install",
 		"preproduction": "npm install",
 		"prebuild": "npm install",
 		"prebuild:github:pages": "npm install",
@@ -48,9 +48,9 @@
 	"author": "Luca Iaconelli <lucabelli9@gmail.com> (https://github.com/luxdamore)",
 	"license": "ISC",
 	"private": true,
-	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-1/",
+	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-2/",
 	"bugs": {
-		"url": "https://github.com/LuXDAmore/mws-restaurant-stage-1/issues"
+		"url": "https://github.com/LuXDAmore/mws-restaurant-stage-2/issues"
 	},
 	"devDependencies": {
 		"babel-eslint": "^7.2.3",
@@ -94,6 +94,7 @@
 		"gulp-uglify": "^2.1.2",
 		"gulp-util": "^3.0.8",
 		"gulp-webserver": "^0.9.1",
+		"modern-normalize": "^0.4.0",
 		"prettier": "^1.9.2",
 		"stylelint-no-unsupported-browser-features": "^1.0.1",
 		"sw-precache": "^5.2.1",
@@ -109,7 +110,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://LuXDAmore@bitbucket.org/studiomado/pvp_gestionale.git"
+		"url": "https://github.com/LuXDAmore/mws-restaurant-stage-2/"
 	},
 	"engines": {
 		"node": ">= 4.0.0",

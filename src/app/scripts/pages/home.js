@@ -58,18 +58,15 @@
 
 		// Restaurants list
 		const ul = document.getElementById( 'restaurants-list' );
+
 		/**
 		 * Fetch neighborhoods and cuisines as soon as the page is loaded.
 		 */
 		function ready() {
 
-			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
+			window.removeEventListener( 'load', ready );
 
-			GMapHelper.load(
-				{
-					callback: 'initMap',
-				}
-			);
+			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
 			DBHelper.fetchRestaurants(
 				() => {
@@ -81,7 +78,14 @@
 			);
 
 		};
-		ready();
+		window.addEventListener( 'load', ready, false );
+
+		// Async - Defer Gmaps
+		GMapHelper.load(
+			{
+				callback: 'initMap',
+			}
+		);
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
@@ -213,14 +217,14 @@
 		function resetRestaurants( restaurants ) {
 
 			// Remove all restaurants
-			self.restaurants = [];
-
-			ul.textContent = '';
+			self.restaurants = restaurants;
 
 			// Remove all map markers
 			self.markers.forEach( m => m.setMap( null ) );
 			self.markers = [];
-			self.restaurants = restaurants;
+
+			// Remove HTML
+			ul.textContent = '';
 
 		};
 

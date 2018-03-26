@@ -10,7 +10,7 @@ For the **Restaurant Reviews** projects, you will incrementally convert a static
 
 ### Install
 
-1. Clone this repo `git clone https://github.com/LuXDAmore/mws-restaurant-stage-1/`
+1. Clone this repo `git clone https://github.com/LuXDAmore/mws-restaurant-stage-2/`
 2. Go to the folder
 3. Run `npm install`
 
@@ -34,8 +34,8 @@ _It watch files under the `dist/` folder, on port `4000`, to changing it check `
 
 ### Demos
 
-[Live Netlify](https://mws-restaurant.netlify.com "Demo Netlify")
-[Live Github Pages](https://luxdamore.github.io/mws-restaurant-stage-1/ "Demo Github Pages")
+[Live Netlify](https://mws2-restaurant.netlify.com "Demo Netlify")
+[Live Github Pages](https://luxdamore.github.io/mws-restaurant-stage-2/ "Demo Github Pages")
 
 ### Info
 
@@ -66,11 +66,11 @@ Local server:
 
 --
 
-#### Start the server
+#### Start only server
 
 `npm run start`: development, Port: 1337
 
-##### Start the server and the build together
+##### Start the server and the building process together
 
-`npm run local-dev`: development, Port: 1337 && 4000
-`npm run local-production`: production, Port: 1337 && 5000
+`npm run sailjs`: production, Port: 1337, you manually have to go to url `http://localhost:1377`
+_Served from `.tmp/public` folder_

@@ -34,6 +34,7 @@ class DBHelper { // eslint-disable-line
 						if( ! response.ok )
 							throw new Error( 'Error during Network request' );
 
+						// Got a success response from server!
 						return response.json();
 
 					}
@@ -41,15 +42,19 @@ class DBHelper { // eslint-disable-line
 				.then(
 					data => {
 
-						restaurants = IS_LOCALHOST ? data : data.restaurants;
+						restaurants = data;
 						callback( null, restaurants );
 
 					}
 				)
+				// Oops!. Got an error from server.
 				.catch( error => callback( error, null ) )
 			;
 
-		} else {
+		};
+
+		/* For Old-browsers.
+		else {
 
 			const xhr = new XMLHttpRequest();
 
@@ -59,15 +64,13 @@ class DBHelper { // eslint-disable-line
 
 				if( this.readyState === XMLHttpRequest.DONE ) {
 
-					// Got a success response from server!
 					if( this.status === 200 ) {
 
-						restaurants = IS_LOCALHOST ? this.response : this.response.restaurants;
+						restaurants = this.response;
 						callback( null, restaurants );
 
 					} else {
 
-						// Oops!. Got an error from server.
 						const error = `Request failed. Returned status of ${ this.status }`;
 						callback( error, null );
 
@@ -81,6 +84,7 @@ class DBHelper { // eslint-disable-line
 			xhr.send();
 
 		};
+		*/
 
 	};
 
@@ -97,11 +101,11 @@ class DBHelper { // eslint-disable-line
 					callback( error, null );
 				else {
 
-					const restaurant = restaurants.find( r => r.id === parseInt( id ) );
+					const position = restaurants.map( obj => obj.id ).indexOf( parseInt( id ) );
 
 					// Got the restaurant
-					if( restaurant )
-						callback( null, restaurant );
+					if( ~ position )
+						callback( null, restaurants[ position ] );
 					// Restaurant does not exist in the database
 					else
 						callback( 'Restaurant does not exist', null );

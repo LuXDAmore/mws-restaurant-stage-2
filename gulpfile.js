@@ -33,6 +33,7 @@ var gulp = require( 'gulp' )
 			dist: 'dist',
 			git_pages: 'docs',
 			tools: 'tools',
+			sailsjs: '.tmp/public',
 		},
 		github: {
 			name: 'mws-restaurant-stage-2',
@@ -493,7 +494,7 @@ gulp.task(
 
 		var critical = require( 'critical' ).stream
 			, glob = require( 'glob' )
-			, css_files = glob.sync( options.directory.dist + '/app/**/**/*.css' ) || []
+			, css_files = glob.sync( options.directory.dist + '/app/styles/**/*.css' ) || []
 		;
 
 		return gulp
@@ -527,6 +528,7 @@ gulp.task(
 );
 
 // BUILD APP TASKS
+// Github Pages
 gulp.task(
 	'github:pages:clean',
 	function() {
@@ -598,6 +600,35 @@ gulp.task(
 
 	}
 );
+
+// SailsJs
+gulp.task(
+	'sailsjs:clean',
+	function() {
+
+		gutil.log( gutil.colors.white.bgMagenta( ' [ sailsjs : Clean ] ' ) );
+
+		return del( options.directory.sailsjs, options.clean )
+			.catch( errorManager )
+		;
+
+	}
+);
+gulp.task(
+	'sailsjs:copy',
+	function() {
+
+		gutil.log( gutil.colors.white.bgBlue( ' [ sailsjs : Public ] ' ) );
+
+		return gulp
+			.src( options.directory.dist + '/**/**/*.*' )
+			.pipe( gulp.dest( options.directory.sailsjs + '/' ), options.write )
+		;
+
+	}
+);
+
+// Inject
 gulp.task(
 	'build:inject',
 	function() {
@@ -735,17 +766,17 @@ gulp.task(
 
 		var filterCSS = filter( '**/*.css', { restore: true } )
 			, filterSASS = filter( [ '**/*.scss', '**/*.sass' ], { restore: true } )
-			, nameCSS = development() ? 'app.css' : 'app.min.css';
+			, nameCSS = development() ? 'app.css' : 'app.min.css'
+			, sources = [
+				'node_modules/modern-normalize/modern-normalize.css',
+				options.directory.source + '/app/**/*.css',
+				options.directory.source + '/app/**/*.sass',
+				options.directory.source + '/app/**/*.scss',
+			]
 		;
 
 		return gulp
-			.src(
-				[
-					options.directory.source + '/app/**/*.css',
-					options.directory.source + '/app/**/*.sass',
-					options.directory.source + '/app/**/*.scss',
-				]
-			)
+			.src( sources )
 			.pipe( filterCSS )
 			.pipe( gulpif( staging(), sourcemaps.init() ) )
 			.pipe( filterCSS.restore )
@@ -1044,10 +1075,20 @@ gulp.task( 'default', [ 'build' ] );
 
 // Github Pages
 gulp.task(
-	'github:pages',
+	'sailsjs',
+	[ 'build' ],
 	function( done ) {
 
-		sequence( 'build', 'github:pages:clean', 'github:pages:copy', 'github:pages:replace' )( done );
+		sequence( 'sailsjs:clean', 'sailsjs:copy' )( done );
+
+	}
+);
+gulp.task(
+	'github:pages',
+	[ 'build' ],
+	function( done ) {
+
+		sequence( 'github:pages:clean', 'github:pages:copy', 'github:pages:replace' )( done );
 
 	}
 );

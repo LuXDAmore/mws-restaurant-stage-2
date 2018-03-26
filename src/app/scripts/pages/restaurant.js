@@ -66,16 +66,19 @@
 		 */
 		function ready() {
 
+			window.removeEventListener( 'load', ready );
+
 			window.console.log( '%c RESTAURANT REVIEWS - SINGLE, ready to rock ✌️', 'color:#2980b9' );
 
-			GMapHelper.load(
-				{
-					callback: 'initMapRestaurantInfo',
-				}
-			);
-
 		};
-		ready();
+		window.addEventListener( 'load', ready, false );
+
+		// Async - Defer Gmaps
+		GMapHelper.load(
+			{
+				callback: 'initMapRestaurantInfo',
+			}
+		);
 
 		/**
 		 * Get current restaurant from page URL.

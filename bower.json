@@ -13,11 +13,12 @@
 	"license": "ISC",
 	"author": "Luca Iaconelli <lucabelli9@gmail.com> (https://github.com/luxdamore)",
 	"private": true,
-	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-1/",
+	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-2/",
 	"ignore": [
 		"**/.*",
 		"dist",
 		"docs",
+		".tmp",
 		"node_modules",
 		"bower_components",
 		"tests"
