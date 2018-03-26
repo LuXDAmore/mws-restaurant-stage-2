@@ -72,5 +72,5 @@ Local server:
 
 ##### Start the server and the building process together
 
-`npm run sailjs`: production, Port: 1337, you manually have to go to url `http://localhost:1377`
+`npm run sailsjs`: production, Port: 1337, you manually have to go to url `http://localhost:1377`
 _Served from `.tmp/public` folder_
