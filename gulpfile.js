@@ -159,6 +159,7 @@ options.other_files = [
 	options.directory.source + '/*.txt',
 	options.directory.source + '/*.yml',
 	options.directory.source + '/*.txt',
+	'node_modules/sw-toolbox/sw-toolbox.js',
 ];
 
 // Common Webserver
@@ -421,15 +422,30 @@ gulp.task(
 		var path = require( 'path' )
 			, swPrecache = require( 'sw-precache' )
 			, config = {
+				importScripts: [
+					'sw-toolbox.js',
+				],
+				runtimeCaching: [
+					{
+						urlPattern: /\/restaurants\//,
+						handler: 'fastest',
+						options: {
+						cache: {
+								maxEntries: 10,
+								name: 'restaurants-cache',
+							},
+						},
+					}
+				],
 				staticFileGlobs: [
-					options.directory.dist + '/**/**/*.json',
-					options.directory.dist + '/**/**/*.html',
-					options.directory.dist + '/**/**/*.js',
-					options.directory.dist + '/**/**/*.css',
-					options.directory.dist + '/**/**/*.webp',
-					options.directory.dist + '/**/**/*.jpg',
-					options.directory.dist + '/**/**/*.png',
-					options.directory.dist + '/**/**/*.{eot,ttf,woff,woff2}',
+					options.directory.dist + '/**/**/**/*.html',
+					options.directory.dist + '/**/**/**/*.json',
+					options.directory.dist + '/**/**/**/*.js',
+					options.directory.dist + '/**/**/**/*.css',
+					options.directory.dist + '/**/**/**/*.webp',
+					options.directory.dist + '/**/**/**/*.jpg',
+					options.directory.dist + '/**/**/**/*.png',
+					options.directory.dist + '/**/**/**/*.{eot,ttf,woff,woff2}',
 				],
 				stripPrefix: options.directory.dist + '/',
 			}

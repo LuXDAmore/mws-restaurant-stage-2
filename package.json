@@ -9,8 +9,8 @@
 		"start": "node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
-		"local-dev": "npm run serve | npm run start",
-		"local-production": "npm run production | npm run start",
+		"local-dev": "npm run start | npm run serve",
+		"local-production": "cross-env NODE_ENV=production npm run start | npm run production",
 		"serve": "cross-env NODE_ENV=development gulp serve",
 		"dev": "cross-env NODE_ENV=development gulp serve",
 		"staging": "cross-env NODE_ENV=staging gulp serve:staging",
@@ -60,7 +60,7 @@
 		"bower": "^1.8.2",
 		"browser-sync": "^2.18.13",
 		"browserslist": "^2.10.0",
-		"critical": "^1.2.0",
+		"critical": "^1.2.1",
 		"cross-env": "^5.1.4",
 		"del": "^3.0.0",
 		"eslint": "^3.19.0",
@@ -95,7 +95,8 @@
 		"gulp-webserver": "^0.9.1",
 		"prettier": "^1.9.2",
 		"stylelint-no-unsupported-browser-features": "^1.0.1",
-		"sw-precache": "^5.2.1"
+		"sw-precache": "^5.2.1",
+		"sw-toolbox": "^3.6.0"
 	},
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",

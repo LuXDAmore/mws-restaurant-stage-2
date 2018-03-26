@@ -1,6 +1,6 @@
 'use strict';
 
-const URL = ~ window.location.href.indexOf( 'localhost' ) ? `http://localhost:1337/restaurants` : 'data/restaurants.json';
+const URL = ~ window.location.href.indexOf( 'localhost' ) ? `http://localhost:1337/restaurants/` : 'data/restaurants.json';
 let restaurants = [];
 
 /**
@@ -22,25 +22,30 @@ class DBHelper { // eslint-disable-line
 
 		const xhr = new XMLHttpRequest();
 
-		xhr.responseType = 'json';
 		xhr.open( 'GET', URL );
-		xhr.onload = () => {
+		xhr.responseType = 'json';
+		function onReadyStateChange() {
 
-			// Got a success response from server!
-			if( xhr.status === 200 ) {
+			if( this.readyState === XMLHttpRequest.DONE ) {
 
-				restaurants = xhr.response
-				callback( null, restaurants );
+				// Got a success response from server!
+				if( this.status === 200 ) {
 
-			} else {
+					restaurants = this.response;
+					callback( null, restaurants );
 
-				// Oops!. Got an error from server.
-				const error = `Request failed. Returned status of ${ xhr.status }`;
-				callback( error, null );
+				} else {
+
+					// Oops!. Got an error from server.
+					const error = `Request failed. Returned status of ${ xhr.status }`;
+					callback( error, null );
+
+				};
 
 			};
 
 		};
+		xhr.onreadystatechange = onReadyStateChange;
 
 		xhr.send();
 
