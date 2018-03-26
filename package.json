@@ -9,6 +9,8 @@
 		"start": "node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
+		"local-dev": "npm run serve | npm run start",
+		"local-production": "npm run production | npm run start",
 		"serve": "cross-env NODE_ENV=development gulp serve",
 		"dev": "cross-env NODE_ENV=development gulp serve",
 		"staging": "cross-env NODE_ENV=staging gulp serve:staging",
