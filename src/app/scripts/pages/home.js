@@ -65,18 +65,18 @@
 
 			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
+			GMapHelper.load(
+				{
+					callback: 'initMap',
+				}
+			);
+
 			DBHelper.fetchRestaurants(
 				() => {
 
 					fetchNeighborhoods();
 					fetchCuisines();
 
-				}
-			);
-
-			GMapHelper.load(
-				{
-					callback: 'initMap',
 				}
 			);
 

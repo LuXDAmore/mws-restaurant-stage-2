@@ -68,7 +68,9 @@ Local server:
 
 #### Start the server
 
-`npm run start`
+`npm run start`: development, Port: 1337
 
-Environment : development
-Port        : 1337
+##### Start the server and the build together
+
+`npm run local-dev`: development, Port: 1337 && 4000
+`npm run local-production`: production, Port: 1337 && 5000

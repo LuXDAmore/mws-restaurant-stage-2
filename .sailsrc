@@ -1,8 +1,9 @@
 {
-  "generators": {
-    "modules": {}
-  },
-  "hooks": {
-    "grunt": false
-  }
+	"generators": {
+		"modules": {}
+	},
+	"hooks": {
+		"grunt": false,
+		"gulp": true
+	}
 }

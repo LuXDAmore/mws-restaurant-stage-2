@@ -6,6 +6,7 @@
 	"keywords": [
 		"google",
 		"udacity",
+		"udacity-nanodegree",
 		"restaurant",
 		"nanodegree"
 	],
@@ -15,6 +16,8 @@
 	"homepage": "https://luxdamore.github.com/mws-restaurant-stage-1/",
 	"ignore": [
 		"**/.*",
+		"dist",
+		"docs",
 		"node_modules",
 		"bower_components",
 		"tests"

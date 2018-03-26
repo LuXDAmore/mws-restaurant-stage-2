@@ -1,6 +1,7 @@
 'use strict';
 
-const URL = ~ window.location.href.indexOf( 'localhost' ) ? `http://localhost:1337/restaurants/` : 'data/restaurants.json';
+const IS_LOCALHOST = ~ window.location.href.indexOf( 'localhost' );
+const URL = IS_LOCALHOST ? 'http://localhost:1337/restaurants' : 'data/restaurants.json';
 let restaurants = [];
 
 /**
@@ -13,41 +14,73 @@ class DBHelper { // eslint-disable-line
 	 */
 	static fetchRestaurants( callback ) {
 
-		if( restaurants && restaurants.length ) {
+		if( restaurants.length ) {
 
 			callback( null, restaurants );
 			return;
 
 		};
 
-		const xhr = new XMLHttpRequest();
+		if( 'fetch' in window ) {
 
-		xhr.open( 'GET', URL );
-		xhr.responseType = 'json';
-		function onReadyStateChange() {
+			const options = {
+				method: 'GET',
+			};
 
-			if( this.readyState === XMLHttpRequest.DONE ) {
+			fetch( URL, options )
+				.then(
+					response => {
 
-				// Got a success response from server!
-				if( this.status === 200 ) {
+						if( ! response.ok )
+							throw new Error( 'Error during Network request' );
 
-					restaurants = this.response;
-					callback( null, restaurants );
+						return response.json();
 
-				} else {
+					}
+				)
+				.then(
+					data => {
 
-					// Oops!. Got an error from server.
-					const error = `Request failed. Returned status of ${ xhr.status }`;
-					callback( error, null );
+						restaurants = IS_LOCALHOST ? data : data.restaurants;
+						callback( null, restaurants );
+
+					}
+				)
+				.catch( error => callback( error, null ) )
+			;
+
+		} else {
+
+			const xhr = new XMLHttpRequest();
+
+			xhr.open( 'GET', URL );
+			xhr.responseType = 'json';
+			function onReadyStateChange() {
+
+				if( this.readyState === XMLHttpRequest.DONE ) {
+
+					// Got a success response from server!
+					if( this.status === 200 ) {
+
+						restaurants = IS_LOCALHOST ? this.response : this.response.restaurants;
+						callback( null, restaurants );
+
+					} else {
+
+						// Oops!. Got an error from server.
+						const error = `Request failed. Returned status of ${ this.status }`;
+						callback( error, null );
+
+					};
 
 				};
 
 			};
+			xhr.onreadystatechange = onReadyStateChange;
+
+			xhr.send();
 
 		};
-		xhr.onreadystatechange = onReadyStateChange;
-
-		xhr.send();
 
 	};
 
