@@ -35,7 +35,7 @@ var gulp = require( 'gulp' )
 			tools: 'tools',
 		},
 		github: {
-			name: 'mws-restaurant-stage-1',
+			name: 'mws-restaurant-stage-2',
 		},
 		service_worker: {
 			name: 'sw.js',
@@ -437,6 +437,21 @@ gulp.task(
 						},
 					}
 				],
+				dynamicUrlToDependencies: {
+					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=2': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=3': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=4': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=5': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=6': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=7': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=8': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=9': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=10': [ options.directory.dist + '/restaurant.html' ],
+					'restaurant.html?id=*': [ options.directory.dist + '/restaurant.html' ],
+				},
 				staticFileGlobs: [
 					options.directory.dist + '/**/**/**/*.html',
 					options.directory.dist + '/**/**/**/*.json',
