@@ -34,12 +34,11 @@ _It watch files under the `dist/` folder, on port `4000`, to changing it check `
 
 ### Demos
 
-[Live Netlify](https://mws2-restaurant.netlify.com "Demo Netlify")
-[Live Github Pages](https://luxdamore.github.io/mws-restaurant-stage-2/ "Demo Github Pages")
+[Live Netlify](https://mws2-restaurant.netlify.com "Demo Netlify") - [Live Github Pages](https://luxdamore.github.io/mws-restaurant-stage-2/ "Demo Github Pages")
 
 ### Info
 
-**Main configurations are in the `gulpfile.js` in a variable called `options`;**
+**Main configurations are in the `gulpfile.js` file, in a variable called `options`;**
 **For Github Pages, you should read the documentation setting branch `master` with `docs/` folder and you should check `var options.github` in the `gulpfile.js`**
 **This building tool is compatible with [Netlify](https://www.netlify.com/ "Netlify").**
 
