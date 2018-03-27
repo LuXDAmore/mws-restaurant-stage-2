@@ -12,7 +12,7 @@
 
 			function serviceWorker() {
 
-				window.removeEventListener( 'load', serviceWorker, false );
+				window.removeEventListener( 'load', serviceWorker );
 
 				function SWRegistration( registration ) {
 
