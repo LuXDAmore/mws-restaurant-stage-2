@@ -430,20 +430,40 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /\/fonts.googleapis.com/,
+						urlPattern: /\/fonts\.gstatic\.com\//,
+						handler: 'cacheFirst',
+						options: {
+							cache: {
+								maxEntries: 5,
+								name: 'fonts-static-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /\/maps\.gstatic\.com\//,
+						handler: 'cacheFirst',
+						options: {
+							cache: {
+								maxEntries: 10,
+								name: 'maps-static-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /\/fonts\.googleapis\.com\//,
 						handler: 'fastest',
 						options: {
-						cache: {
+							cache: {
 								maxEntries: 5,
 								name: 'fonts-api-cache',
 							},
 						},
 					},
 					{
-						urlPattern: /\/maps.googleapis.com/,
+						urlPattern: /\/maps\.googleapis\.com\//,
 						handler: 'fastest',
 						options: {
-						cache: {
+							cache: {
 								maxEntries: 10,
 								name: 'maps-api-cache',
 							},
@@ -453,7 +473,7 @@ gulp.task(
 						urlPattern: /\/restaurants/,
 						handler: 'fastest',
 						options: {
-						cache: {
+							cache: {
 								maxEntries: 10,
 								name: 'restaurants-cache',
 							},
@@ -463,7 +483,7 @@ gulp.task(
 						urlPattern: /\/restaurants\/[1-10]/,
 						handler: 'fastest',
 						options: {
-						cache: {
+							cache: {
 								maxEntries: 1,
 								name: 'restaurant-cache',
 							},

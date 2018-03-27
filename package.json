@@ -27,7 +27,6 @@
 		"gulp": "gulp",
 		"prebower": "bower cache clean",
 		"predev": "npm install",
-		"presailsjs": "npm install",
 		"prebuild:sailsjs": "npm install",
 		"preproduction": "npm install",
 		"prebuild": "npm install",
