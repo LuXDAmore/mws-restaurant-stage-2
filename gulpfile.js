@@ -430,16 +430,6 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /\/fonts.gstatic.com/,
-						handler: 'fastest',
-						options: {
-						cache: {
-								maxEntries: 5,
-								name: 'fonts-static-cache',
-							},
-						},
-					},
-					{
 						urlPattern: /\/fonts.googleapis.com/,
 						handler: 'fastest',
 						options: {
@@ -450,21 +440,11 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /\/maps.gstatic.com/,
-						handler: 'fastest',
-						options: {
-						cache: {
-								maxEntries: 5,
-								name: 'maps-static-cache',
-							},
-						},
-					},
-					{
 						urlPattern: /\/maps.googleapis.com/,
 						handler: 'fastest',
 						options: {
 						cache: {
-								maxEntries: 5,
+								maxEntries: 10,
 								name: 'maps-api-cache',
 							},
 						},
