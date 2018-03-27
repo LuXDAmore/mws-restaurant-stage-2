@@ -774,11 +774,12 @@ gulp.task(
 
 		var nameJS = development() ? 'app.js' : 'app.min.js';
 
+		// FIXME: If you need Polyfills, uncomment this lines.
 		// var polyfill = './node_modules/babel-polyfill/dist/polyfill.js';
 
 		var scripts = [
 			// polyfill,
-			options.directory.source + '/app/scripts/helper/*.js',
+			options.directory.source + '/app/scripts/common/*.js',
 			options.directory.source + '/app/scripts/pages/*.js',
 		];
 
@@ -830,9 +831,9 @@ gulp.task(
 			.on( 'error', errorManager )
 			.pipe( gulpif( development(), autoprefixer( options.autoprefixer ) ) )
 			.on( 'error', errorManager )
-			.pipe( gulpif( ! production(), stylelint( options.stylelint ) ) )
 			.on( 'error', errorManager )
 			.pipe( concat( nameCSS ) )
+			.pipe( gulpif( ! production(), stylelint( options.stylelint ) ) )
 			.pipe( rev() )
 			.pipe( gulpif( staging(), sourcemaps.write( '.', options.sourcemaps ) ) )
 			.pipe( gulp.dest( options.directory.dist + '/app/styles' ) )
