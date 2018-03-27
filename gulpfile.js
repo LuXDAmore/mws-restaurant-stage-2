@@ -92,10 +92,12 @@ var gulp = require( 'gulp' )
 			reporters: [
 				{
 					formatter: 'string',
-					console: true,
-					debug: false,
+					console: false,
 				}
-			]
+			],
+			fix: false,
+			failAfterError: false,
+			debug: false,
 		},
 		sourcemaps: {
 			addComment: false,
@@ -428,6 +430,46 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
+						urlPattern: /fonts\.gstatic\.com/,
+						handler: 'fastest',
+						options: {
+						cache: {
+								maxEntries: 5,
+								name: 'fonts-static-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /fonts\.googleapis\.com/,
+						handler: 'fastest',
+						options: {
+						cache: {
+								maxEntries: 5,
+								name: 'fonts-api-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /maps\.gstatic\.com/,
+						handler: 'fastest',
+						options: {
+						cache: {
+								maxEntries: 5,
+								name: 'maps-static-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /maps\.googleapis\.com/,
+						handler: 'fastest',
+						options: {
+						cache: {
+								maxEntries: 5,
+								name: 'maps-api-cache',
+							},
+						},
+					},
+					{
 						urlPattern: /\/restaurants/,
 						handler: 'fastest',
 						options: {
@@ -446,9 +488,10 @@ gulp.task(
 								name: 'restaurant-cache',
 							},
 						},
-					}
+					},
 				],
 				dynamicUrlToDependencies: {
+					'/': [ options.directory.dist + '/index.html' ],
 					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
@@ -494,7 +537,7 @@ gulp.task(
 
 		var critical = require( 'critical' ).stream
 			, glob = require( 'glob' )
-			, css_files = glob.sync( options.directory.dist + '/app/styles/**/*.css' ) || []
+			, css_files = glob.sync( options.directory.dist + '/app/styles/**/*.css', { silent: true } ) || []
 		;
 
 		return gulp
@@ -733,7 +776,7 @@ gulp.task(
 
 		var nameJS = development() ? 'app.js' : 'app.min.js';
 
-		// var polyfill = './node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js';
+		// var polyfill = 'node_modules/babel-polyfill/dist/polyfill.js';
 
 		var scripts = [
 			// polyfill,
@@ -767,16 +810,17 @@ gulp.task(
 		var filterCSS = filter( '**/*.css', { restore: true } )
 			, filterSASS = filter( [ '**/*.scss', '**/*.sass' ], { restore: true } )
 			, nameCSS = development() ? 'app.css' : 'app.min.css'
-			, sources = [
-				'node_modules/modern-normalize/modern-normalize.css',
-				options.directory.source + '/app/**/*.css',
-				options.directory.source + '/app/**/*.sass',
-				options.directory.source + '/app/**/*.scss',
-			]
 		;
 
 		return gulp
-			.src( sources )
+			.src(
+				[
+					'node_modules/modern-normalize/modern-normalize.css',
+					options.directory.source + '/app/**/*.css',
+					options.directory.source + '/app/**/*.sass',
+					options.directory.source + '/app/**/*.scss',
+				]
+			)
 			.pipe( filterCSS )
 			.pipe( gulpif( staging(), sourcemaps.init() ) )
 			.pipe( filterCSS.restore )
@@ -788,7 +832,7 @@ gulp.task(
 			.on( 'error', errorManager )
 			.pipe( gulpif( development(), autoprefixer( options.autoprefixer ) ) )
 			.on( 'error', errorManager )
-			.pipe( stylelint( options.stylelint ) )
+			.pipe( gulpif( ! production(), stylelint( options.stylelint ) ) )
 			.on( 'error', errorManager )
 			.pipe( concat( nameCSS ) )
 			.pipe( rev() )
