@@ -162,7 +162,7 @@ options.other_files = [
 	options.directory.source + '/*.txt',
 	options.directory.source + '/*.yml',
 	options.directory.source + '/*.txt',
-	'node_modules/sw-toolbox/sw-toolbox.js',
+	'./node_modules/sw-toolbox/sw-toolbox.js',
 ];
 
 // Common Webserver
@@ -430,7 +430,7 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /fonts\.gstatic\.com/,
+						urlPattern: /\/fonts.gstatic.com/,
 						handler: 'fastest',
 						options: {
 						cache: {
@@ -440,7 +440,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /fonts\.googleapis\.com/,
+						urlPattern: /\/fonts.googleapis.com/,
 						handler: 'fastest',
 						options: {
 						cache: {
@@ -450,7 +450,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /maps\.gstatic\.com/,
+						urlPattern: /\/maps.gstatic.com/,
 						handler: 'fastest',
 						options: {
 						cache: {
@@ -460,7 +460,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /maps\.googleapis\.com/,
+						urlPattern: /\/maps.googleapis.com/,
 						handler: 'fastest',
 						options: {
 						cache: {
@@ -508,13 +508,11 @@ gulp.task(
 				},
 				staticFileGlobs: [
 					options.directory.dist + '/**/**/**/*.html',
-					options.directory.dist + '/**/**/**/*.json',
 					options.directory.dist + '/**/**/**/*.js',
 					options.directory.dist + '/**/**/**/*.css',
-					options.directory.dist + '/**/**/**/*.webp',
-					options.directory.dist + '/**/**/**/*.jpg',
-					options.directory.dist + '/**/**/**/*.png',
+					options.directory.dist + '/**/**/**/*.{webp,jpg,jpeg,png,svg,ico}',
 					options.directory.dist + '/**/**/**/*.{eot,ttf,woff,woff2}',
+					options.directory.dist + '/**/**/**/*.json',
 				],
 				stripPrefix: options.directory.dist + '/',
 			}
@@ -776,7 +774,7 @@ gulp.task(
 
 		var nameJS = development() ? 'app.js' : 'app.min.js';
 
-		// var polyfill = 'node_modules/babel-polyfill/dist/polyfill.js';
+		// var polyfill = './node_modules/babel-polyfill/dist/polyfill.js';
 
 		var scripts = [
 			// polyfill,
@@ -815,7 +813,7 @@ gulp.task(
 		return gulp
 			.src(
 				[
-					'node_modules/modern-normalize/modern-normalize.css',
+					'./node_modules/modern-normalize/modern-normalize.css',
 					options.directory.source + '/app/**/*.css',
 					options.directory.source + '/app/**/*.sass',
 					options.directory.source + '/app/**/*.scss',
