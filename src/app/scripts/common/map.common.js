@@ -17,8 +17,8 @@ class GMapHelper { // eslint-disable-line
 
 		const default_config = {
 			key: 'AIzaSyBG8LXp4osGIgtI1SxUafmy6fPsgMq414c',
-			libraries: 'places',
-			callback: '',
+			libraries: null,
+			callback: null,
 		};
 
 		const options = Object.assign(
@@ -30,6 +30,7 @@ class GMapHelper { // eslint-disable-line
 		let url = `https://maps.googleapis.com/maps/api/js?${
 			Object
 				.keys( options )
+				.filter( key => !! options[ key ] )
 				.map( key => encodeURIComponent( key ) + '=' + encodeURIComponent( options[ key ] ) )
 				.join( '&' )
 		}`;
