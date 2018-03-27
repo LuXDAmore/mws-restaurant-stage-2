@@ -491,7 +491,8 @@ gulp.task(
 					},
 				],
 				dynamicUrlToDependencies: {
-					'/': [ options.directory.dist + '/index.html' ],
+					'index.html': [ options.directory.dist + '/index.html' ],
+					'restaurant.html': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
