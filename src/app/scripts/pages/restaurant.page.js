@@ -4,7 +4,7 @@
 		'use strict';
 
 		// Check the right page
-		const IS_RESTAURANT = window.location.href.indexOf( 'restaurant.html' ) !== - 1;
+		const IS_RESTAURANT = !! ~ window.location.href.indexOf( 'restaurant.html' );
 		if( ! IS_RESTAURANT )
 			return;
 

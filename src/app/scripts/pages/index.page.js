@@ -4,8 +4,8 @@
 		'use strict';
 
 		// Check the right page
-		const IS_INDEX = window.location.href.indexOf( 'restaurant.html' ) === - 1;
-		if( ! IS_INDEX )
+		const IS_RESTAURANT = !! ~ window.location.href.indexOf( 'restaurant.html' );
+		if( IS_RESTAURANT )
 			return;
 
 		// Common vars
