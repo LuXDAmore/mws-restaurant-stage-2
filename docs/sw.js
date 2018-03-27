@@ -285,8 +285,10 @@ self.addEventListener('fetch', function(event) {
 
 // Runtime cache configuration, using the sw-toolbox library.
 
-toolbox.router.get(/\/fonts.googleapis.com/, toolbox.fastest, {"cache":{"maxEntries":5,"name":"fonts-api-cache"}});
-toolbox.router.get(/\/maps.googleapis.com/, toolbox.fastest, {"cache":{"maxEntries":10,"name":"maps-api-cache"}});
+toolbox.router.get(/\/fonts\.gstatic\.com\//, toolbox.cacheFirst, {"cache":{"maxEntries":5,"name":"fonts-static-cache"}});
+toolbox.router.get(/\/maps\.gstatic\.com\//, toolbox.cacheFirst, {"cache":{"maxEntries":10,"name":"maps-static-cache"}});
+toolbox.router.get(/\/fonts\.googleapis\.com\//, toolbox.fastest, {"cache":{"maxEntries":5,"name":"fonts-api-cache"}});
+toolbox.router.get(/\/maps\.googleapis\.com\//, toolbox.fastest, {"cache":{"maxEntries":10,"name":"maps-api-cache"}});
 toolbox.router.get(/\/restaurants/, toolbox.fastest, {"cache":{"maxEntries":10,"name":"restaurants-cache"}});
 toolbox.router.get(/\/restaurants\/[1-10]/, toolbox.fastest, {"cache":{"maxEntries":1,"name":"restaurant-cache"}});
 
