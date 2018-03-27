@@ -470,7 +470,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /\/restaurants/,
+						urlPattern: /\/restaurants\//,
 						handler: 'fastest',
 						options: {
 							cache: {
@@ -491,8 +491,6 @@ gulp.task(
 					},
 				],
 				dynamicUrlToDependencies: {
-					'index.html': [ options.directory.dist + '/index.html' ],
-					'restaurant.html': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
@@ -614,6 +612,10 @@ gulp.task(
 				'"start_url": "/"',
 				'"start_url": "/' + options.github.name + '/"',
 			]
+			, replace_preload = [
+				'http://localhost:1337/restaurants/',
+				'data/restaurants.json',
+			]
 		;
 
 		var filterHTML = filter( '**/*.html', { restore: true } )
@@ -631,6 +633,8 @@ gulp.task(
 			.pipe( injectString.replace( replace_base[ 0 ], replace_base[ 1 ] ) )
 			.on( 'error', errorManager )
 			.pipe( injectString.replace( replace_canonical[ 0 ], replace_canonical[ 1 ] ) )
+			.on( 'error', errorManager )
+			.pipe( injectString.replace( replace_preload[ 0 ], replace_preload[ 1 ] ) )
 			.on( 'error', errorManager )
 			.pipe( filterHTML.restore )
 			.pipe( filterManifest )
