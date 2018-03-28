@@ -162,6 +162,7 @@ options.other_files = [
 	options.directory.source + '/*.txt',
 	options.directory.source + '/*.yml',
 	options.directory.source + '/*.txt',
+	options.directory.source + '/.htaccess',
 	'./node_modules/sw-toolbox/sw-toolbox.js',
 ];
 
@@ -588,7 +589,12 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ Github Pages : Docs ] ' ) );
 
 		return gulp
-			.src( options.directory.dist + '/**/**/*.*' )
+			.src(
+				[
+					options.directory.dist + '/**/**/.*',
+					options.directory.dist + '/**/**/*.*',
+				]
+			)
 			.pipe( gulp.dest( options.directory.git_pages + '/' ), options.write )
 		;
 
@@ -667,7 +673,12 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ sailsjs : Public ] ' ) );
 
 		return gulp
-			.src( options.directory.dist + '/**/**/*.*' )
+			.src(
+				[
+					options.directory.dist + '/**/**/.*',
+					options.directory.dist + '/**/**/*.*',
+				]
+			)
 			.pipe( gulp.dest( options.directory.sailsjs + '/' ), options.write )
 		;
 
