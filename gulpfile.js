@@ -519,8 +519,6 @@ gulp.task(
 			}
 		;
 
-		config.dynamicUrlToDependencies[ '/' + options.github.name + '/' ] = [ options.directory.dist + '/index.html' ];
-
 		swPrecache.write(
 			path.join(
 				options.directory.dist,
@@ -625,10 +623,15 @@ gulp.task(
 				'http://localhost:1337/restaurants/',
 				'data/restaurants.json',
 			]
+			, replace_sw = [
+				'["/"',
+				'["/' + options.github.name + '/"]',
+			]
 		;
 
 		var filterHTML = filter( '**/*.html', { restore: true } )
 			, filterManifest = filter( '**/*.json', { restore: true } )
+			, filterSW = filter( '**/*.sw', { restore: true } )
 		;
 
 		return gulp
@@ -636,6 +639,7 @@ gulp.task(
 				[
 					options.directory.dist + '/*.html',
 					options.directory.dist + '/manifest.json',
+					options.directory.dist + '/' + options.service_worker.name,
 				]
 			)
 			.pipe( filterHTML )
@@ -650,6 +654,10 @@ gulp.task(
 			.pipe( injectString.replace( replace_manifest[ 0 ], replace_manifest[ 1 ] ) )
 			.on( 'error', errorManager )
 			.pipe( filterManifest.restore )
+			.pipe( filterSW )
+			.pipe( injectString.replace( replace_sw[ 0 ], replace_sw[ 1 ] ) )
+			.on( 'error', errorManager )
+			.pipe( filterSW.restore )
 			.pipe( gulp.dest( options.directory.git_pages + '/' ), options.write )
 		;
 
