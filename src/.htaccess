@@ -29,7 +29,7 @@
 
     <FilesMatch "\.(js|html|css|json|webp|svg|jpg|jpeg|png|gif)$">
 
-        Header set Cache-Control "max-age=604800, private"
+        Header set Cache-Control "max-age=604800"
 
     </FilesMatch>
 
