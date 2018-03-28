@@ -485,7 +485,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 1,
+								maxEntries: 10,
 								name: 'restaurant-cache',
 							},
 						},
