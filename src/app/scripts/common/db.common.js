@@ -14,7 +14,7 @@ class DBHelper { // eslint-disable-line
 	 */
 	static fetchRestaurants( callback ) {
 
-		if( restaurants.length ) {
+		if( restaurants && restaurants.length ) {
 
 			callback( null, restaurants );
 			return;
@@ -31,8 +31,15 @@ class DBHelper { // eslint-disable-line
 				.then(
 					response => {
 
-						if( ! response.ok )
-							throw new Error( 'Error during Network request' );
+						// Oops!. Got an error from server.
+						if( ! response.ok ) {
+
+							const error = 'Error during Network request';
+
+							callback( error, null );
+							throw new Error( error );
+
+						};
 
 						// Got a success response from server!
 						return response.json();
@@ -47,19 +54,15 @@ class DBHelper { // eslint-disable-line
 
 					}
 				)
-				// Oops!. Got an error from server.
-				.catch( error => callback( error, null ) )
 			;
 
-		};
-
-		/* For Old-browsers.
-		else {
+		} else {
 
 			const xhr = new XMLHttpRequest();
 
 			xhr.open( 'GET', URL );
-			xhr.responseType = 'json';
+			xhr.setRequestHeader( 'Content-Type', 'application/json' );
+
 			function onReadyStateChange() {
 
 				if( this.readyState === XMLHttpRequest.DONE ) {
@@ -79,12 +82,13 @@ class DBHelper { // eslint-disable-line
 				};
 
 			};
+
+			xhr.responseType = 'json';
 			xhr.onreadystatechange = onReadyStateChange;
 
 			xhr.send();
 
 		};
-		*/
 
 	};
 

@@ -68,14 +68,18 @@
 
 			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
-			DBHelper.fetchRestaurants(
-				() => {
+			function restaurantsFetched( error, restaurants ) {
 
-					fetchNeighborhoods();
-					fetchCuisines();
+				if( error )
+					return window.alert( error );
 
-				}
-			);
+				self.restaurants = restaurants;
+
+				fetchNeighborhoods();
+				fetchCuisines();
+
+			};
+			DBHelper.fetchRestaurants( restaurantsFetched );
 
 		};
 		window.addEventListener( 'load', ready, false );

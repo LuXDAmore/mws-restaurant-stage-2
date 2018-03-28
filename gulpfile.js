@@ -435,7 +435,7 @@ gulp.task(
 						handler: 'cacheFirst',
 						options: {
 							cache: {
-								maxEntries: 5,
+								maxEntries: 10,
 								name: 'fonts-static-cache',
 							},
 						},
@@ -465,7 +465,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 5,
 								name: 'maps-api-cache',
 							},
 						},
@@ -492,6 +492,7 @@ gulp.task(
 					},
 				],
 				dynamicUrlToDependencies: {
+					'/': [ options.directory.dist + '/index.html' ],
 					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
@@ -517,6 +518,8 @@ gulp.task(
 				stripPrefix: options.directory.dist + '/',
 			}
 		;
+
+		config.dynamicUrlToDependencies[ '/' + options.github.name + '/' ] = [ options.directory.dist + '/index.html' ];
 
 		swPrecache.write(
 			path.join(
