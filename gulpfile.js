@@ -616,8 +616,8 @@ gulp.task(
 				'<link rel="canonical" href="/' + options.github.name + '/">',
 			]
 			, replace_manifest = [
-				'"start_url": "/"',
-				'"start_url": "/' + options.github.name + '/"',
+				'"start_url": "/index.html"',
+				'"start_url": "/' + options.github.name + '/index.html"',
 			]
 			, replace_preload = [
 				'http://localhost:1337/restaurants/',
