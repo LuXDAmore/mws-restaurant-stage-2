@@ -543,10 +543,16 @@ gulp.task(
 				critical(
 					{
 						base: options.directory.dist + '/',
+						folder: options.directory.dist + '/',
 						inline: true,
 						minify: true,
 						extract: false,
+						inlineImages: false,
 						css: css_files,
+						pathPrefix: '',
+						assetPaths: [
+							options.directory.dist + '/assets/',
+						],
 						dimensions: [
 							{
 								width: 412,
