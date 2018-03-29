@@ -55,18 +55,22 @@
 			updateRestaurants();
 
 		};
+		// Async - Defer Gmaps
+		GMapHelper.load(
+			{
+				callback: 'initMap',
+			}
+		);
 
 		// Restaurants list
 		const ul = document.getElementById( 'restaurants-list' );
 
 		/**
-		 * Fetch neighborhoods and cuisines as soon as the page is loaded.
+		 * Fetch restaurants, neighborhoods and cuisines as soon as the page is loaded.
 		 */
 		function ready() {
 
 			window.removeEventListener( 'load', ready );
-
-			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
 			function restaurantsFetched( error, restaurants ) {
 
@@ -81,15 +85,10 @@
 			};
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
+			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
+
 		};
 		window.addEventListener( 'load', ready, false );
-
-		// Async - Defer Gmaps
-		GMapHelper.load(
-			{
-				callback: 'initMap',
-			}
-		);
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
@@ -119,6 +118,8 @@
 		 */
 		function fillNeighborhoodsHTML( neighborhoods = self.neighborhoods ) {
 
+			const options = [];
+
 			neighborhoods.forEach(
 				neighborhood => {
 
@@ -127,10 +128,12 @@
 					option.textContent = neighborhood;
 					option.value = neighborhood;
 
-					nSelect.append( option );
+					options.push( option );
 
 				}
 			);
+
+			nSelect.append( ...options );
 
 		};
 
@@ -162,6 +165,8 @@
 		 */
 		function fillCuisinesHTML( cuisines = self.cuisines ) {
 
+			const options =[];
+
 			cuisines.forEach(
 				cuisine => {
 
@@ -170,10 +175,12 @@
 					option.innerHTML = cuisine;
 					option.value = cuisine;
 
-					cSelect.append( option );
+					options.push( option );
 
 				}
 			);
+
+			cSelect.append( ...options );
 
 		};
 
@@ -185,11 +192,11 @@
 
 		function updateRestaurants() {
 
-			const cIndex = cSelect.selectedIndex;
-			const nIndex = nSelect.selectedIndex;
-
-			const cuisine = cSelect[ cIndex ].value;
-			const neighborhood = nSelect[ nIndex ].value;
+			const cIndex = cSelect.selectedIndex
+				, nIndex = nSelect.selectedIndex
+				, cuisine = cSelect[ cIndex ].value //-> Selected cuisine
+				, neighborhood = nSelect[ nIndex ].value //-> Selected neighborhood
+			;
 
 			DBHelper.fetchRestaurantByCuisineAndNeighborhood(
 				cuisine,
@@ -237,14 +244,12 @@
 		 */
 		function fillRestaurantsHTML( restaurants = self.restaurants ) {
 
-
-			restaurants.forEach( restaurant => ul.append( createRestaurantHTML( restaurant ) ) );
-
-			DBHelper.lazyLoadImages();
-
-			addMarkersToMap();
+			restaurants.forEach( restaurant => ul.appendChild( createRestaurantHTML( restaurant ) ) );
 
 			ul.setAttribute( 'aria-busy', false );
+
+			DBHelper.lazyLoadImages();
+			addMarkersToMap();
 
 		};
 
@@ -255,8 +260,13 @@
 
 			const li = document.createElement( 'li' )
 				, picture = document.createElement( 'picture' )
+				, name = document.createElement( 'h3' )
+				, neighborhood = document.createElement( 'p' )
+				, address = document.createElement( 'p' )
+				, more = document.createElement( 'a' )
 			;
 
+			// Images
 			DBHelper.generateSourceInPicture(
 				restaurant,
 				picture,
@@ -265,32 +275,27 @@
 				]
 			);
 
-			li.append( picture );
-
 			// Title
-			const name = document.createElement( 'h3' );
-
 			name.textContent = restaurant.name;
-			li.append( name );
 
-			const neighborhood = document.createElement( 'p' );
-
+			// Neighborhood
 			neighborhood.textContent = restaurant.neighborhood;
-			li.append( neighborhood );
 
-			const address = document.createElement( 'p' );
-
+			// Address
 			address.textContent = restaurant.address;
-			li.append( address );
 
-			const more = document.createElement( 'a' );
-
+			// More
 			more.textContent = 'View Details';
 			more.title = 'Restaurant Details';
 			more.rel = 'nooper';
 			more.href = DBHelper.urlForRestaurant( restaurant );
 
-			li.append( more );
+			// Append HTML
+			li.appendChild( picture );
+			li.appendChild( name );
+			li.appendChild( neighborhood );
+			li.appendChild( address );
+			li.appendChild( more );
 
 			return li;
 

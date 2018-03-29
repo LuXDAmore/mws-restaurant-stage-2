@@ -60,6 +60,12 @@
 			);
 
 		};
+		// Async - Defer Gmaps
+		GMapHelper.load(
+			{
+				callback: 'initMapRestaurantInfo',
+			}
+		);
 
 		/**
 		 * Fetch restaurant data
@@ -68,17 +74,10 @@
 
 			window.removeEventListener( 'load', ready );
 
-			window.console.log( '%c RESTAURANT REVIEWS - SINGLE, ready to rock ✌️', 'color:#2980b9' );
+			window.console.log( '%c RESTAURANT REVIEWS - DETAILS, ready to rock ✌️', 'color:#2980b9' );
 
 		};
 		window.addEventListener( 'load', ready, false );
-
-		// Async - Defer Gmaps
-		GMapHelper.load(
-			{
-				callback: 'initMapRestaurantInfo',
-			}
-		);
 
 		/**
 		 * Get current restaurant from page URL.
@@ -129,17 +128,22 @@
 		 */
 		function fillRestaurantHTML( restaurant = self.restaurant ) {
 
-			const name = document.getElementById( 'restaurant-name' );
+			const name = document.getElementById( 'restaurant-name' )
+				, address = document.getElementById( 'restaurant-address' )
+				, picture = document.getElementById( 'restaurant-img' )
+				, cuisine = document.getElementById( 'restaurant-cuisine' )
+			;
+
+			// Title
 			name.textContent = restaurant.name;
 
-			const address = document.getElementById( 'restaurant-address' );
+			// Address
 			address.textContent = restaurant.address;
 
-			const picture = document.getElementById( 'restaurant-img' );
-
+			// Image
 			DBHelper.generateSourceInPicture( restaurant, picture );
 
-			const cuisine = document.getElementById( 'restaurant-cuisine' );
+			// Cuisine
 			cuisine.textContent = restaurant.cuisine_type;
 
 			// fill operating hours
@@ -156,23 +160,30 @@
 		*/
 		function fillRestaurantHoursHTML( operatingHours = self.restaurant.operating_hours ) {
 
-			const hours = document.getElementById( 'restaurant-hours' );
+			const hours = document.getElementById( 'restaurant-hours' )
+				, rows = []
+			;
 
 			for( let key in operatingHours ) {
 
-				const row = document.createElement( 'tr' );
+				const row = document.createElement( 'tr' )
+					, day = document.createElement( 'td' )
+					, time = document.createElement( 'td' )
+				;
 
-				const day = document.createElement( 'td' );
+				// Day && time
 				day.textContent = key;
-				row.appendChild( day );
-
-				const time = document.createElement( 'td' );
 				time.innerHTML = operatingHours[ key ].replace( ', ', '<br />' );
-				row.appendChild( time );
 
-				hours.appendChild( row );
+				// Appending of generated elements
+				row.append( day, time );
+
+				// NodeList of elements
+				rows.push( row );
 
 			};
+
+			hours.append( ...rows );
 
 		};
 
@@ -181,22 +192,31 @@
 		*/
 		function fillReviewsHTML( reviews = self.restaurant.reviews ) {
 
-			const container = document.getElementById( 'reviews-container' );
-			const title = document.createElement( 'h2' );
+			const container = document.getElementById( 'reviews-container' )
+				, title = document.createElement( 'h2' )
+			;
+
+			// Title
 			title.textContent = 'Reviews';
 			container.appendChild( title );
 
-			if( ! reviews ) {
+			if( ! reviews || ! reviews.length ) {
 
 				const noReviews = document.createElement( 'p' );
+
 				noReviews.textContent = 'No reviews yet!';
 				container.appendChild( noReviews );
+
 				return;
 
 			};
 
-			const ul = document.getElementById( 'reviews-list' );
-			reviews.forEach( review => ul.appendChild( createReviewHTML( review ) ) );
+			const ul = document.getElementById( 'reviews-list' )
+				, rows = []
+			;
+			reviews.forEach( review => rows.push( createReviewHTML( review ) ) );
+
+			ul.append( ...rows );
 			container.appendChild( ul );
 
 		};
@@ -206,31 +226,33 @@
 		*/
 		function createReviewHTML( review ) {
 
-			const li = document.createElement( 'li' );
+			const li = document.createElement( 'li' )
+				, title = document.createElement( 'p' )
+				, name = document.createElement( 'strong' )
+				, subtitle = document.createElement( 'p' )
+				, date = document.createElement( 'em' )
+				, rating = document.createElement( 'span' )
+				, comments = document.createElement( 'p' )
+			;
 
-			const title = document.createElement( 'p' );
-			const name = document.createElement( 'strong' );
+			// Title
 			name.textContent = review.name;
-			title.appendChild( name );
-			li.appendChild( title );
 
-			const subtitle = document.createElement( 'p' );
-
-			const date = document.createElement( 'em' );
+			// Date
 			date.textContent = review.date;
 
-			const rating = document.createElement( 'span' );
+			// Rating
 			rating.textContent = `Rating: ${ review.rating }`;
 
-			subtitle.appendChild( date );
-			subtitle.appendChild( rating );
-
-			li.appendChild( subtitle );
-
-			const comments = document.createElement( 'p' );
+			// Comments
 			comments.textContent = review.comments;
 
-			li.appendChild( comments );
+			// Append generated elements
+			title.appendChild( name );
+			subtitle.append( date, rating );
+
+			// Append generated elements
+			li.append( title, subtitle, comments );
 
 			return li;
 
