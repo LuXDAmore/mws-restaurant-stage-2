@@ -1,7 +1,7 @@
 'use strict';
 
 const IS_LOCALHOST_OR_DEV = !! ( ~ window.location.href.indexOf( 'localhost' ) || ~ window.location.href.indexOf( 'dev.' ) );
-const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants/' : 'data/restaurants.json';
+const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants' : 'data/restaurants.json';
 let restaurants = [];
 
 /**
