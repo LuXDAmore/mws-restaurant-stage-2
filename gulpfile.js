@@ -745,6 +745,29 @@ gulp.task(
 			)
 			.on( 'error', errorManager )
 			.pipe(
+				gulpif(
+					development(),
+					inject(
+						gulp.src( options.directory.tools + '/performance.js' ),
+						{
+							starttag: '<!-- inject:performance:{{ext}} -->',
+							transform: function( filepath, file ) {
+
+								return '<script>'
+									+ file.contents
+										.toString()
+										.replace( /\n|\r|\t/g, '' )
+										.trim()
+									+ '</script>'
+								;
+
+							},
+						}
+					)
+				)
+			)
+			.on( 'error', errorManager )
+			.pipe(
 				inject(
 					gulp.src( options.directory.tools + '/' + options.service_worker.generator ),
 					{
@@ -1031,8 +1054,10 @@ gulp.task(
 		// Scripts
 		gulp.watch(
 			[
+				options.directory.tools + '/performance.js',
 				options.directory.source + '/app/**/*.js',
 				options.directory.tools + '/' + options.service_worker.generator,
+				'./.eslintignore',
 				'./.eslintrc',
 			],
 			sequenceJS
