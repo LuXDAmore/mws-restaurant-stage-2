@@ -131,6 +131,30 @@
 		</footer>
 		<!-- End footer -->
 
+		<!-- Scripts -->
+		<!-- Prevent Google Fonts: Roboto -->
+		<script>
+
+			// Thanks to: https://stackoverflow.com/questions/25523806/google-maps-v3-prevent-api-from-loading-roboto-font/25902239
+			var head = document.getElementsByTagName( 'head' )[ 0 ]
+				, insertBefore = head.insertBefore
+			;
+
+			head.insertBefore = function( newElement, referenceElement ) {
+
+				if( newElement.href && newElement.href.indexOf( '//fonts.googleapis.com/css?family=Roboto' ) > -1 ) {
+
+					window.console.info( 'Prevented Roboto from loading!' );
+					return;
+
+				};
+
+				insertBefore.call( head, newElement, referenceElement );
+
+			};
+
+		</script>
+
 		<!-- inject:js -->
 		<!-- endinject -->
 
