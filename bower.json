@@ -24,7 +24,7 @@
 		"tests"
 	],
 	"dependencies": {
-		"vanilla-lazyload": "^10.5.1"
+		"vanilla-lazyload": "^10.5.2"
 	},
 	"overrides": {
 		"vanilla-lazyload": {
