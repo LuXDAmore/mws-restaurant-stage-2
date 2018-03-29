@@ -3,18 +3,22 @@
 
 		'use strict';
 
-		// Offline Event.
-		function goingOffline() {
+		// Showing cached maps if not online onload.
+		function showGMapsOnOffline() {
 
-			window.console.debug( 'Offline event fired' );
+			window.removeEventListener( 'load', showGMapsOnOffline );
 
 			// Show cached version of GMaps.
-			const map = document.getElementById( 'map' );
-			if( map )
-				map.setAttribute( 'aria-hidden', false );
+			if( ! window.navigator.onLine ) {
+
+				const map = document.getElementById( 'map' );
+				if( map )
+					map.setAttribute( 'aria-hidden', false );
+
+			};
 
 		};
-		window.addEventListener( 'offline', goingOffline, false );
+		window.addEventListener( 'load', showGMapsOnOffline, false );
 
 	}
 )( window, document )
