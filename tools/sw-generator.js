@@ -1,9 +1,9 @@
 (
-	function( window, navigator ) {
+	function( window ) {
 
 		'use strict';
 
-		if( 'serviceWorker' in navigator
+		if( 'serviceWorker' in window.navigator
 			&& (
 				window.location.protocol === 'https:'
 				|| window.location.href.indexOf( 'localhost:[SERVICE-WORKER-EXCLUDED-PORT]' ) === - 1
@@ -26,7 +26,7 @@
 
 							switch( installingWorker.state ) {
 								case 'installed':
-									if( navigator.serviceWorker.controller ) window.console.info( 'New or updated content is available.' );
+									if( window.navigator.serviceWorker.controller ) window.console.info( 'New or updated content is available.' );
 									else window.console.info( 'Content is cached, and will be available for offline use the next time the page is loaded.' );
 								break;
 								case 'redundant':
@@ -40,7 +40,7 @@
 
 				};
 
-				navigator.serviceWorker
+				window.navigator.serviceWorker
 					.register(
 						'[SERVICE-WORKER-NAME]',
 						{
@@ -64,4 +64,4 @@
 		};
 
 	}
-)( window, navigator )
+)( window )
