@@ -21,43 +21,42 @@ class DBHelper { // eslint-disable-line
 
 		};
 
-		if( 'fetch' in window ) {
+		const options = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
 
-			const options = {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			};
+		fetch( URL, options )
+			.then(
+				response => {
 
-			fetch( URL, options )
-				.then(
-					response => {
+					// Oops!. Got an error from server.
+					if( ! response.ok ) {
 
-						// Oops!. Got an error from server.
-						if( ! response.ok ) {
+						const error = 'Error during Network request';
+						throw new Error( error );
 
-							const error = 'Error during Network request';
-							throw new Error( error );
+					};
 
-						};
+					// Got a success response from server!
+					return response.json();
 
-						// Got a success response from server!
-						return response.json();
+				}
+			)
+			.then(
+				data => {
 
-					}
-				)
-				.then(
-					data => {
+					restaurants = data;
+					callback( null, restaurants );
 
-						restaurants = data;
-						callback( null, restaurants );
+				}
+			)
+			.catch( error => callback( error, restaurants ) )
+		;
 
-					}
-				)
-				.catch( error => callback( error, restaurants ) )
-			;
-
-		} else {
+		/*
+		if( 'fetch' in window ) {} else {
 
 			const xhr = new XMLHttpRequest();
 
@@ -90,6 +89,7 @@ class DBHelper { // eslint-disable-line
 			xhr.send();
 
 		};
+		*/
 
 	};
 
