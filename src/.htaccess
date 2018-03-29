@@ -55,6 +55,8 @@
 
 <IfModule mod_headers.c>
 
+	Header set Access-Control-Allow-Origin "*"
+
     <FilesMatch "\.(html)$">
 
         Header set Cache-Control "no-cache"

@@ -431,19 +431,21 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /1337\/restaurants\//,
+						urlPattern: /\/restaurants\//,
 						handler: 'fastest',
 						options: {
 							cache: {
+								maxEntries: 10,
 								name: 'restaurants-cache',
 							},
 						},
 					},
 					{
-						urlPattern: /1337\/restaurants\/[1,9]/,
+						urlPattern: /\/restaurants\/[1,9]/,
 						handler: 'fastest',
 						options: {
 							cache: {
+								maxEntries: 10,
 								name: 'restaurant-cache',
 							},
 						},
