@@ -426,12 +426,14 @@ gulp.task(
 		var path = require( 'path' )
 			, swPrecache = require( 'sw-precache' )
 			, config = {
+				verbose: development(),
+				handleFetch: ! development(),
 				importScripts: [
 					'sw-toolbox.js',
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /\/restaurants\//,
+						urlPattern: /([\/]?)(restaurants)([\/]?)/,
 						handler: 'fastest',
 						options: {
 							cache: {
@@ -441,7 +443,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /\/restaurants\/[1,9]/,
+						urlPattern: /([\/]?)(restaurants\/[1,9])/,
 						handler: 'fastest',
 						options: {
 							cache: {
@@ -452,20 +454,20 @@ gulp.task(
 					},
 					{
 						urlPattern: /\/fonts\.gstatic\.com\//,
-						handler: 'fastest',
+						handler: 'cacheFirst',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 5,
 								name: 'fonts-static-cache',
 							},
 						},
 					},
 					{
 						urlPattern: /\/maps\.gstatic\.com\//,
-						handler: 'fastest',
+						handler: 'cacheFirst',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 5,
 								name: 'maps-static-cache',
 							},
 						},
@@ -493,6 +495,8 @@ gulp.task(
 				],
 				dynamicUrlToDependencies: {
 					'/': [ options.directory.dist + '/index.html' ],
+					'index.html': [ options.directory.dist + '/index.html' ],
+					'restaurant.html': [ options.directory.dist + '/index.html' ],
 					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
@@ -505,7 +509,6 @@ gulp.task(
 					'restaurant.html?id=8': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=9': [ options.directory.dist + '/restaurant.html' ],
 					'restaurant.html?id=10': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=*': [ options.directory.dist + '/restaurant.html' ],
 				},
 				staticFileGlobs: [
 					options.directory.dist + '/**/**/**/*.html',
@@ -626,7 +629,7 @@ gulp.task(
 				'"start_url": "/' + options.github.name + '/index.html"',
 			]
 			, replace_preload = [
-				'http://localhost:1337/restaurants/',
+				'http://localhost:1337/restaurants',
 				'data/restaurants.json',
 			]
 			, replace_sw = [
