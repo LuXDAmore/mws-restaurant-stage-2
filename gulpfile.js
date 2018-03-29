@@ -823,8 +823,8 @@ gulp.task(
 		var nameJS = development() ? 'app.js' : 'app.min.js';
 
 		var scripts = [
-			// FIXME: If you don't need Polyfills, comment this line.
-			'./node_modules/babel-polyfill/dist/polyfill.js',
+			// FIXME: If you need Polyfills, uncomment this line.
+			// './node_modules/babel-polyfill/dist/polyfill.js',
 			options.directory.source + '/app/scripts/common/*.js',
 			options.directory.source + '/app/scripts/pages/*.js',
 		];
