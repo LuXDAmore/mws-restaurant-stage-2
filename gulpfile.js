@@ -473,7 +473,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 5,
 								name: 'fonts-api-cache',
 							},
 						},
@@ -483,7 +483,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 5,
 								name: 'maps-api-cache',
 							},
 						},
