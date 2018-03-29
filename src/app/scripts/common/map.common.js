@@ -46,7 +46,7 @@ class GMapHelper { // eslint-disable-line
 
 	};
 
-	// Do this on every Maps Loaded event. --> Only to obtain more on Lighthouse.
+	// Do this on every Maps Loaded event. --> Only to obtain more on Lighthouse's accessibility.
 	static mapsLoaded( map ) {
 
 		const iframe = map.querySelector( 'iframe' );
@@ -65,6 +65,9 @@ class GMapHelper { // eslint-disable-line
 
 		};
 		window.requestAnimationFrame( step );
+
+		// Map is now visible
+		map.setAttribute( 'aria-hidden', false );
 
 	};
 

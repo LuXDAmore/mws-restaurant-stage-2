@@ -67,6 +67,9 @@
 		<!-- inject:css -->
 		<!-- endinject -->
 
+		<!-- inject:performance:js -->
+		<!-- endinject -->
+
 	</head>
 
 	<body class="restaurant">
@@ -102,7 +105,14 @@
 		<main id="maincontent">
 			<!-- Beginning map -->
 			<section id="map-container">
-				<div id="map" role="application" aria-label="Map of a restaurant"></div>
+
+				<div
+					id="map"
+					role="application"
+					aria-label="Map of a restaurant"
+					aria-hidden="true"
+				></div>
+
 			</section>
 			<!-- End map -->
 			<!-- Beginning restaurant -->
@@ -144,7 +154,7 @@
 
 				if( newElement.href && newElement.href.indexOf( '//fonts.googleapis.com/css?family=Roboto' ) > -1 ) {
 
-					window.console.info( 'Prevented Roboto from loading!' );
+					window.console.debug( 'Prevented Roboto from loading!' );
 					return;
 
 				};

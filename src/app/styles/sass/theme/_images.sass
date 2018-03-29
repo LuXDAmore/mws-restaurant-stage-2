@@ -5,9 +5,17 @@ picture,
 #restaurants-list .restaurant-img,
 .restaurant-img
 	display: block;
-	min-height: 261px;
+	min-height: 273px;
 	margin: 0 auto;
 	height: auto;
 	width: 100%;
 	text-align: center;
 	background-color: transparent;
+
+
+.restaurant-img
+	opacity: 0;
+	will-change: opacity;
+	transition: opacity .2 ease-in;
+	&.loaded
+		opacity: 1;

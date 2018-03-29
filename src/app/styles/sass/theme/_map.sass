@@ -10,12 +10,18 @@
 	overflow: hidden;
 	background-color: #e8e8e8;
 
-	.gm-style
-		div
-			&.gmnoprint
-				> img
-					&[draggable="false"]
-						width: auto !important;
-						height: auto !important;
-						max-width: 43px !important;
-						max-height: 68px !important;
+	#map
+		opacity: 1;
+		will-change: opacity;
+		transition: opacity .2s ease-in;
+		&[aria-hidden="true"]
+			opacity: 0;
+		.gm-style
+			div
+				&.gmnoprint
+					> img
+						&[draggable="false"]
+							width: auto !important;
+							height: auto !important;
+							max-width: 43px !important;
+							max-height: 68px !important;
