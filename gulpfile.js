@@ -624,14 +624,14 @@ gulp.task(
 				'data/restaurants.json',
 			]
 			, replace_sw = [
-				'["/"',
-				'["/' + options.github.name + '/"]',
+				'["/",',
+				'["/' + options.github.name + '/",',
 			]
 		;
 
 		var filterHTML = filter( '**/*.html', { restore: true } )
 			, filterManifest = filter( '**/*.json', { restore: true } )
-			, filterSW = filter( '**/*.sw', { restore: true } )
+			, filterSW = filter( '**/*.js', { restore: true } )
 		;
 
 		return gulp
