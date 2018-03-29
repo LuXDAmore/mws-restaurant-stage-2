@@ -24,7 +24,9 @@ class DBHelper { // eslint-disable-line
 		if( 'fetch' in window ) {
 
 			const options = {
-				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			};
 
 			fetch( URL, options )
@@ -35,8 +37,6 @@ class DBHelper { // eslint-disable-line
 						if( ! response.ok ) {
 
 							const error = 'Error during Network request';
-
-							callback( error, null );
 							throw new Error( error );
 
 						};
@@ -54,6 +54,7 @@ class DBHelper { // eslint-disable-line
 
 					}
 				)
+				.catch( error => callback( error, restaurants ) )
 			;
 
 		} else {
@@ -75,7 +76,7 @@ class DBHelper { // eslint-disable-line
 					} else {
 
 						const error = `Request failed. Returned status of ${ this.status }`;
-						callback( error, null );
+						callback( error, restaurants );
 
 					};
 
