@@ -431,7 +431,7 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /1377\/restaurants\//,
+						urlPattern: /1337\/restaurants\//,
 						handler: 'fastest',
 						options: {
 							cache: {
@@ -440,7 +440,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: /1377\/restaurants\/[1,9]/,
+						urlPattern: /1337\/restaurants\/[1,9]/,
 						handler: 'fastest',
 						options: {
 							cache: {
