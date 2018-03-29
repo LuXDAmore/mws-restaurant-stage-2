@@ -431,8 +431,26 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
+						urlPattern: /1377\/restaurants\//,
+						handler: 'fastest',
+						options: {
+							cache: {
+								name: 'restaurants-cache',
+							},
+						},
+					},
+					{
+						urlPattern: /1377\/restaurants\/[1,9]/,
+						handler: 'fastest',
+						options: {
+							cache: {
+								name: 'restaurant-cache',
+							},
+						},
+					},
+					{
 						urlPattern: /\/fonts\.gstatic\.com\//,
-						handler: 'cacheFirst',
+						handler: 'fastest',
 						options: {
 							cache: {
 								maxEntries: 10,
@@ -442,7 +460,7 @@ gulp.task(
 					},
 					{
 						urlPattern: /\/maps\.gstatic\.com\//,
-						handler: 'cacheFirst',
+						handler: 'fastest',
 						options: {
 							cache: {
 								maxEntries: 10,
@@ -455,7 +473,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 5,
+								maxEntries: 10,
 								name: 'fonts-api-cache',
 							},
 						},
@@ -465,28 +483,8 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 5,
+								maxEntries: 10,
 								name: 'maps-api-cache',
-							},
-						},
-					},
-					{
-						urlPattern: /\/restaurants\//,
-						handler: 'fastest',
-						options: {
-							cache: {
-								maxEntries: 10,
-								name: 'restaurants-cache',
-							},
-						},
-					},
-					{
-						urlPattern: /\/restaurants\/[1-10]/,
-						handler: 'fastest',
-						options: {
-							cache: {
-								maxEntries: 10,
-								name: 'restaurant-cache',
 							},
 						},
 					},
@@ -624,8 +622,8 @@ gulp.task(
 				'data/restaurants.json',
 			]
 			, replace_sw = [
-				'["/",',
-				'["/' + options.github.name + '/",',
+				'"/",',
+				'"/' + options.github.name + '/",',
 			]
 		;
 
@@ -824,11 +822,9 @@ gulp.task(
 
 		var nameJS = development() ? 'app.js' : 'app.min.js';
 
-		// FIXME: If you need Polyfills, uncomment this lines.
-		// var polyfill = './node_modules/babel-polyfill/dist/polyfill.js';
-
 		var scripts = [
-			// polyfill,
+			// FIXME: If you don't need Polyfills, comment this line.
+			'./node_modules/babel-polyfill/dist/polyfill.js',
 			options.directory.source + '/app/scripts/common/*.js',
 			options.directory.source + '/app/scripts/pages/*.js',
 		];
