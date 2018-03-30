@@ -9,7 +9,7 @@
 		"start": "node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
-		"sailsjs": "npm run build:sailsjs && npm run start",
+		"sailsjs": "npm run build:sailsjs && cross-env NODE_ENV=production npm run start",
 		"serve": "cross-env NODE_ENV=development gulp serve",
 		"dev": "cross-env NODE_ENV=development gulp serve",
 		"staging": "cross-env NODE_ENV=staging gulp serve:staging",
