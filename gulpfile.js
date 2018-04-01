@@ -434,7 +434,7 @@ gulp.task(
 				runtimeCaching: [
 					{
 						urlPattern: /([\/]?)(restaurants)([\/]?)/,
-						handler: 'fastest',
+						handler: 'networkFirst',
 						options: {
 							cache: {
 								maxEntries: 10,
@@ -444,7 +444,7 @@ gulp.task(
 					},
 					{
 						urlPattern: /([\/]?)(restaurants\/[1,9])/,
-						handler: 'fastest',
+						handler: 'networkFirst',
 						options: {
 							cache: {
 								maxEntries: 10,
@@ -512,8 +512,8 @@ gulp.task(
 				},
 				staticFileGlobs: [
 					options.directory.dist + '/**/**/**/*.html',
-					options.directory.dist + '/**/**/**/*.js',
-					options.directory.dist + '/**/**/**/*.css',
+					options.directory.dist + '/app/**/**/*.js',
+					options.directory.dist + '/app/**/**/*.css',
 					options.directory.dist + '/**/**/**/*.{webp,jpg,jpeg,png,svg,ico}',
 					options.directory.dist + '/**/**/**/*.{eot,ttf,woff,woff2}',
 					options.directory.dist + '/**/**/**/*.json',
