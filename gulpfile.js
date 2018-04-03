@@ -433,17 +433,17 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /([\/]?)(restaurants)([\/]?)/,
+						urlPattern: /http:\/\/localhost:1337\/restaurants([\/]?)/,
 						handler: 'networkFirst',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 1,
 								name: 'restaurants-cache',
 							},
 						},
 					},
 					{
-						urlPattern: /([\/]?)(restaurants\/[1,9])/,
+						urlPattern: /http:\/\/localhost:1337\/restaurants\/[1,9]/,
 						handler: 'networkFirst',
 						options: {
 							cache: {
@@ -457,7 +457,7 @@ gulp.task(
 						handler: 'cacheFirst',
 						options: {
 							cache: {
-								maxEntries: 5,
+								maxEntries: 3,
 								name: 'fonts-static-cache',
 							},
 						},
@@ -467,7 +467,7 @@ gulp.task(
 						handler: 'cacheFirst',
 						options: {
 							cache: {
-								maxEntries: 5,
+								maxEntries: 3,
 								name: 'maps-static-cache',
 							},
 						},
@@ -477,7 +477,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 3,
 								name: 'fonts-api-cache',
 							},
 						},
@@ -487,7 +487,7 @@ gulp.task(
 						handler: 'fastest',
 						options: {
 							cache: {
-								maxEntries: 10,
+								maxEntries: 3,
 								name: 'maps-api-cache',
 							},
 						},
