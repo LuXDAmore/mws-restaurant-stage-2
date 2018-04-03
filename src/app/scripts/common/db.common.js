@@ -25,14 +25,19 @@ class DBHelper { // eslint-disable-line
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			referrerPolicy: 'no-referrer',
 		};
 
-		fetch( URL, options )
+		const req = new Request( URL, options );
+
+		fetch( req )
 			.then(
 				response => {
 
 					// Oops!. Got an error from server.
 					if( ! response.ok ) {
+
+						window.console.error( response );
 
 						const error = 'Error during Network request';
 						throw new Error( error );
@@ -73,6 +78,8 @@ class DBHelper { // eslint-disable-line
 						callback( null, restaurants );
 
 					} else {
+
+						window.console.error( this.response );
 
 						const error = `Request failed. Returned status of ${ this.status }`;
 						callback( error, restaurants );
