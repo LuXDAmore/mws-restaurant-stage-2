@@ -73,3 +73,8 @@ Local server:
 
 `npm run sailsjs`: production, Port: 1337, you manually have to go to url `http://localhost:1377`
 _Served from `.tmp/public` folder_
+
+
+#### Audits // Lighthouse
+_In Chrome: You need to set Network option 'Disable cache' to false, this because SW-Toolbox that need cache._
+![Image of 100% on Lighthouse](https://raw.githubusercontent.com/LuXDAmore/mws-restaurant-stage-2/master/100.jpg)
