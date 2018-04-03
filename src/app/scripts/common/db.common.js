@@ -279,7 +279,7 @@ class DBHelper { // eslint-disable-line
 	 */
 	static altTextForRestaurantImages( restaurant ) {
 
-		return `${ restaurant.name }, ${ restaurant.cuisine_type } - ${ restaurant.alt }`;
+		return `${ restaurant.name }, ${ restaurant.cuisine_type }`;
 
 	};
 
