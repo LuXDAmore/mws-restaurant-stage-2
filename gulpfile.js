@@ -427,68 +427,49 @@ gulp.task(
 			, swPrecache = require( 'sw-precache' )
 			, config = {
 				verbose: development(),
-				handleFetch: ! development(),
 				importScripts: [
 					'sw-toolbox.js',
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /http:\/\/localhost:1337\/restaurants([\/]?)/,
+						urlPattern: /([\/]?)restaurants([\/]?)/,
 						handler: 'networkFirst',
 						options: {
 							cache: {
-								maxEntries: 1,
 								name: 'restaurants-cache',
+								maxEntries: 1,
 							},
 						},
 					},
 					{
-						urlPattern: /http:\/\/localhost:1337\/restaurants\/[1,9]/,
+						urlPattern: /([\/]?)(restaurants\/)[1,9]/,
 						handler: 'networkFirst',
 						options: {
 							cache: {
-								maxEntries: 10,
 								name: 'restaurant-cache',
+								maxEntries: 10,
 							},
 						},
 					},
 					{
-						urlPattern: /\/fonts\.gstatic\.com\//,
-						handler: 'cacheFirst',
-						options: {
-							cache: {
-								maxEntries: 3,
-								name: 'fonts-static-cache',
-							},
-						},
-					},
-					{
-						urlPattern: /\/maps\.gstatic\.com\//,
-						handler: 'cacheFirst',
-						options: {
-							cache: {
-								maxEntries: 3,
-								name: 'maps-static-cache',
-							},
-						},
-					},
-					{
-						urlPattern: /\/fonts\.googleapis\.com\//,
+						urlPattern: /(.*)/,
 						handler: 'fastest',
 						options: {
+							origin: /\.googleapis\.com\//,
 							cache: {
-								maxEntries: 3,
-								name: 'fonts-api-cache',
+								name: 'googleapis-cache',
+								maxEntries: 1,
 							},
 						},
 					},
 					{
-						urlPattern: /\/maps\.googleapis\.com\//,
+						urlPattern: /(.*)/,
 						handler: 'fastest',
 						options: {
+							origin: /\.gstatic\.com\//,
 							cache: {
-								maxEntries: 3,
-								name: 'maps-api-cache',
+								name: 'gstatic-cache',
+								maxEntries: 1,
 							},
 						},
 					},
