@@ -450,16 +450,12 @@ gulp.task(
 				runtimeCaching: [
 					{
 						urlPattern: new RegExp( /.*\.css$/ ),
-						handler: 'staleWhileRevalidate',
+						handler: 'cacheFirst',
 						options: {
-							cacheName: 'css-cache',
+							cacheName: 'styles-cache',
 							expiration: {
-								maxEntries: 5,
-							},
-							cacheableResponse: {
-								statuses: [
-									200,
-								],
+								maxEntries: 10,
+								maxAgeSeconds: 31536000,
 							},
 						},
 					},
@@ -469,13 +465,8 @@ gulp.task(
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
-								maxEntries: 60,
+								maxEntries: 55,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
-							},
-							cacheableResponse: {
-								statuses: [
-									200,
-								],
 							},
 						},
 					},
@@ -489,6 +480,7 @@ gulp.task(
 							},
 							cacheableResponse: {
 								statuses: [
+									0,
 									200,
 								],
 							},
@@ -496,14 +488,15 @@ gulp.task(
 					},
 					{
 						urlPattern: new RegExp( /^(?:http|https):\/\/(?:maps|fonts)\.googleapis\.com\/(.*)/ ),
-						handler: 'cacheFirst',
+						handler: 'staleWhileRevalidate',
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 10,
+								maxEntries: 5,
 							},
 							cacheableResponse: {
 								statuses: [
+									0,
 									200,
 								],
 							},
@@ -515,10 +508,11 @@ gulp.task(
 						options: {
 							cacheName: 'googlestatic-cache',
 							expiration: {
-								maxEntries: 10,
+								maxEntries: 5,
 							},
 							cacheableResponse: {
 								statuses: [
+									0,
 									200,
 								],
 							},
@@ -534,6 +528,7 @@ gulp.task(
 							},
 							cacheableResponse: {
 								statuses: [
+									0,
 									200,
 								],
 							},
@@ -542,6 +537,8 @@ gulp.task(
 				],
 				templatedUrls: {
 					'/': [ 'index.html' ],
+					'restaurant.html?id': [ 'restaurant.html' ],
+					'restaurant.html?id=': [ 'restaurant.html' ],
 					'restaurant.html?id=1': [ 'restaurant.html' ],
 					'restaurant.html?id=2': [ 'restaurant.html' ],
 					'restaurant.html?id=3': [ 'restaurant.html' ],
