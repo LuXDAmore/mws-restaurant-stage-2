@@ -15,6 +15,21 @@ picture,
 .restaurant-img
 	opacity: 0;
 	will-change: opacity;
-	transition: opacity .2 ease-in;
+	transition: opacity .2s ease-in;
 	&.loaded
 		opacity: 1;
+
+#restaurant-img
+	position: relative;
+	&:before
+		background-color: rgba(51, 51, 51, 0.03);
+		display: block;
+		position: absolute;
+		content: "";
+		z-index: 0;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		animation: pulse 1s infinite ease-in-out;
+		will-change: background-color;
