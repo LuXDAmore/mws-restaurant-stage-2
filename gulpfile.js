@@ -7,6 +7,7 @@ var gulp = require( 'gulp' )
 	, sourcemaps = require( 'gulp-sourcemaps' )
 	, babel = require( 'gulp-babel' )
 	, concat = require( 'gulp-concat' )
+	, glob = require( 'glob' )
 	, browserSync = require( 'browser-sync' ).create()
 	, inject = require( 'gulp-inject' )
 	, injectString = require( 'gulp-inject-string' )
@@ -32,6 +33,7 @@ var gulp = require( 'gulp' )
 			source: 'src',
 			dist: 'dist',
 			git_pages: 'docs',
+			assets: 'assets',
 			tools: 'tools',
 			sailsjs: '.tmp/public',
 		},
@@ -39,8 +41,9 @@ var gulp = require( 'gulp' )
 			name: 'mws-restaurant-stage-2',
 		},
 		service_worker: {
-			name: 'sw.js',
 			generator: 'sw-generator.js',
+			name: 'sw.js',
+			toolbox_name: 'sw-toolbox.js',
 		},
 		browserSync: {
 			port: 4000,
@@ -163,7 +166,7 @@ options.other_files = [
 	options.directory.source + '/*.yml',
 	options.directory.source + '/*.txt',
 	options.directory.source + '/.htaccess',
-	'./node_modules/sw-toolbox/sw-toolbox.js',
+	options.directory.tools + '/' + options.service_worker.toolbox_name,
 ];
 
 // Common Webserver
@@ -273,10 +276,10 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ Copy : Assets : Icons ] ' ) );
 
 		return gulp
-			.src( options.directory.source + '/assets/icons/**/*.{png,jpg,gif,svg}' )
+			.src( options.directory.source + '/' + options.directory.assets + '/icons/**/*.{png,jpg,gif,svg}' )
 			.pipe( imagemin( options.imagemin.plugins, options.imagemin.config ) )
 			.on( 'error', errorManager )
-			.pipe( gulp.dest( options.directory.dist + '/assets/icons' ), options.write )
+			.pipe( gulp.dest( options.directory.dist + '/' + options.directory.assets + '/icons' ), options.write )
 		;
 
 	}
@@ -288,8 +291,8 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ Copy : Assets : Fonts ] ' ) );
 
 		return gulp
-			.src( options.directory.source + '/assets/fonts/**/*.*' )
-			.pipe( gulp.dest( options.directory.dist + '/assets/fonts' ), options.write )
+			.src( options.directory.source + '/' + options.directory.assets + '/fonts/**/*.*' )
+			.pipe( gulp.dest( options.directory.dist + '/' + options.directory.assets + '/fonts' ), options.write )
 		;
 
 	}
@@ -301,10 +304,10 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ Copy : Assets : Images ] ' ) );
 
 		return gulp
-			.src( options.directory.source + '/assets/images/**/*.{png,jpg,gif,svg,webp}' )
+			.src( options.directory.source + '/' + options.directory.assets + '/images/**/*.{png,jpg,gif,svg,webp}' )
 			.pipe( imagemin( options.imagemin.plugins, options.imagemin.config ) )
 			.on( 'error', errorManager )
-			.pipe( gulp.dest( options.directory.dist + '/assets/images' ), options.write )
+			.pipe( gulp.dest( options.directory.dist + '/' + options.directory.assets + '/images' ), options.write )
 		;
 
 	}
@@ -423,93 +426,156 @@ gulp.task(
 	'generate-service-worker',
 	function( done ) {
 
-		var path = require( 'path' )
-			, swPrecache = require( 'sw-precache' )
-			, config = {
-				verbose: development(),
+		var workbox = require( 'workbox-build' );
+
+		return workbox.generateSW(
+			{
+				swDest: options.directory.dist + '/' + options.service_worker.name,
+				importWorkboxFrom: 'local',
 				importScripts: [
-					'sw-toolbox.js',
+					options.service_worker.toolbox_name,
+				],
+				globDirectory: options.directory.dist + '/',
+				globPatterns: [
+					'**\/*.html',
+					'**\/*.js',
+					'**\/*.css',
+					'**\/*.{webp,png,jpg,jpeg,svg,ico}',
+					'**\/*.json',
+				],
+				globIgnores: [
+					'**\/' + options.service_worker.toolbox_name,
+					'**\/' + options.service_worker.name,
 				],
 				runtimeCaching: [
 					{
-						urlPattern: /([\/]?)restaurants([\/]?)/,
-						handler: 'networkFirst',
+						urlPattern: new RegExp( /.*\.css$/ ),
+						handler: 'staleWhileRevalidate',
 						options: {
-							cache: {
-								name: 'restaurants-cache',
-								maxEntries: 1,
+							cacheName: 'css-cache',
+							expiration: {
+								maxEntries: 5,
+							},
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
 							},
 						},
 					},
 					{
-						urlPattern: /([\/]?)(restaurants\/)[1,9]/,
+						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico)$/ ),
+						handler: 'cacheFirst',
+						options: {
+							cacheName: 'images-cache',
+							expiration: {
+								maxEntries: 60,
+								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
+							},
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
+							},
+						},
+					},
+					{
+						urlPattern: new RegExp( /^(?:http|https):\/\/localhost:1337\/restaurants([\/]?)/ ),
 						handler: 'networkFirst',
 						options: {
-							cache: {
-								name: 'restaurant-cache',
+							cacheName: 'restaurants-cache',
+							expiration: {
 								maxEntries: 10,
 							},
-						},
-					},
-					{
-						urlPattern: /(.*)/,
-						handler: 'fastest',
-						options: {
-							origin: /\.googleapis\.com\//,
-							cache: {
-								name: 'googleapis-cache',
-								maxEntries: 1,
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
 							},
 						},
 					},
 					{
-						urlPattern: /(.*)/,
-						handler: 'fastest',
+						urlPattern: new RegExp( /^(?:http|https):\/\/(?:maps|fonts)\.googleapis\.com\/(.*)/ ),
+						handler: 'cacheFirst',
 						options: {
-							origin: /\.gstatic\.com\//,
-							cache: {
-								name: 'gstatic-cache',
-								maxEntries: 1,
+							cacheName: 'googleapis-cache',
+							expiration: {
+								maxEntries: 10,
+							},
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
+							},
+						},
+					},
+					{
+						urlPattern: new RegExp( /^(?:http|https):\/\/(?:maps|fonts)\.gstatic\.com\/(.*)/ ),
+						handler: 'cacheFirst',
+						options: {
+							cacheName: 'googlestatic-cache',
+							expiration: {
+								maxEntries: 10,
+							},
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
+							},
+						},
+					},
+					{
+						urlPattern: new RegExp( /.*\.json$/ ),
+						handler: 'cacheFirst',
+						options: {
+							cacheName: 'json-cache',
+							expiration: {
+								maxEntries: 10,
+							},
+							cacheableResponse: {
+								statuses: [
+									200,
+								],
 							},
 						},
 					},
 				],
-				dynamicUrlToDependencies: {
-					'/': [ options.directory.dist + '/index.html' ],
-					'index.html': [ options.directory.dist + '/index.html' ],
-					'restaurant.html': [ options.directory.dist + '/index.html' ],
-					'restaurant.html?id': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=1': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=2': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=3': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=4': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=5': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=6': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=7': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=8': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=9': [ options.directory.dist + '/restaurant.html' ],
-					'restaurant.html?id=10': [ options.directory.dist + '/restaurant.html' ],
+				templatedUrls: {
+					'/': [ 'index.html' ],
+					'restaurant.html?id=1': [ 'restaurant.html' ],
+					'restaurant.html?id=2': [ 'restaurant.html' ],
+					'restaurant.html?id=3': [ 'restaurant.html' ],
+					'restaurant.html?id=4': [ 'restaurant.html' ],
+					'restaurant.html?id=5': [ 'restaurant.html' ],
+					'restaurant.html?id=6': [ 'restaurant.html' ],
+					'restaurant.html?id=7': [ 'restaurant.html' ],
+					'restaurant.html?id=8': [ 'restaurant.html' ],
+					'restaurant.html?id=9': [ 'restaurant.html' ],
+					'restaurant.html?id=10': [ 'restaurant.html' ],
 				},
-				staticFileGlobs: [
-					options.directory.dist + '/**/**/**/*.html',
-					options.directory.dist + '/app/**/**/*.js',
-					options.directory.dist + '/app/**/**/*.css',
-					options.directory.dist + '/**/**/**/*.{webp,jpg,jpeg,png,svg,ico}',
-					options.directory.dist + '/**/**/**/*.{eot,ttf,woff,woff2}',
-					options.directory.dist + '/**/**/**/*.json',
-				],
-				stripPrefix: options.directory.dist + '/',
+				clientsClaim: true,
+				skipWaiting: true,
 			}
-		;
+		).then(
+			function( response ) {
 
-		swPrecache.write(
-			path.join(
-				options.directory.dist,
-				options.service_worker.name
-			),
-			config,
-			done
+				// In case there are any warnings from workbox-build, log them.
+				for( var warning of response.warnings )
+					gutil.log( gutil.colors.yellow( warning.toString() ) );
+
+				gutil.log( gutil.colors.green( 'Service worker generation completed.' ) );
+
+				return response;
+
+			}
+		).catch(
+			function( error ) {
+
+				gutil.log( gutil.colors.red( 'Service worker generation failed.', error.toString() ) );
+
+				return error;
+
+			}
 		);
 
 	}
@@ -519,7 +585,6 @@ gulp.task(
 	function() {
 
 		var critical = require( 'critical' ).stream
-			, glob = require( 'glob' )
 			, css_files = glob.sync( options.directory.dist + '/app/styles/**/*.css', { silent: true } ) || []
 		;
 
@@ -535,9 +600,8 @@ gulp.task(
 						extract: false,
 						inlineImages: false,
 						css: css_files,
-						pathPrefix: '',
 						assetPaths: [
-							options.directory.dist + '/assets/',
+							options.directory.assets + '/',
 						],
 						dimensions: [
 							{
@@ -1060,7 +1124,7 @@ gulp.task(
 		options.other_files.push( options.directory.source + '/data/**/*.*' );
 		gulp.watch( options.other_files, sequenceASSETS );
 		// Images
-		gulp.watch( options.directory.source + '/assets/**/*.*', sequenceImages );
+		gulp.watch( options.directory.source + '/' + options.directory.assets + '/**/*.*', sequenceImages );
 
 	}
 );
