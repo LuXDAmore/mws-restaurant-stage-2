@@ -43,7 +43,7 @@
 
 	mod_gzip_on Yes
 	mod_gzip_dechunk Yes
-	mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+	mod_gzip_item_include file .(html?|txt|css|js|json|php|pl)$
 	mod_gzip_item_include handler ^cgi-script$
 	mod_gzip_item_include mime ^font/.*
 	mod_gzip_item_include mime ^text/.*
