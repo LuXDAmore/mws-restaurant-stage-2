@@ -156,12 +156,8 @@
 
 			head.insertBefore = function( newElement, referenceElement ) {
 
-				if( newElement.href && newElement.href.indexOf( '//fonts.googleapis.com/css?family=Roboto' ) > -1 ) {
-
-					window.console.debug( 'Prevented Roboto from loading!' );
+				if( newElement.href && ~ newElement.href.indexOf( '//fonts.googleapis.com/css?family=Roboto' ) )
 					return;
-
-				};
 
 				insertBefore.call( head, newElement, referenceElement );
 
@@ -170,9 +166,6 @@
 		</script>
 
 		<!-- inject:js -->
-		<!-- endinject -->
-
-		<!-- inject:async:js -->
 		<!-- endinject -->
 
 		<!-- inject:service-worker:js -->

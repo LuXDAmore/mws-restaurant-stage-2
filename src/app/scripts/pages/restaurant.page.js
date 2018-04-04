@@ -60,11 +60,9 @@
 			);
 
 		};
+		function onLoad() {
 
-		// Ready
-		function ready() {
-
-			window.console.log( '%c RESTAURANT REVIEWS - DETAILS, ready to rock ✌️', 'color:#2980b9' );
+			window.removeEventListener( 'load', onLoad );
 
 			// Async - Defer GMaps
 			GMapHelper.load(
@@ -74,7 +72,7 @@
 			);
 
 		};
-		ready();
+		window.addEventListener( 'load', onLoad, false );
 
 		/**
 		 * Get current restaurant from page URL.
@@ -294,6 +292,9 @@
 			return decodeURIComponent( results[ 2 ].replace( /\+/g, ' ' ) );
 
 		};
+
+		// Ready
+		window.console.log( '%c RESTAURANT REVIEWS - Details, ready to rock ✌️', 'color:#2980b9' );
 
 	}
 )( window, document )

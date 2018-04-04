@@ -57,13 +57,13 @@
 
 	Header set Access-Control-Allow-Origin "*"
 
-    <FilesMatch "\.(html)$">
+    <FilesMatch "\.html$">
 
         Header set Cache-Control "no-cache"
 
     </FilesMatch>
 
-    <FilesMatch "\.(js)$">
+    <FilesMatch "\.js$">
 
         Header set Cache-Control "max-age=31536000, private"
 
@@ -72,6 +72,12 @@
 	<FilesMatch "\.(css|json|webp|svg|jpg|jpeg|png|gif)$">
 
         Header set Cache-Control "max-age=31536000"
+
+    </FilesMatch>
+
+	<FilesMatch "\sw\.js$">
+
+        Header set Cache-Control "max-age=0, no-cache"
 
     </FilesMatch>
 

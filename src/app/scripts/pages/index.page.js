@@ -16,6 +16,7 @@
 			, markers = []
 		;
 
+		// Self data
 		const self = {
 			restaurants,
 			neighborhoods,
@@ -24,71 +25,11 @@
 			markers,
 		};
 
-		/**
-		 * Initialize Google map, called from HTML.
-		 */
-		window.initMap = () => {
-
-			const map = document.getElementById( 'map' );
-
-			let loc = {
-				lat: 40.722216,
-				lng: - 73.987501,
-			};
-
-			self.map = new google.maps.Map(
-				map,
-				{
-					zoom: 12,
-					center: loc,
-					scrollwheel: false,
-					disableDefaultUI: true,
-				}
-			);
-
-			google.maps.event.addListenerOnce(
-				self.map,
-				'tilesloaded',
-				() => GMapHelper.mapsLoaded( map )
-			);
-
-			updateRestaurants();
-
-		};
-
-		/**
-		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
-		 */
-		function ready() {
-
-			// Async - Defer GMaps
-			GMapHelper.load(
-				{
-					callback: 'initMap',
-				}
-			);
-
-			// Fetch restaurants
-			function restaurantsFetched( error, restaurants ) {
-
-				if( error )
-					return window.alert( error );
-
-				self.restaurants = restaurants;
-
-				fetchNeighborhoods();
-				fetchCuisines();
-
-			};
-			DBHelper.fetchRestaurants( restaurantsFetched );
-
-			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
-
-		};
-		ready();
-
-		// Restaurants list
-		const ul = document.getElementById( 'restaurants-list' );
+		// DOM Elements
+		const ul = document.getElementById( 'restaurants-list' )
+			, cSelect = document.getElementById( 'cuisines-select' )
+			, nSelect = document.getElementById( 'neighborhoods-select' )
+		;
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
@@ -187,9 +128,6 @@
 		/**
 		 * Update page and map for current restaurants.
 		 */
-		const cSelect = document.getElementById( 'cuisines-select' );
-		const nSelect = document.getElementById( 'neighborhoods-select' );
-
 		function updateRestaurants() {
 
 			const cIndex = cSelect.selectedIndex
@@ -324,6 +262,76 @@
 			);
 
 		};
+
+		/**
+		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
+		 */
+		function DOMContentLoaded() {
+
+			// Fetch restaurants
+			function restaurantsFetched( error, restaurants ) {
+
+				if( error )
+					return window.alert( error );
+
+				self.restaurants = restaurants;
+
+				fetchNeighborhoods();
+				fetchCuisines();
+
+			};
+			DBHelper.fetchRestaurants( restaurantsFetched );
+
+		};
+		DOMContentLoaded();
+
+		/**
+		 * Initialize Google map.
+		*/
+		window.initMap = () => {
+
+			const map = document.getElementById( 'map' );
+
+			let loc = {
+				lat: 40.722216,
+				lng: - 73.987501,
+			};
+
+			self.map = new google.maps.Map(
+				map,
+				{
+					zoom: 12,
+					center: loc,
+					scrollwheel: false,
+					disableDefaultUI: true,
+				}
+			);
+
+			google.maps.event.addListenerOnce(
+				self.map,
+				'tilesloaded',
+				() => GMapHelper.mapsLoaded( map )
+			);
+
+			updateRestaurants();
+
+		};
+		function onLoad() {
+
+			window.removeEventListener( 'load', onLoad );
+
+			// Async - Defer GMaps
+			GMapHelper.load(
+				{
+					callback: 'initMap',
+				}
+			);
+
+		};
+		window.addEventListener( 'load', onLoad, false );
+
+		// Ready
+		window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
 	}
 )( window, document )

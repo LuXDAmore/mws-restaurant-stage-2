@@ -449,7 +449,7 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: new RegExp( /.*\.css$/ ),
+						urlPattern: new RegExp( /styles\/.*\.css/ ),
 						handler: 'cacheFirst',
 						options: {
 							cacheName: 'styles-cache',
@@ -460,13 +460,37 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico)$/ ),
+						urlPattern: new RegExp( /assets\/.*\.(?:webp|png|jpg|jpeg|svg|ico)/ ),
 						handler: 'cacheFirst',
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
 								maxEntries: 55,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
+							},
+						},
+					},
+					{
+						urlPattern: new RegExp( /restaurant\.html.*/ ),
+						handler: 'networkFirst',
+						options: {
+							cacheName: 'restaurant-pages',
+						},
+					},
+					{
+
+						urlPattern: new RegExp( /.*\.json$/ ),
+						handler: 'cacheFirst',
+						options: {
+							cacheName: 'json-cache',
+							expiration: {
+								maxEntries: 10,
+							},
+							cacheableResponse: {
+								statuses: [
+									0,
+									200,
+								],
 							},
 						},
 					},
@@ -487,44 +511,12 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /^(?:http|https):\/\/(?:maps|fonts)\.googleapis\.com\/(.*)/ ),
+						urlPattern: new RegExp( /^http:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
 						handler: 'staleWhileRevalidate',
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 5,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
-							},
-						},
-					},
-					{
-						urlPattern: new RegExp( /^(?:http|https):\/\/(?:maps|fonts)\.gstatic\.com\/(.*)/ ),
-						handler: 'cacheFirst',
-						options: {
-							cacheName: 'googlestatic-cache',
-							expiration: {
-								maxEntries: 5,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
-							},
-						},
-					},
-					{
-						urlPattern: new RegExp( /.*\.json$/ ),
-						handler: 'cacheFirst',
-						options: {
-							cacheName: 'json-cache',
-							expiration: {
-								maxEntries: 10,
+								maxEntries: 20,
 							},
 							cacheableResponse: {
 								statuses: [
@@ -755,17 +747,16 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgCyan( ' [ Build : Inject ] ' ) );
 
 		var injectable = gulp.src(
-				[
-					options.directory.dist + '/app/styles/vendor-*.css',
-					options.directory.dist + '/app/styles/themes-*.css',
-					options.directory.dist + '/app/styles/app-*.css',
-					options.directory.dist + '/app/scripts/vendor-*.js',
-					options.directory.dist + '/app/scripts/themes-*.js',
-				],
-				options.read
-			)
-			, injectableAsync = gulp.src( options.directory.dist + '/app/scripts/app-*.js', options.read )
-		;
+			[
+				options.directory.dist + '/app/styles/vendor-*.css',
+				options.directory.dist + '/app/styles/themes-*.css',
+				options.directory.dist + '/app/styles/app-*.css',
+				options.directory.dist + '/app/scripts/vendor-*.js',
+				options.directory.dist + '/app/scripts/themes-*.js',
+				options.directory.dist + '/app/scripts/app-*.js',
+			],
+			options.read
+		);
 
 		return gulp
 			.src( options.directory.source + '/*.html' )
@@ -775,22 +766,6 @@ gulp.task(
 					{
 						ignorePath: 'dist',
 						addRootSlash: false,
-					}
-				)
-			)
-			.on( 'error', errorManager )
-			.pipe(
-				inject(
-					injectableAsync,
-					{
-						starttag: '<!-- inject:async:{{ext}} -->',
-						ignorePath: 'dist',
-						addRootSlash: false,
-						transform: function( filepath ) {
-
-							return '<script src="' + filepath + '" async defer></script>';
-
-						},
 					}
 				)
 			)
