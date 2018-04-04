@@ -60,24 +60,21 @@
 			);
 
 		};
-		// Async - Defer Gmaps
-		GMapHelper.load(
-			{
-				callback: 'initMapRestaurantInfo',
-			}
-		);
 
-		/**
-		 * Fetch restaurant data
-		 */
+		// Ready
 		function ready() {
-
-			window.removeEventListener( 'load', ready );
 
 			window.console.log( '%c RESTAURANT REVIEWS - DETAILS, ready to rock ✌️', 'color:#2980b9' );
 
+			// Async - Defer GMaps
+			GMapHelper.load(
+				{
+					callback: 'initMapRestaurantInfo',
+				}
+			);
+
 		};
-		window.addEventListener( 'load', ready, false );
+		ready();
 
 		/**
 		 * Get current restaurant from page URL.
@@ -164,7 +161,7 @@
 				, rows = []
 			;
 
-			for( let key in operatingHours ) {
+			for( const key in operatingHours ) {
 
 				const row = document.createElement( 'tr' )
 					, day = document.createElement( 'td' )

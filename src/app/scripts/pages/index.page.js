@@ -55,23 +55,20 @@
 			updateRestaurants();
 
 		};
-		// Async - Defer Gmaps
-		GMapHelper.load(
-			{
-				callback: 'initMap',
-			}
-		);
-
-		// Restaurants list
-		const ul = document.getElementById( 'restaurants-list' );
 
 		/**
-		 * Fetch restaurants, neighborhoods and cuisines as soon as the page is loaded.
+		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
 		 */
 		function ready() {
 
-			window.removeEventListener( 'load', ready );
+			// Async - Defer GMaps
+			GMapHelper.load(
+				{
+					callback: 'initMap',
+				}
+			);
 
+			// Fetch restaurants
 			function restaurantsFetched( error, restaurants ) {
 
 				if( error )
@@ -88,7 +85,10 @@
 			window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
 		};
-		window.addEventListener( 'load', ready, false );
+		ready();
+
+		// Restaurants list
+		const ul = document.getElementById( 'restaurants-list' );
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.

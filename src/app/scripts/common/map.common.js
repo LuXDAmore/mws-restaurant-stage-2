@@ -60,14 +60,18 @@ class GMapHelper { // eslint-disable-line
 
 			if( ! anchors.length )
 				window.requestAnimationFrame( step );
-			else
+			else {
+
+				// Map is now fully-visible
+				map.setAttribute( 'aria-hidden', false );
+
+				// Accessibility
 				anchors.forEach( anchor => anchor.rel = 'noopener' );
+
+			};
 
 		};
 		window.requestAnimationFrame( step );
-
-		// Map is now visible
-		map.setAttribute( 'aria-hidden', false );
 
 	};
 
