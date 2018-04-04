@@ -1,15 +1,15 @@
 {
 	"name": "mws-restaurant-stage-2",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "RESTAURANT REVIEWS",
 	"main": "./dist/index.html",
 	"scripts": {
 		"test": "test",
 		"debug": "node inspect app.js",
-		"start": "node app.js",
+		"start": "cross-env NODE_ENV=production node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
-		"sailsjs": "npm run build:sailsjs && cross-env NODE_ENV=production npm run start",
+		"sailsjs": "npm run build:sailsjs && npm run start",
 		"serve": "cross-env NODE_ENV=development gulp serve",
 		"dev": "cross-env NODE_ENV=development gulp serve",
 		"staging": "cross-env NODE_ENV=staging gulp serve:staging",
@@ -93,8 +93,7 @@
 		"modern-normalize": "^0.4.0",
 		"stylelint": "^9.2.0",
 		"stylelint-no-unsupported-browser-features": "^1.0.1",
-		"sw-precache": "^5.2.1",
-		"sw-toolbox": "^3.6.0"
+		"workbox-build": "^3.0.1"
 	},
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
@@ -103,7 +102,8 @@
 		"include-all": "^1.0.0",
 		"rc": "1.0.1",
 		"sails": "^0.12.13",
-		"sails-disk": "~0.10.9"
+		"sails-disk": "~0.10.9",
+		"workbox-sw": "^3.0.1"
 	},
 	"repository": {
 		"type": "git",
