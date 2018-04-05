@@ -316,19 +316,13 @@
 			updateRestaurants();
 
 		};
-		function onLoad() {
 
-			window.removeEventListener( 'load', onLoad );
-
-			// Async - Defer GMaps
-			GMapHelper.load(
-				{
-					callback: 'initMap',
-				}
-			);
-
-		};
-		window.addEventListener( 'load', onLoad, false );
+		// Async - Defer GMaps
+		GMapHelper.load(
+			{
+				callback: 'initMap',
+			}
+		);
 
 		// Ready
 		window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
