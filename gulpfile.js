@@ -304,7 +304,7 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgBlue( ' [ Copy : Assets : Images ] ' ) );
 
 		return gulp
-			.src( options.directory.source + '/' + options.directory.assets + '/images/**/*.{png,jpg,gif,svg,webp}' )
+			.src( options.directory.source + '/' + options.directory.assets + '/images/**/*.{webp,png,jpg,jpeg,gif,svg,ico,bmp}' )
 			.pipe( imagemin( options.imagemin.plugins, options.imagemin.config ) )
 			.on( 'error', errorManager )
 			.pipe( gulp.dest( options.directory.dist + '/' + options.directory.assets + '/images' ), options.write )
@@ -440,7 +440,7 @@ gulp.task(
 					'**\/*.html',
 					'**\/*.js',
 					'**\/*.css',
-					'**\/*.{webp,png,jpg,jpeg,svg,ico}',
+					'**\/*.{webp,png,jpg,jpeg,svg,ico,cur,bmp}',
 					'**\/*.json',
 				],
 				globIgnores: [
@@ -466,7 +466,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico)$/ ),
+						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico|cur|bmp)$/ ),
 						handler: 'cacheFirst',
 						options: {
 							cacheName: 'images-cache',
