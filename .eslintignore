@@ -1,3 +1,4 @@
 dist/
 docs/
 .tmp/public/
+.vscode/

@@ -1,6 +1,10 @@
 # App
 dist
 
+# Dependency directories
+node_modules
+bower_components
+
 # Temp
 .tmp/public
 .sass-cache
@@ -17,10 +21,6 @@ npm-debug.log*
 pids
 *.pid
 *.seed
-
-# Dependency directories
-node_modules
-bower_components
 
 # Optional npm cache directory
 .npm
