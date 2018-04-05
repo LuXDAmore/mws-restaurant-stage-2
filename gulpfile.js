@@ -529,6 +529,22 @@ gulp.task(
 						},
 					},
 					{
+						urlPattern: new RegExp( /^(?:http|https):\/\/localhost:1337\/restaurants\/[1,9]/ ),
+						handler: 'networkFirst',
+						options: {
+							cacheName: 'restaurant-cache',
+							expiration: {
+								maxEntries: 10,
+							},
+							cacheableResponse: {
+								statuses: [
+									0,
+									200,
+								],
+							},
+						},
+					},
+					{
 						urlPattern: new RegExp( /^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
 						handler: 'staleWhileRevalidate',
 						options: {
@@ -681,7 +697,7 @@ gulp.task(
 				'"start_url": "/' + options.github.name + '/index.html"',
 			]
 			, replace_preload = [
-				'http://localhost:1337/restaurants',
+				'http://localhost:1337/restaurants/',
 				'data/restaurants.json',
 			]
 			, replace_sw = [
