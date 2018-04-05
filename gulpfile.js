@@ -457,6 +457,12 @@ gulp.task(
 								maxEntries: 10,
 								maxAgeSeconds: 31536000,
 							},
+							cacheableResponse: {
+								statuses: [
+									0,
+									200,
+								],
+							},
 						},
 					},
 					{
@@ -465,8 +471,14 @@ gulp.task(
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
-								maxEntries: 60,
+								maxEntries: 55,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
+							},
+							cacheableResponse: {
+								statuses: [
+									0,
+									200,
+								],
 							},
 						},
 					},
@@ -475,6 +487,12 @@ gulp.task(
 						handler: 'networkFirst',
 						options: {
 							cacheName: 'restaurant-pages',
+							cacheableResponse: {
+								statuses: [
+									0,
+									200,
+								],
+							},
 						},
 					},
 					{
