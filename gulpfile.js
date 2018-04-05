@@ -449,7 +449,7 @@ gulp.task(
 				],
 				runtimeCaching: [
 					{
-						urlPattern: new RegExp( /styles\/.*\.css/ ),
+						urlPattern: new RegExp( /.*\.css$/ ),
 						handler: 'cacheFirst',
 						options: {
 							cacheName: 'styles-cache',
@@ -460,12 +460,12 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /assets\/.*\.(?:webp|png|jpg|jpeg|svg|ico)/ ),
+						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico)$/ ),
 						handler: 'cacheFirst',
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
-								maxEntries: 55,
+								maxEntries: 60,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
 							},
 						},
@@ -511,7 +511,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /^http:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
+						urlPattern: new RegExp( /^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
 						handler: 'staleWhileRevalidate',
 						options: {
 							cacheName: 'googleapis-cache',
