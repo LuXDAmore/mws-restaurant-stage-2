@@ -1,7 +1,7 @@
 'use strict';
 
 const IS_LOCALHOST_OR_DEV = !! ( ~ window.location.href.indexOf( 'localhost' ) || ~ window.location.href.indexOf( 'dev.' ) );
-const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants' : 'data/restaurants.json';
+const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants/' : 'data/restaurants.json';
 let restaurants = [];
 
 /**
@@ -12,7 +12,7 @@ class DBHelper { // eslint-disable-line
 	/**
 	 * Fetch all restaurants.
 	 */
-	static fetchRestaurants( callback ) {
+	static fetchRestaurants( callback, id = '' ) {
 
 		if( restaurants && restaurants.length ) {
 
@@ -28,7 +28,7 @@ class DBHelper { // eslint-disable-line
 			referrerPolicy: 'no-referrer',
 		};
 
-		const req = new Request( URL, options );
+		const req = new Request( ( IS_LOCALHOST_OR_DEV ? `${ URL }${ id }` : URL ), options );
 
 		fetch( req )
 			.then(
@@ -103,7 +103,7 @@ class DBHelper { // eslint-disable-line
 	/**
 	 * Fetch a restaurant by its ID.
 	 */
-	static fetchRestaurantById( id, callback ) {
+	static fetchRestaurantById( callback, id = '' ) {
 
 		// fetch all restaurants with proper error handling.
 		DBHelper.fetchRestaurants(
@@ -113,18 +113,20 @@ class DBHelper { // eslint-disable-line
 					callback( error, null );
 				else {
 
-					const position = restaurants.map( obj => obj.id ).indexOf( parseInt( id ) );
+					const searchRestaurants = Array.isArray( restaurants ) ? restaurants : [ restaurants ];
+					const position = searchRestaurants.map( obj => obj.id ).indexOf( parseInt( id ) );
 
 					// Got the restaurant
 					if( ~ position )
-						callback( null, restaurants[ position ] );
+						callback( null, searchRestaurants[ position ] );
 					// Restaurant does not exist in the database
 					else
 						callback( 'Restaurant does not exist', null );
 
 				}
 
-			}
+			},
+			id
 		);
 
 	};

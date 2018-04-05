@@ -89,7 +89,6 @@
 			else {
 
 				DBHelper.fetchRestaurantById(
-					id,
 					( error, restaurant ) => {
 
 						self.restaurant = restaurant;
@@ -105,7 +104,8 @@
 
 						callback( null, restaurant );
 
-					}
+					},
+					id
 				);
 
 			};

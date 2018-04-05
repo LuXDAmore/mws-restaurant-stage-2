@@ -106,7 +106,7 @@
 		 */
 		function fillCuisinesHTML( cuisines = self.cuisines ) {
 
-			const options =[];
+			const options = [];
 
 			cuisines.forEach(
 				cuisine => {
@@ -266,7 +266,7 @@
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
 		 */
-		function DOMContentLoaded() {
+		function domContentLoaded() {
 
 			// Fetch restaurants
 			function restaurantsFetched( error, restaurants ) {
@@ -283,7 +283,7 @@
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
 		};
-		DOMContentLoaded();
+		domContentLoaded();
 
 		/**
 		 * Initialize Google map.
