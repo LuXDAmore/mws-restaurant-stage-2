@@ -283,7 +283,7 @@
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
 		};
-		domContentLoaded();
+		document.addEventListener( 'DOMContentLoaded', domContentLoaded, false );
 
 		/**
 		 * Initialize Google map.

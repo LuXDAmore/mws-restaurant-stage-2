@@ -1,15 +1,29 @@
+// TODO: Add custom Foreach
+// function foreach(fn) {
+//     var arr = this;
+//     var len = arr.length;
+//     for(var i=0; i<len; ++i) {
+//         fn(arr[i], i);
+//     }
+// }
+
+// Object.defineProperty(Array.prototype, 'customForEach', {
+//     enumerable: false,
+//     value: foreach
+// });
+
 (
 	function( window, document ) {
 
 		'use strict';
 
-		// Showing cached maps if not online onload.
-		function showGMapsOnOffline() {
-
-			window.removeEventListener( 'load', showGMapsOnOffline );
+		// Online ed Offline tasks
+		function OnlineOffline() {
 
 			// Show cached version of GMaps.
 			if( ! window.navigator.onLine ) {
+
+				document.body.classList.add( 'offline' );
 
 				const map = document.getElementById( 'map' );
 				if( map )
@@ -17,8 +31,17 @@
 
 			};
 
+			// Add class for offline
+			function handleNetworkChange( event ) {
+
+				document.body.classList.toggle( 'offline' );
+
+			};
+			window.addEventListener( 'online', handleNetworkChange, false );
+			window.addEventListener( 'offline', handleNetworkChange, false );
+
 		};
-		window.addEventListener( 'load', showGMapsOnOffline, false );
+		document.addEventListener( 'DOMContentLoaded', OnlineOffline, false );
 
 	}
 )( window, document )
