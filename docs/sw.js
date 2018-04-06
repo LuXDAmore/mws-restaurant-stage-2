@@ -29,19 +29,23 @@ workbox.clientsClaim();
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "369de0947d24c37c55604b866d3d5be2"
+    "revision": "3da931b1a8a295215b5e65a053ee076e"
   },
   {
     "url": "index.html",
-    "revision": "6fa276eeeb8eabb7683415aace36d0a7"
+    "revision": "1345c59f4516436c4b6733ef3f9ea5a3"
   },
   {
     "url": "restaurant.html",
-    "revision": "0f7da7548db960e50b915e1f0a92fdc3"
+    "revision": "24242a30e509867eca501362ed55d17a"
   },
   {
-    "url": "app/scripts/app-2984d5b5c5.min.js",
-    "revision": "2984d5b5c54302bdd88ef5f646ad3cd3"
+    "url": "app/scripts/app-0b050b8ddb.min.js",
+    "revision": "0b050b8ddb17c650d444f33ed81a6401"
+  },
+  {
+    "url": "app/scripts/themes-2ed901b08e.min.js",
+    "revision": "2ed901b08e0580776cb87103dd367ef5"
   },
   {
     "url": "app/scripts/vendor-a7dfdeb4d2.min.js",
@@ -429,68 +433,68 @@ self.__precacheManifest = [
   },
   {
     "url": "manifest.json",
-    "revision": "93726044ecf8b728c08fb7b6e10536ae"
+    "revision": "af633056a382ff7524b949789229fa4f"
   },
   {
     "url": "/mws-restaurant-stage-2/",
-    "revision": "832057b0ba54e4addaebdf6cea7e8b5b"
+    "revision": "dbcb174f65d940c66e9fd43f23e51734"
   },
   {
     "url": "restaurant.html?id",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=1",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=2",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=3",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=4",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=5",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=6",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=7",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=8",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=9",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   },
   {
     "url": "restaurant.html?id=10",
-    "revision": "b45a219781cd29e0ee99ab82942d2a31"
+    "revision": "17159288415e9a431cd8dbf1c104119e"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(/.*\.css$/, workbox.strategies.cacheFirst({ cacheName: "styles-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10,"maxAgeSeconds":31536000}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
-workbox.routing.registerRoute(/.*\.(?:webp|png|jpg|jpeg|svg|ico|cur|bmp)$/, workbox.strategies.cacheFirst({ cacheName: "images-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":55,"maxAgeSeconds":604800}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/.*\.(?:webp|png|jpg|jpeg|svg|ico|cur|bmp)$/, workbox.strategies.cacheFirst({ cacheName: "images-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":50,"maxAgeSeconds":604800}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/restaurant\.html.*/, workbox.strategies.networkFirst({ cacheName: "restaurant-pages", plugins: [new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/.*\.json$/, workbox.strategies.cacheFirst({ cacheName: "json-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
-workbox.routing.registerRoute(/^(?:http|https):\/\/localhost:1337\/restaurants([\/]?)/, workbox.strategies.networkFirst({ cacheName: "restaurants-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
-workbox.routing.registerRoute(/^(?:http|https):\/\/localhost:1337\/restaurants\/[1,9]/, workbox.strategies.networkFirst({ cacheName: "restaurant-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
-workbox.routing.registerRoute(/^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/, workbox.strategies.staleWhileRevalidate({ cacheName: "googleapis-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":20}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants[\/]?/, workbox.strategies.networkFirst({ cacheName: "restaurants-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants\/[1,9]/, workbox.strategies.networkFirst({ cacheName: "restaurant-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/, workbox.strategies.staleWhileRevalidate({ cacheName: "googleapis-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":15}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
