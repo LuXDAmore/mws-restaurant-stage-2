@@ -52,6 +52,7 @@ class DBHelper { // eslint-disable-line
 			.then(
 				data => {
 
+					isLoading = false;
 					restaurants = data;
 					callback( null, restaurants );
 
@@ -59,44 +60,6 @@ class DBHelper { // eslint-disable-line
 			)
 			.catch( error => callback( error, restaurants ) )
 		;
-
-		/*
-		if( 'fetch' in window ) {} else {
-
-			const xhr = new XMLHttpRequest();
-
-			xhr.open( 'GET', URL );
-			xhr.setRequestHeader( 'Content-Type', 'application/json' );
-
-			function onReadyStateChange() {
-
-				if( this.readyState === XMLHttpRequest.DONE ) {
-
-					if( this.status === 200 ) {
-
-						restaurants = this.response;
-						callback( null, restaurants );
-
-					} else {
-
-						window.console.error( this.response );
-
-						const error = `Request failed. Returned status of ${ this.status }`;
-						callback( error, restaurants );
-
-					};
-
-				};
-
-			};
-
-			xhr.responseType = 'json';
-			xhr.onreadystatechange = onReadyStateChange;
-
-			xhr.send();
-
-		};
-		*/
 
 	};
 

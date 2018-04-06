@@ -61,7 +61,7 @@
 
 			const options = [];
 
-			neighborhoods.forEach(
+			neighborhoods.customForEach(
 				neighborhood => {
 
 					const option = document.createElement( 'option' );
@@ -108,7 +108,7 @@
 
 			const options = [];
 
-			cuisines.forEach(
+			cuisines.customForEach(
 				cuisine => {
 
 					const option = document.createElement( 'option' );
@@ -169,7 +169,7 @@
 			self.restaurants = restaurants;
 
 			// Remove all map markers
-			self.markers.forEach( m => m.setMap( null ) );
+			self.markers.customForEach( m => m.setMap( null ) );
 			self.markers = [];
 
 			// Remove HTML
@@ -182,7 +182,7 @@
 		 */
 		function fillRestaurantsHTML( restaurants = self.restaurants ) {
 
-			restaurants.forEach( restaurant => ul.appendChild( createRestaurantHTML( restaurant ) ) );
+			restaurants.customForEach( restaurant => ul.appendChild( createRestaurantHTML( restaurant ) ) );
 
 			ul.setAttribute( 'aria-busy', false );
 
@@ -244,7 +244,7 @@
 		*/
 		function addMarkersToMap( restaurants = self.restaurants ) {
 
-			restaurants.forEach(
+			restaurants.customForEach(
 				restaurant => {
 
 					// Add marker to the map

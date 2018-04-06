@@ -53,7 +53,6 @@ class GMapHelper { // eslint-disable-line
 		if( iframe )
 			iframe.title = 'Google maps';
 
-		// FIXME: Is this correct?
 		function step() {
 
 			const anchors = map.querySelectorAll( 'a' );

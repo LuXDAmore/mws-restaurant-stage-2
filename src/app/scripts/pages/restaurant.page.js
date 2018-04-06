@@ -203,7 +203,7 @@
 			const ul = document.getElementById( 'reviews-list' )
 				, rows = []
 			;
-			reviews.forEach( review => rows.push( createReviewHTML( review ) ) );
+			reviews.customForEach( review => rows.push( createReviewHTML( review ) ) );
 
 			ul.append( ...rows );
 			container.appendChild( ul );

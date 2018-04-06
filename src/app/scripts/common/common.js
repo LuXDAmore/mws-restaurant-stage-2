@@ -1,17 +1,17 @@
-// TODO: Add custom Foreach
-// function foreach(fn) {
-//     var arr = this;
-//     var len = arr.length;
-//     for(var i=0; i<len; ++i) {
-//         fn(arr[i], i);
-//     }
-// }
+// Custom forEach should be more performant.
+// FROM => https://stackoverflow.com/a/41462717/3446499
+function customForEach( fn ) {
 
-// Object.defineProperty(Array.prototype, 'customForEach', {
-//     enumerable: false,
-//     value: foreach
-// });
+	const arr = this
+		, len = arr.length
+	;
+    for( let i = 0; i < len; ++ i )
+        fn( arr[ i ], i );
 
+};
+Object.defineProperty( Array.prototype, 'customForEach', { enumerable: false, value: customForEach } );
+
+// Common
 (
 	function( window, document ) {
 

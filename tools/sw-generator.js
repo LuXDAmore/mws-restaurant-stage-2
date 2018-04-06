@@ -12,8 +12,6 @@
 
 			function serviceWorker() {
 
-				window.removeEventListener( 'load', serviceWorker );
-
 				function SWRegistration( registration ) {
 
 					if( typeof registration.update === 'function' ) registration.update();
@@ -58,8 +56,7 @@
 				;
 
 			};
-
-			window.addEventListener( 'load', serviceWorker, false );
+			serviceWorker();
 
 		};
 
