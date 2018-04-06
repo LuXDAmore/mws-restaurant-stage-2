@@ -50,7 +50,7 @@ _It watch files under the `dist/` folder, on port `4000`, to changing it check `
 
 #### Get Restaurants
 
-`curl "http://localhost:1337/restaurants"`
+`curl "http://localhost:1337/restaurants/"`
 
 #### Get Restaurants by id
 
