@@ -434,7 +434,6 @@ gulp.task(
 				importWorkboxFrom: 'local',
 				importScripts: [
 					options.service_worker.toolbox_name,
-					// TODO: Import https://github.com/sdgluck/fetch-sync
 				],
 				globDirectory: options.directory.dist + '/',
 				globPatterns: [
@@ -472,7 +471,7 @@ gulp.task(
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
-								maxEntries: 55,
+								maxEntries: 50,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
 							},
 							cacheableResponse: {
@@ -514,7 +513,7 @@ gulp.task(
 						},
 					},
 					{
-						urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants([\/]?)/ ),
+						urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants[\/]?/ ),
 						handler: 'networkFirst',
 						options: {
 							cacheName: 'restaurants-cache',
@@ -551,7 +550,7 @@ gulp.task(
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 30,
+								maxEntries: 15,
 							},
 							cacheableResponse: {
 								statuses: [
@@ -562,8 +561,6 @@ gulp.task(
 						},
 					},
 				],
-				// TODO: ADD custom background-sync
-				// https://github.com/webmaxru/pwatter/blob/workbox/dist/sw.js
 				templatedUrls: {
 					'/': [ 'index.html' ],
 					'restaurant.html?id': [ 'restaurant.html' ],
