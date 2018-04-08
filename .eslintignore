@@ -2,3 +2,4 @@ dist/
 docs/
 .tmp/public/
 .vscode/
+tools/sw-toolbox.js

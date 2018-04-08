@@ -12,21 +12,14 @@
 		<meta name="robots" content="all" />
 
 		<!-- Tricks -->
-		<link rel="preconnect" href="http://localhost:1337/" crossorigin />
+		<link rel="preload" href="assets/images/placeholder/map-marker.webp" as="image" />
+		<link rel="preload" href="assets/images/placeholder/map-home.webp" as="image" />
+
 		<link rel="preconnect" href="https://maps.googleapis.com/" crossorigin />
 		<link rel="preconnect" href="https://maps.gstatic.com/" crossorigin />
 
-		<!--
-			<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin />
-			<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-			<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" as="style" />
-		-->
-
 		<link rel="preload" href="http://localhost:1337/restaurants/" as="fetch" />
 		<link rel="preload" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyBG8LXp4osGIgtI1SxUafmy6fPsgMq414c&callback=initMap" as="fetch" />
-
-		<link rel="prefetch" href="restaurant.html" />
-		<link rel="next" href="restaurant.html" />
 
 		<link rel="preload" href="assets/images/400/1.webp" as="image" />
 		<link rel="preload" href="assets/images/400/2.webp" as="image" />
@@ -38,8 +31,6 @@
 		<link rel="preload" href="assets/images/400/8.webp" as="image" />
 		<link rel="preload" href="assets/images/400/9.webp" as="image" />
 		<link rel="preload" href="assets/images/400/10.webp" as="image" />
-		<link rel="preload" href="assets/images/placeholder/map-marker.webp" as="image" />
-		<link rel="preload" href="assets/images/placeholder/map-home.webp" as="image" />
 
 		<!-- WebApp Capable -->
 		<!-- Chrome for Android -->
@@ -192,6 +183,9 @@
 		</script>
 
 		<!-- inject:js -->
+		<!-- endinject -->
+
+		<!-- inject:async:js -->
 		<!-- endinject -->
 
 		<!-- inject:service-worker:js -->

@@ -471,7 +471,7 @@ gulp.task(
 						options: {
 							cacheName: 'images-cache',
 							expiration: {
-								maxEntries: 50,
+								maxEntries: 60,
 								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
 							},
 							cacheableResponse: {
@@ -550,7 +550,7 @@ gulp.task(
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 15,
+								maxEntries: 20,
 							},
 							cacheableResponse: {
 								statuses: [
@@ -781,16 +781,22 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgCyan( ' [ Build : Inject ] ' ) );
 
 		var injectable = gulp.src(
-			[
-				options.directory.dist + '/app/styles/vendor-*.css',
-				options.directory.dist + '/app/styles/themes-*.css',
-				options.directory.dist + '/app/styles/app-*.css',
-				options.directory.dist + '/app/scripts/vendor-*.js',
-				options.directory.dist + '/app/scripts/themes-*.js',
-				options.directory.dist + '/app/scripts/app-*.js',
-			],
-			options.read
-		);
+				[
+					options.directory.dist + '/app/styles/vendor-*.css',
+					options.directory.dist + '/app/styles/themes-*.css',
+					options.directory.dist + '/app/styles/app-*.css',
+					options.directory.dist + '/app/scripts/vendor-*.js',
+					options.directory.dist + '/app/scripts/themes-*.js',
+				],
+				options.read
+			)
+			, injectableAsync = gulp.src(
+				[
+					options.directory.dist + '/app/scripts/app-*.js',
+				],
+				options.read
+			)
+		;
 
 		return gulp
 			.src( options.directory.source + '/*.html' )
@@ -800,6 +806,22 @@ gulp.task(
 					{
 						ignorePath: 'dist',
 						addRootSlash: false,
+					}
+				)
+			)
+			.on( 'error', errorManager )
+			.pipe(
+				inject(
+					injectableAsync,
+					{
+						ignorePath: 'dist',
+						addRootSlash: false,
+						starttag: '<!-- inject:async:{{ext}} -->',
+						transform: function( filepath ) {
+
+							return '<script src="' + filepath + '" async defer></script>';
+
+						},
 					}
 				)
 			)
