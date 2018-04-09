@@ -855,12 +855,17 @@ gulp.task(
 					options.directory.dist + '/app/styles/vendor-*.css',
 					options.directory.dist + '/app/styles/themes-*.css',
 					options.directory.dist + '/app/styles/app-*.css',
+				],
+				options.read
+			)
+			, injectableAsync = gulp.src(
+				[
 					options.directory.dist + '/app/scripts/vendor-*.js',
 					options.directory.dist + '/app/scripts/themes-*.js',
 				],
 				options.read
 			)
-			, injectableAsync = gulp.src(
+			, injectableAsyncDefer = gulp.src(
 				[
 					options.directory.dist + '/app/scripts/app-*.js',
 				],
@@ -887,6 +892,22 @@ gulp.task(
 						ignorePath: 'dist',
 						addRootSlash: false,
 						starttag: '<!-- inject:async:{{ext}} -->',
+						transform: function( filepath ) {
+
+							return '<script src="' + filepath + '" async></script>';
+
+						},
+					}
+				)
+			)
+			.on( 'error', errorManager )
+			.pipe(
+				inject(
+					injectableAsyncDefer,
+					{
+						ignorePath: 'dist',
+						addRootSlash: false,
+						starttag: '<!-- inject:async:defer:{{ext}} -->',
 						transform: function( filepath ) {
 
 							return '<script src="' + filepath + '" async defer></script>';
