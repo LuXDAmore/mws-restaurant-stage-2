@@ -4,6 +4,9 @@ const IS_LOCALHOST_OR_DEV = !! ( ~ window.location.href.indexOf( 'localhost' ) |
 const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants/' : 'data/restaurants.json';
 let restaurants = [];
 
+if( fetchSync )
+	fetchSync.init();
+
 /**
  * Common database helper functions.
  */
@@ -12,7 +15,11 @@ class DBHelper { // eslint-disable-line
 	/**
 	 * Fetch all restaurants.
 	 */
-	static fetchRestaurants( callback, id = '' ) {
+	static fetchRestaurants(
+		callback,
+		id = '',
+		type = 'GetRestaurants'
+	) {
 
 		if( restaurants && restaurants.length ) {
 
@@ -21,6 +28,44 @@ class DBHelper { // eslint-disable-line
 
 		};
 
+		// Responses
+		function getData( response ) {
+
+			window.console.log( response );
+
+			// Oops!. Got an error from server.
+			if( ! response.ok ) {
+
+				window.console.error( response );
+
+				const error = 'Error during Network request';
+				throw new Error( error );
+
+			};
+
+			// Got a success response from server!
+			return response.json();
+
+		};
+		function returnData( response ) {
+
+			window.console.log( response );
+
+			isLoading = false;
+			restaurants = response;
+			callback( null, restaurants );
+
+			return response;
+
+		};
+		function returnError( error ) {
+
+			callback( error, restaurants );
+			return error;
+
+		};
+
+		// Options
 		const options = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -31,34 +76,9 @@ class DBHelper { // eslint-disable-line
 		const req = new Request( ( IS_LOCALHOST_OR_DEV ? `${ URL }${ id }` : URL ), options );
 
 		fetch( req )
-			.then(
-				response => {
-
-					// Oops!. Got an error from server.
-					if( ! response.ok ) {
-
-						window.console.error( response );
-
-						const error = 'Error during Network request';
-						throw new Error( error );
-
-					};
-
-					// Got a success response from server!
-					return response.json();
-
-				}
-			)
-			.then(
-				data => {
-
-					isLoading = false;
-					restaurants = data;
-					callback( null, restaurants );
-
-				}
-			)
-			.catch( error => callback( error, restaurants ) )
+			.then( getData )
+			.then( returnData )
+			.catch( returnError )
 		;
 
 	};

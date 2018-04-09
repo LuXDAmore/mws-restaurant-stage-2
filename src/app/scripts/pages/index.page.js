@@ -9,9 +9,9 @@
 			return;
 
 		// Common vars
-		let restaurants
-			, neighborhoods
-			, cuisines
+		let restaurants = []
+			, neighborhoods = []
+			, cuisines = []
 			, map
 			, markers = []
 		;
@@ -136,23 +136,16 @@
 				, neighborhood = nSelect[ nIndex ].value //-> Selected neighborhood
 			;
 
-			DBHelper.fetchRestaurantByCuisineAndNeighborhood(
-				cuisine,
-				neighborhood,
-				( error, restaurants ) => {
+			// filter by cuisine
+			if( cuisine !== 'all' )
+				self.restaurants = self.restaurants.filter( r => r.cuisine_type === cuisine );
 
-					// Got an error!
-					if( error )
-						window.console.error( error );
-					else {
+			// filter by neighborhood
+			if( neighborhood !== 'all' )
+				self.restaurants = self.restaurants.filter( r => r.neighborhood === neighborhood );
 
-						resetRestaurants( restaurants );
-						fillRestaurantsHTML();
-
-					};
-
-				}
-			);
+			resetRestaurants();
+			fillRestaurantsHTML();
 
 		};
 
@@ -163,7 +156,7 @@
 		/**
 		 * Clear current restaurants, their HTML and remove their map markers.
 		 */
-		function resetRestaurants( restaurants ) {
+		function resetRestaurants( restaurants = self.restaurants ) {
 
 			// Remove all restaurants
 			self.restaurants = restaurants;

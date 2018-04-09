@@ -8,6 +8,8 @@ var gulp = require( 'gulp' )
 	, babel = require( 'gulp-babel' )
 	, concat = require( 'gulp-concat' )
 	, glob = require( 'glob' )
+	, zopfli = require( 'gulp-zopfli' )
+	, brotli = require( 'gulp-brotli' )
 	, browserSync = require( 'browser-sync' ).create()
 	, inject = require( 'gulp-inject' )
 	, injectString = require( 'gulp-inject-string' )
@@ -167,6 +169,8 @@ options.other_files = [
 	options.directory.source + '/*.txt',
 	options.directory.source + '/.htaccess',
 	options.directory.tools + '/' + options.service_worker.toolbox_name,
+	'./node_modules/fetch-sync/dist/fetch-sync.min.js',
+	'./node_modules/fetch-sync/dist/fetch-sync.sw.min.js',
 ];
 
 // Common Webserver
@@ -434,17 +438,14 @@ gulp.task(
 				importWorkboxFrom: 'local',
 				importScripts: [
 					options.service_worker.toolbox_name,
+					'fetch-sync.sw.min.js',
 				],
 				globDirectory: options.directory.dist + '/',
 				globPatterns: [
-					'**\/*.html',
-					'**\/*.js',
-					'**\/*.css',
+					'**\/*.{html,js,css,json}',
 					'**\/*.{webp,png,jpg,jpeg,svg,ico,cur,bmp}',
-					'**\/*.json',
 				],
 				globIgnores: [
-					'**\/' + options.service_worker.toolbox_name,
 					'**\/' + options.service_worker.name,
 				],
 				runtimeCaching: [
@@ -646,6 +647,75 @@ gulp.task(
 	}
 );
 
+// Compress
+gulp.task(
+	'compress:gzip',
+	function() {
+
+		gutil.log( gutil.colors.white.bgMagenta( ' [ Compress : Gzip ] ' ) );
+
+		return gulp.src(
+				[
+					options.directory.dist + '/**/**/*.{html,js,css}',
+					'!' + options.directory.dist + '/*.js',
+				]
+			)
+			.pipe( zopfli() )
+			.on( 'error', errorManager )
+			.pipe( gulp.dest( options.directory.dist + '/' ) )
+		;
+
+	}
+);
+gulp.task(
+	'compress:brotli',
+	function() {
+
+		gutil.log( gutil.colors.white.bgMagenta( ' [ Compress : Brotli ] ' ) );
+
+		return gulp.src(
+			[
+				options.directory.dist + '/**/**/*.{html,js,css}',
+				'!' + options.directory.dist + '/*.js',
+			]
+			)
+			.pipe( brotli.compress() )
+			.on( 'error', errorManager )
+			.pipe( gulp.dest( options.directory.dist + '/' ) )
+		;
+
+	}
+);
+gulp.task(
+	'compress:gzip:brotli',
+	function() {
+
+		gutil.log( gutil.colors.white.bgMagenta( ' [ Compress : Brotli : Gzip ] ' ) );
+
+		return gulp.src(
+				[
+					options.directory.dist + '/**/**/*.{html,js,css}',
+					'!' + options.directory.dist + '/*.js',
+				]
+			)
+			.pipe( zopfli() )
+			.on( 'error', errorManager )
+			.pipe( brotli.compress() )
+			.on( 'error', errorManager )
+			.pipe( gulp.dest( options.directory.dist + '/' ) )
+		;
+
+	}
+);
+gulp.task(
+	'compress',
+	function( done ) {
+
+		sequence( 'compress:gzip', 'compress:brotli', 'compress:gzip:brotli' )( done );
+
+	}
+);
+
 // BUILD APP TASKS
 // Github Pages
 gulp.task(
@@ -685,24 +755,24 @@ gulp.task(
 		gutil.log( gutil.colors.white.bgCyan( ' [ Github Pages : Replace ] ' ) );
 
 		var replace_base = [
-				'<base href="/">',
-				'<base href="/' + options.github.name + '/">',
+				'<base href="\/">',
+				'<base href="\/' + options.github.name + '\/">',
 			]
 			, replace_canonical = [
-				'<link rel="canonical" href="/">',
-				'<link rel="canonical" href="/' + options.github.name + '/">',
+				'<link rel="canonical" href="\/">',
+				'<link rel="canonical" href="\/' + options.github.name + '\/">',
 			]
 			, replace_manifest = [
-				'"start_url": "/index.html"',
-				'"start_url": "/' + options.github.name + '/index.html"',
+				'"start_url": "\/index.html"',
+				'"start_url": "\/' + options.github.name + '\/index.html"',
 			]
 			, replace_preload = [
-				'http://localhost:1337/restaurants/',
-				'data/restaurants.json',
+				'http:\/\/localhost:1337\/restaurants\/',
+				'data\/restaurants.json',
 			]
 			, replace_sw = [
-				'"/",',
-				'"/' + options.github.name + '/",',
+				'"\/",',
+				'"\/' + options.github.name + '\/",',
 			]
 		;
 
@@ -1065,11 +1135,11 @@ gulp.task(
 				sequence(
 					'clean:app:scripts',
 					'build:scripts',
-					'build:inject'
+					'build:inject',
 				)( reload );
 
 			}
-			, sequenceCSS = function() {
+			, sequenceCSS = function( ) {
 
 				sequence(
 					'clean:app:styles',
@@ -1178,6 +1248,7 @@ gulp.task(
 			[
 				options.directory.source + '/**/**/**/*.*',
 				options.directory.tools + '/' + options.service_worker.generator,
+				options.directory.tools + '/sw-toolbox.js',
 			],
 			sequenceBuild
 		);
@@ -1186,6 +1257,36 @@ gulp.task(
 );
 gulp.task(
 	'serve:production',
+	[
+		'build:nocompression',
+	],
+	function() {
+
+		options.browserSync.notify = false;
+		options.browserSync.port = options.service_worker.local_port;
+		browserSync.init( options.browserSync );
+
+		var sequenceBuild = function() {
+
+			sequence( 'build:nocompression' )( reload );
+
+		};
+
+		// Watch files
+		// Styles
+		gulp.watch(
+			[
+				options.directory.source + '/**/**/**/*.*',
+				options.directory.tools + '/' + options.service_worker.generator,
+				options.directory.tools + '/sw-toolbox.js',
+			],
+			sequenceBuild
+		);
+
+	}
+);
+gulp.task(
+	'view:production',
 	[
 		'build',
 	],
@@ -1239,10 +1340,18 @@ gulp.task(
 	}
 );
 gulp.task(
-	'build',
+	'build:nocompression',
 	function( done ) {
 
 		sequence( 'clean', 'environment:production', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html' ], 'build:inject', 'generate-criticalcss', 'generate-service-worker' )( done );
+
+	}
+);
+gulp.task(
+	'build',
+	function( done ) {
+
+		sequence( 'clean', 'environment:production', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html' ], 'build:inject', 'generate-criticalcss', 'generate-service-worker', 'compress' )( done );
 
 	}
 );
@@ -1250,20 +1359,22 @@ gulp.task( 'default', [ 'build' ] );
 
 // Github Pages
 gulp.task(
-	'sailsjs',
-	[ 'build' ],
-	function( done ) {
-
-		sequence( 'sailsjs:clean', 'sailsjs:copy' )( done );
-
-	}
-);
-gulp.task(
 	'github:pages',
 	[ 'build' ],
 	function( done ) {
 
 		sequence( 'github:pages:clean', 'github:pages:copy', 'github:pages:replace' )( done );
+
+	}
+);
+
+// Sailsjs
+gulp.task(
+	'sailsjs',
+	[ 'build' ],
+	function( done ) {
+
+		sequence( 'sailsjs:clean', 'sailsjs:copy' )( done );
 
 	}
 );

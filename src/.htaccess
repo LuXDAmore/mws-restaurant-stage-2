@@ -3,6 +3,18 @@
     Options -MultiViews
 
     RewriteEngine On
+
+	# Serve pre-compressed Brotli assets
+	RewriteCond %{HTTP:Accept-Encoding} br
+	RewriteCond %{REQUEST_FILENAME}.br -f
+	RewriteRule ^(.*)$ $1.br [L]
+
+	# Serve pre-compressed gzip assets
+	RewriteCond %{HTTP:Accept-Encoding} gzip
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)$ $1.gz [L]
+
+	# Force HTTPS
     RewriteCond %{HTTPS} !on
     RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
@@ -12,30 +24,14 @@
 
 	SetOutputFilter DEFLATE
 
-	AddOutputFilterByType DEFLATE application/json
-	AddOutputFilterByType DEFLATE application/javascript
-	AddOutputFilterByType DEFLATE application/rss+xml
-	AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
-	AddOutputFilterByType DEFLATE application/x-font
-	AddOutputFilterByType DEFLATE application/x-font-opentype
-	AddOutputFilterByType DEFLATE application/x-font-otf
-	AddOutputFilterByType DEFLATE application/x-font-truetype
-	AddOutputFilterByType DEFLATE application/x-font-ttf
-	AddOutputFilterByType DEFLATE application/x-javascript
-	AddOutputFilterByType DEFLATE application/xhtml+xml
-	AddOutputFilterByType DEFLATE application/xml
-	AddOutputFilterByType DEFLATE font/opentype
-	AddOutputFilterByType DEFLATE font/otf
-	AddOutputFilterByType DEFLATE font/ttf
-	AddOutputFilterByType DEFLATE image/svg+xml
-	AddOutputFilterByType DEFLATE image/x-icon
-	AddOutputFilterByType DEFLATE text/css
-	AddOutputFilterByType DEFLATE text/html
-	AddOutputFilterByType DEFLATE text/javascript
-	AddOutputFilterByType DEFLATE text/plain
-	AddOutputFilterByType DEFLATE text/xml
-	AddOutputFilterByType DEFLATE image/png image/jpg image/jpeg image/webp image/gif
-    AddOutputFilterByType DEFLATE application/x-php application/php
+	AddOutputFilterByType DEFLATE application/json application/javascript application/rss+xml application/vnd.ms-fontobject application/x-font application/x-font-opentype application/x-font-otf application/x-font-truetype application/x-font-ttf application/x-javascript application/xhtml+xml application/xml font/opentype font/otf font/ttf image/svg+xml image/x-icon text/css text/html text/javascript text/plain text/xml image/png image/jpg image/jpeg image/webp image/gif application/x-php application/php
+
+</IfModule>
+<IfModule mod_brotli.c>
+
+	SetOutputFilter BROTLI_COMPRESS
+
+	AddOutputFilterByType BROTLI_COMPRESS application/javascript text/css text/html text/javascript text/plain text/xml
 
 </IfModule>
 
@@ -82,3 +78,31 @@
     </FilesMatch>
 
 </IfModule>
+
+# Specify Brotli-encoded assets
+<Files *.js.br>
+	AddType "text/javascript" .br
+	AddEncoding br .br
+</Files>
+<Files *.css.br>
+	AddType "text/css" .br
+	AddEncoding br .br
+</Files>
+<Files *.html.br>
+	AddType "text/html" .br
+	AddEncoding br .br
+</Files>
+
+# Specify gzip-encoded assets
+<Files *.js.gz>
+	AddType "text/javascript" .gz
+	AddEncoding gz .gz
+</Files>
+<Files *.css.gz>
+	AddType "text/css" .gz
+	AddEncoding gz .gz
+</Files>
+<Files *.html.gz>
+	AddType "text/html" .gz
+	AddEncoding gz .gz
+</Files>

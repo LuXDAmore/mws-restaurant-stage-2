@@ -20,7 +20,8 @@ _[ In my computer i have installed [ImageMagick](http://www.imagemagick.org/scri
 
 1. Development, with livereload: `npm run dev` or `npm run serve`
 2. Staging, with livereload: `npm run staging` or `npm run serve:staging`
-3. Production, no livereload: `npm run production` or `npm run serve:production`
+3. Production, with livereload: `npm run production` or `npm run serve:production`
+4. Production, no livereload: `npm run production` or `npm run view:production`
 
 _It watch files under the `dist/` folder, on port `4000`, to changing it check `var options` in the `gulpfile.js`*_
 
