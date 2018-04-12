@@ -2,10 +2,11 @@
 
 const IS_LOCALHOST_OR_DEV = !! ( ~ window.location.href.indexOf( 'localhost' ) || ~ window.location.href.indexOf( 'dev.' ) );
 const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants/' : 'data/restaurants.json';
+const DB_NAME = 'restaurant_reviews';
 let restaurants = null;
 
 // DB Offline
-const DB = new Dexie( 'restaurant_reviews' );
+const DB = new Dexie( DB_NAME );
 DB
 	.version( 1 )
 	.stores(
@@ -57,7 +58,7 @@ class DBHelper { // eslint-disable-line
 			restaurants = response;
 
 			if( ! id && restaurants && restaurants.length )
-				DB.restaurants.bulkAdd( restaurants );
+				DB.restaurants.bulkAdd( restaurants ).catch( error => window.console.debug( error ) );
 
 			callback( null, restaurants );
 

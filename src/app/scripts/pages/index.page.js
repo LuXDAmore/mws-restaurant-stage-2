@@ -272,6 +272,8 @@
 				fetchNeighborhoods();
 				fetchCuisines();
 
+				updateRestaurants();
+
 			};
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
@@ -290,23 +292,27 @@
 				lng: - 73.987501,
 			};
 
-			self.map = new google.maps.Map(
-				map,
-				{
-					zoom: 12,
-					center: loc,
-					scrollwheel: false,
-					disableDefaultUI: true,
-				}
-			);
+			if( typeof google !== 'undefined' ) {
 
-			google.maps.event.addListenerOnce(
-				self.map,
-				'tilesloaded',
-				() => GMapHelper.mapsLoaded( map )
-			);
+				self.map = new google.maps.Map(
+					map,
+					{
+						zoom: 12,
+						center: loc,
+						scrollwheel: false,
+						disableDefaultUI: true,
+					}
+				);
 
-			updateRestaurants();
+				google.maps.event.addListenerOnce(
+					self.map,
+					'tilesloaded',
+					() => GMapHelper.mapsLoaded( map )
+				);
+
+				updateRestaurants();
+
+			};
 
 		};
 
