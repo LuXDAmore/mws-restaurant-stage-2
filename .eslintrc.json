@@ -199,6 +199,7 @@
 		"require": true,
 		"google": true,
 		"moment": true,
+		"Dexie": true,
 		"LazyLoad": true
 	}
 }

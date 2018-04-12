@@ -4,8 +4,16 @@ const IS_LOCALHOST_OR_DEV = !! ( ~ window.location.href.indexOf( 'localhost' ) |
 const URL = IS_LOCALHOST_OR_DEV ? 'http://localhost:1337/restaurants/' : 'data/restaurants.json';
 let restaurants = [];
 
-if( fetchSync )
-	fetchSync.init();
+// DB Offline
+const DB = new Dexie( 'restaurant_reviews' );
+DB
+	.version( 1 )
+	.stores(
+		{
+			restaurants: '&id,cuisine_type,neighborhood',
+		}
+	)
+;
 
 /**
  * Common database helper functions.
@@ -31,8 +39,6 @@ class DBHelper { // eslint-disable-line
 		// Responses
 		function getData( response ) {
 
-			window.console.log( response );
-
 			// Oops!. Got an error from server.
 			if( ! response.ok ) {
 
@@ -49,19 +55,39 @@ class DBHelper { // eslint-disable-line
 		};
 		function returnData( response ) {
 
-			window.console.log( response );
-
 			isLoading = false;
 			restaurants = response;
+
+			if( ! id )
+				DB.restaurants.bulkAdd( restaurants );
+
 			callback( null, restaurants );
 
 			return response;
 
 		};
-		function returnError( error ) {
+		function returnError( error = null ) {
 
-			callback( error, restaurants );
-			return error;
+			const RESULT = id ? DB.restaurants.get( id ) : DB.restaurants.toArray();
+
+			return RESULT.then(
+					response => {
+
+						if( response && response.length ) {
+
+							error = null;
+							restaurants = response;
+
+						};
+
+						callback( error, restaurants );
+
+						return response;
+
+					}
+				)
+				.catch( error => callback( error, restaurants ) )
+			;
 
 		};
 

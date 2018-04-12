@@ -169,8 +169,6 @@ options.other_files = [
 	options.directory.source + '/*.txt',
 	options.directory.source + '/.htaccess',
 	options.directory.tools + '/' + options.service_worker.toolbox_name,
-	'./node_modules/fetch-sync/dist/fetch-sync.min.js',
-	'./node_modules/fetch-sync/dist/fetch-sync.sw.min.js',
 ];
 
 // Common Webserver
@@ -438,7 +436,6 @@ gulp.task(
 				importWorkboxFrom: 'local',
 				importScripts: [
 					options.service_worker.toolbox_name,
-					'fetch-sync.sw.min.js',
 				],
 				globDirectory: options.directory.dist + '/',
 				globPatterns: [
@@ -894,7 +891,7 @@ gulp.task(
 						starttag: '<!-- inject:async:{{ext}} -->',
 						transform: function( filepath ) {
 
-							return '<script src="' + filepath + '" async></script>';
+							return '<script src="' + filepath + '"></script>';
 
 						},
 					}
@@ -1254,7 +1251,6 @@ gulp.task(
 	],
 	function() {
 
-		options.browserSync.notify = false;
 		browserSync.init( options.browserSync );
 
 		var sequenceBuild = function() {
@@ -1283,8 +1279,13 @@ gulp.task(
 	],
 	function() {
 
-		options.browserSync.notify = false;
-		options.browserSync.port = options.service_worker.local_port;
+		options.browserSync = Object.assign(
+			{},
+			options.browserSync,
+			{
+				port: options.service_worker.local_port,
+			}
+		);
 		browserSync.init( options.browserSync );
 
 		var sequenceBuild = function() {
