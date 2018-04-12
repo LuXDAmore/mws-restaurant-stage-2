@@ -58,7 +58,7 @@ class DBHelper { // eslint-disable-line
 			restaurants = response;
 
 			if( ! id && restaurants && restaurants.length )
-				DB.restaurants.bulkAdd( restaurants ).catch( error => window.console.debug( error ) );
+				DB.restaurants.bulkAdd( restaurants ).catch( () => DB.restaurants.bulkPut( restaurants ) );
 
 			callback( null, restaurants );
 
