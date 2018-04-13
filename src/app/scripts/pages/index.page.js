@@ -180,7 +180,9 @@
 			ul.setAttribute( 'aria-busy', false );
 
 			DBHelper.lazyLoadImages();
-			addMarkersToMap();
+
+			if( window.google && typeof google !== 'undefined' )
+				addMarkersToMap();
 
 		};
 
@@ -292,27 +294,26 @@
 				lng: - 73.987501,
 			};
 
-			if( typeof google !== 'undefined' ) {
+			if( ! window.google || typeof google === 'undefined' )
+				return;
 
-				self.map = new google.maps.Map(
-					map,
-					{
-						zoom: 12,
-						center: loc,
-						scrollwheel: false,
-						disableDefaultUI: true,
-					}
-				);
+			self.map = new google.maps.Map(
+				map,
+				{
+					zoom: 12,
+					center: loc,
+					scrollwheel: false,
+					disableDefaultUI: true,
+				}
+			);
 
-				google.maps.event.addListenerOnce(
-					self.map,
-					'tilesloaded',
-					() => GMapHelper.mapsLoaded( map )
-				);
+			google.maps.event.addListenerOnce(
+				self.map,
+				'tilesloaded',
+				() => GMapHelper.mapsLoaded( map )
+			);
 
-				updateRestaurants();
-
-			};
+			updateRestaurants();
 
 		};
 

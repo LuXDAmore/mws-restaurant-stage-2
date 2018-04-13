@@ -868,6 +868,12 @@ gulp.task(
 				],
 				options.read
 			)
+			, injectableSW = gulp.src( options.directory.tools + '/' + options.service_worker.generator )
+				.pipe( eslint.format() )
+				.pipe( babel( options.babel ) )
+				.on( 'error', errorManager )
+				.pipe( uglify( options.uglify ) )
+				.on( 'error', errorManager )
 		;
 
 		return gulp
@@ -939,7 +945,7 @@ gulp.task(
 			.on( 'error', errorManager )
 			.pipe(
 				inject(
-					gulp.src( options.directory.tools + '/' + options.service_worker.generator ),
+					injectableSW,
 					{
 						starttag: '<!-- inject:service-worker:{{ext}} -->',
 						transform: function( filepath, file ) {
@@ -947,8 +953,6 @@ gulp.task(
 							return '<script>'
 								+ file.contents
 									.toString()
-									.replace( /\n|\r|\t/g, '' )
-									.trim()
 									.replace( '[SERVICE-WORKER-NAME]', options.service_worker.name )
 									.replace( '[SERVICE-WORKER-EXCLUDED-PORT]', options.browserSync.port )
 								+ '</script>'

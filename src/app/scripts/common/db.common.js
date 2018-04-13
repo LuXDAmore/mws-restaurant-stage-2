@@ -53,11 +53,14 @@ class DBHelper { // eslint-disable-line
 			return response.json();
 
 		};
-		function returnData( response = [] ) {
+		function returnData(
+			response = [],
+			fromDB = false
+		) {
 
 			restaurants = response;
 
-			if( ! id && restaurants && restaurants.length )
+			if( ! id && ! fromDB && restaurants && restaurants.length )
 				DB.restaurants.bulkAdd( restaurants ).catch( () => DB.restaurants.bulkPut( restaurants ) );
 
 			callback( null, restaurants );
@@ -72,7 +75,7 @@ class DBHelper { // eslint-disable-line
 			return RESULT.then(
 					response => {
 
-						restaurants = response || [];
+						restaurants = response;
 						callback( null, restaurants );
 
 						return response;
@@ -93,6 +96,21 @@ class DBHelper { // eslint-disable-line
 		};
 
 		const req = new Request( ( IS_LOCALHOST_OR_DEV ? `${ URL }${ id }` : URL ), options );
+
+		if( ! id ) {
+
+			DB.restaurants.toArray().then(
+				restaurants => {
+
+					if( restaurants && restaurants.length )
+						returnData( restaurants, true );
+
+					return restaurants;
+
+				}
+			);
+
+		};
 
 		fetch( req )
 			.then( getData )

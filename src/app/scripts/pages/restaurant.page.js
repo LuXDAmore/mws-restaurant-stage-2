@@ -27,34 +27,38 @@
 				( error, restaurant ) => {
 
 					// Got an error!
-					if( error )
+					if( error ) {
+
 						window.console.error( error );
-					else {
-
-						const map = document.getElementById( 'map' );
-
-						self.map = new google.maps.Map(
-							map,
-							{
-								zoom: 16,
-								center: restaurant.latlng,
-								scrollwheel: false,
-								disableDefaultUI: true,
-							}
-						);
-
-						google.maps.event.addListenerOnce(
-							self.map,
-							'tilesloaded',
-							() => GMapHelper.mapsLoaded( map )
-						);
-
-						fillBreadcrumb();
-
-						DBHelper.lazyLoadImages();
-						DBHelper.mapMarkerForRestaurant( self.restaurant, self.map );
+						return error;
 
 					};
+
+					if( ! window.google || typeof google === 'undefined' )
+						return;
+
+					const map = document.getElementById( 'map' );
+
+					self.map = new google.maps.Map(
+						map,
+						{
+							zoom: 16,
+							center: restaurant.latlng,
+							scrollwheel: false,
+							disableDefaultUI: true,
+						}
+					);
+
+					google.maps.event.addListenerOnce(
+						self.map,
+						'tilesloaded',
+						() => GMapHelper.mapsLoaded( map )
+					);
+
+					fillBreadcrumb();
+
+					DBHelper.lazyLoadImages();
+					DBHelper.mapMarkerForRestaurant( self.restaurant, self.map );
 
 				}
 			);
