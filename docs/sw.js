@@ -11,8 +11,8 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("workbox-v3.0.1/workbox-sw.js");
-workbox.setConfig({modulePathPrefix: "workbox-v3.0.1"});
+importScripts("workbox-v3.1.0/workbox-sw.js");
+workbox.setConfig({modulePathPrefix: "workbox-v3.1.0"});
 
 importScripts(
   "sw-toolbox.js"
@@ -61,7 +61,7 @@ self.__precacheManifest = [
   },
   {
     "url": "sw-toolbox.js",
-    "revision": "58c6979852dd6e566a5fab26674c6bb3"
+    "revision": "38374e3e2360ee892b81d470cc4adfd6"
   },
   {
     "url": "assets/icons/icon-128x128.png",
