@@ -21,7 +21,7 @@
 
 					registration.onupdatefound = () => {
 
-						var installingWorker = registration.installing;
+						const installingWorker = registration.installing;
 
 						installingWorker.onstatechange = () => {
 
