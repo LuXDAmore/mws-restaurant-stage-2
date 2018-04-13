@@ -1336,7 +1336,7 @@ gulp.task(
 );
 
 // DEFAULT TASKS
-gulp.task( 'clean:all', [ 'clean', 'github:pages:clean' ] );
+gulp.task( 'clean:all', [ 'clean', 'github:pages:clean', 'sailsjs:clean' ] );
 gulp.task( 'start', [ 'serve' ] );
 gulp.task( 'watch', [ 'serve' ] );
 gulp.task( 'dev', [ 'serve' ] );
@@ -1345,7 +1345,7 @@ gulp.task(
 	'build:development',
 	function( done ) {
 
-		sequence( 'clean:all', 'environment:development', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
+		sequence( 'clean', 'environment:development', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
 
 	}
 );
@@ -1353,7 +1353,7 @@ gulp.task(
 	'build:testing',
 	function( done ) {
 
-		sequence( 'clean:all', 'environment:testing', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
+		sequence( 'clean', 'environment:testing', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
 
 	}
 );
@@ -1361,7 +1361,7 @@ gulp.task(
 	'build:staging',
 	function( done ) {
 
-		sequence( 'clean:all', 'environment:staging', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
+		sequence( 'clean', 'environment:staging', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html', ], 'build:inject' )( done );
 
 	}
 );
@@ -1386,7 +1386,9 @@ gulp.task( 'default', [ 'build' ] );
 // Github Pages
 gulp.task(
 	'github:pages',
-	[ 'build' ],
+	[
+		'build',
+	],
 	function( done ) {
 
 		sequence( 'github:pages:clean', 'github:pages:copy', 'github:pages:replace' )( done );
