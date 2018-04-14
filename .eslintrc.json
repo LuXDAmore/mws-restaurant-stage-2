@@ -200,6 +200,7 @@
 		"google": true,
 		"moment": true,
 		"Dexie": true,
+		"PerformanceObserver": true,
 		"LazyLoad": true
 	}
 }
