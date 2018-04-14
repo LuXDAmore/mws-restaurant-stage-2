@@ -92,7 +92,6 @@
 		"gulp-uglify": "^2.1.2",
 		"gulp-util": "^3.0.8",
 		"gulp-webserver": "^0.9.1",
-		"gulp-zopfli": "^1.0.0",
 		"modern-normalize": "^0.4.0",
 		"stylelint": "^9.2.0",
 		"stylelint-no-unsupported-browser-features": "^1.0.1",

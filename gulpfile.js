@@ -8,7 +8,6 @@ var gulp = require( 'gulp' )
 	, babel = require( 'gulp-babel' )
 	, concat = require( 'gulp-concat' )
 	, glob = require( 'glob' )
-	, zopfli = require( 'gulp-zopfli' )
 	, brotli = require( 'gulp-brotli' )
 	, browserSync = require( 'browser-sync' ).create()
 	, inject = require( 'gulp-inject' )
@@ -646,25 +645,6 @@ gulp.task(
 
 // Compress
 gulp.task(
-	'compress:gzip',
-	function() {
-
-		gutil.log( gutil.colors.white.bgMagenta( ' [ Compress : Gzip ] ' ) );
-
-		return gulp.src(
-				[
-					options.directory.dist + '/**/**/*.{html,js,css}',
-					'!' + options.directory.dist + '/*.js',
-				]
-			)
-			.pipe( zopfli() )
-			.on( 'error', errorManager )
-			.pipe( gulp.dest( options.directory.dist + '/' ) )
-		;
-
-	}
-);
-gulp.task(
 	'compress:brotli',
 	function() {
 
@@ -680,35 +660,6 @@ gulp.task(
 			.on( 'error', errorManager )
 			.pipe( gulp.dest( options.directory.dist + '/' ) )
 		;
-
-	}
-);
-gulp.task(
-	'compress:gzip:brotli',
-	function() {
-
-		gutil.log( gutil.colors.white.bgMagenta( ' [ Compress : Brotli : Gzip ] ' ) );
-
-		return gulp.src(
-				[
-					options.directory.dist + '/**/**/*.{html,js,css}',
-					'!' + options.directory.dist + '/*.js',
-				]
-			)
-			.pipe( zopfli() )
-			.on( 'error', errorManager )
-			.pipe( brotli.compress() )
-			.on( 'error', errorManager )
-			.pipe( gulp.dest( options.directory.dist + '/' ) )
-		;
-
-	}
-);
-gulp.task(
-	'compress',
-	function( done ) {
-
-		sequence( 'compress:gzip', 'compress:brotli', 'compress:gzip:brotli' )( done );
 
 	}
 );
@@ -1377,7 +1328,7 @@ gulp.task(
 	'build',
 	function( done ) {
 
-		sequence( 'clean', 'environment:production', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html' ], 'build:inject', 'generate-criticalcss', 'generate-service-worker', 'compress' )( done );
+		sequence( 'clean', 'environment:production', [ 'copy:requirements', 'copy:assets', 'copy:data' ], [ 'vendor:bower', 'vendor:themes' ], [ 'build:styles', 'build:scripts', 'build:html' ], 'build:inject', 'generate-criticalcss', 'generate-service-worker', 'compress:brotli' )( done );
 
 	}
 );
