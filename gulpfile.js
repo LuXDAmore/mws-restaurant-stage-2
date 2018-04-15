@@ -493,23 +493,6 @@ gulp.task(
 						},
 					},
 					{
-
-						urlPattern: new RegExp( /.*\.json$/ ),
-						handler: 'cacheFirst',
-						options: {
-							cacheName: 'json-cache',
-							expiration: {
-								maxEntries: 10,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
-							},
-						},
-					},
-					{
 						urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants[\/]?/ ),
 						handler: 'networkFirst',
 						options: {
@@ -547,7 +530,7 @@ gulp.task(
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 15,
+								maxEntries: 30,
 							},
 							cacheableResponse: {
 								statuses: [
