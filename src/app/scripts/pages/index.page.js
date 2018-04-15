@@ -64,11 +64,18 @@
 		};
 
 		// Async - Defer GMaps
-		GMapHelper.load(
-			{
-				callback: 'initMap',
-			}
-		);
+		function GMapsLoad() {
+
+			window.removeEventListener( 'load', GMapsLoad );
+
+			GMapHelper.load(
+				{
+					callback: 'initMap',
+				}
+			);
+
+		}
+		window.addEventListener( 'load', GMapsLoad, false );
 
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
