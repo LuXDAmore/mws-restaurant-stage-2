@@ -34,9 +34,6 @@
 
 					};
 
-					if( ! window.google || typeof google === 'undefined' )
-						return;
-
 					const map = document.getElementById( 'map' );
 
 					self.map = new google.maps.Map(

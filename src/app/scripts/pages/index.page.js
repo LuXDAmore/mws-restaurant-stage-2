@@ -43,9 +43,6 @@
 				lng: - 73.987501,
 			};
 
-			if( ! window.google || typeof google === 'undefined' )
-				return;
-
 			self.map = new google.maps.Map(
 				map,
 				{
