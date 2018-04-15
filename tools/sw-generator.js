@@ -12,7 +12,7 @@
 
 			function serviceWorker() {
 
-				// window.removeEventListener( 'load', serviceWorker );
+				window.removeEventListener( 'load', serviceWorker );
 
 				function SWRegistration( registration ) {
 
@@ -60,8 +60,7 @@
 				;
 
 			};
-			serviceWorker();
-			// window.addEventListener( 'load', serviceWorker, false );
+			window.addEventListener( 'load', serviceWorker, false );
 
 		};
 
