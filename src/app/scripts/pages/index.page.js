@@ -32,6 +32,72 @@
 		;
 
 		/**
+		 * Initialize Google map.
+		*/
+		window.initMap = () => {
+
+			const map = document.getElementById( 'map' );
+
+			let loc = {
+				lat: 40.722216,
+				lng: - 73.987501,
+			};
+
+			if( ! window.google || typeof google === 'undefined' )
+				return;
+
+			self.map = new google.maps.Map(
+				map,
+				{
+					zoom: 12,
+					center: loc,
+					scrollwheel: false,
+					disableDefaultUI: true,
+				}
+			);
+
+			google.maps.event.addListenerOnce(
+				self.map,
+				'tilesloaded',
+				() => GMapHelper.mapsLoaded( map )
+			);
+
+			addMarkersToMap();
+
+		};
+
+		// Async - Defer GMaps
+		GMapHelper.load(
+			{
+				callback: 'initMap',
+			}
+		);
+
+		/**
+		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
+		 */
+		function domContentLoaded() {
+
+			// Fetch restaurants
+			function restaurantsFetched( error, restaurants ) {
+
+				if( error )
+					return window.alert( error.toString() );
+
+				self.restaurants = restaurants;
+
+				fetchNeighborhoods();
+				fetchCuisines();
+
+				updateRestaurants();
+
+			};
+			DBHelper.fetchRestaurants( restaurantsFetched );
+
+		};
+		domContentLoaded();
+
+		/**
 		 * Fetch all neighborhoods and set their HTML.
 		 */
 		function fetchNeighborhoods() {
@@ -257,72 +323,6 @@
 			);
 
 		};
-
-		/**
-		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
-		 */
-		function domContentLoaded() {
-
-			// Fetch restaurants
-			function restaurantsFetched( error, restaurants ) {
-
-				if( error )
-					return window.alert( error.toString() );
-
-				self.restaurants = restaurants;
-
-				fetchNeighborhoods();
-				fetchCuisines();
-
-				updateRestaurants();
-
-			};
-			DBHelper.fetchRestaurants( restaurantsFetched );
-
-		};
-		domContentLoaded();
-
-		/**
-		 * Initialize Google map.
-		*/
-		window.initMap = () => {
-
-			const map = document.getElementById( 'map' );
-
-			let loc = {
-				lat: 40.722216,
-				lng: - 73.987501,
-			};
-
-			if( ! window.google || typeof google === 'undefined' )
-				return;
-
-			self.map = new google.maps.Map(
-				map,
-				{
-					zoom: 12,
-					center: loc,
-					scrollwheel: false,
-					disableDefaultUI: true,
-				}
-			);
-
-			google.maps.event.addListenerOnce(
-				self.map,
-				'tilesloaded',
-				() => GMapHelper.mapsLoaded( map )
-			);
-
-			updateRestaurants();
-
-		};
-
-		// Async - Defer GMaps
-		GMapHelper.load(
-			{
-				callback: 'initMap',
-			}
-		);
 
 		// Ready
 		window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
