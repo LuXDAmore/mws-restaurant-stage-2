@@ -267,7 +267,7 @@
 			function restaurantsFetched( error, restaurants ) {
 
 				if( error )
-					return window.alert( error );
+					return window.alert( error.toString() );
 
 				self.restaurants = restaurants;
 
