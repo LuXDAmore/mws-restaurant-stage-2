@@ -547,7 +547,7 @@ gulp.task(
 						options: {
 							cacheName: 'googleapis-cache',
 							expiration: {
-								maxEntries: 20,
+								maxEntries: 15,
 							},
 							cacheableResponse: {
 								statuses: [
@@ -803,11 +803,6 @@ gulp.task(
 					options.directory.dist + '/app/styles/vendor-*.css',
 					options.directory.dist + '/app/styles/themes-*.css',
 					options.directory.dist + '/app/styles/app-*.css',
-				],
-				options.read
-			)
-			, injectableAsync = gulp.src(
-				[
 					options.directory.dist + '/app/scripts/vendor-*.js',
 					options.directory.dist + '/app/scripts/themes-*.js',
 				],
@@ -835,22 +830,6 @@ gulp.task(
 					{
 						ignorePath: 'dist',
 						addRootSlash: false,
-					}
-				)
-			)
-			.on( 'error', errorManager )
-			.pipe(
-				inject(
-					injectableAsync,
-					{
-						ignorePath: 'dist',
-						addRootSlash: false,
-						starttag: '<!-- inject:async:{{ext}} -->',
-						transform: function( filepath ) {
-
-							return '<script src="' + filepath + '"></script>';
-
-						},
 					}
 				)
 			)

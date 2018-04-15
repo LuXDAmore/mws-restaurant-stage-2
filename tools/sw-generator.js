@@ -60,6 +60,7 @@
 				;
 
 			};
+			serviceWorker();
 			// window.addEventListener( 'load', serviceWorker, false );
 
 		};
