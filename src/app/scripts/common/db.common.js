@@ -8,7 +8,7 @@ let restaurants = null;
 // DB Offline
 const DB = new Dexie( DB_NAME );
 DB
-	.version( 2 )
+	.version( 1 )
 	.stores(
 		{
 			restaurants: '&id,cuisine_type,neighborhood',
