@@ -29,7 +29,7 @@ workbox.clientsClaim();
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "d892d2195e60ef14a9d13c6920b65ea4"
+    "revision": "457b1f695e9a5797c97a92311c931b3a"
   },
   {
     "url": "app/scripts/app-c75f6c1db0.min.js",
@@ -49,7 +49,7 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "1b3b52efa741bb36a0a034c4f7992913"
+    "revision": "458bfbe6f9289700589b26f20cda76c5"
   },
   {
     "url": "manifest.json",
@@ -57,7 +57,7 @@ self.__precacheManifest = [
   },
   {
     "url": "restaurant.html",
-    "revision": "90bc9c72fdfbe6106335c359e244049f"
+    "revision": "bf65e9c5c17d7f1b7eca474756854c45"
   },
   {
     "url": "sw-toolbox.js",
@@ -437,55 +437,55 @@ self.__precacheManifest = [
   },
   {
     "url": "/mws-restaurant-stage-2/",
-    "revision": "bd16a3711468bd43aed2dbcf8a7451a5"
+    "revision": "59c125b874fe91a8073ee663971b8693"
   },
   {
     "url": "restaurant.html?id",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=1",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=2",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=3",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=4",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=5",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=6",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=7",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=8",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=9",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   },
   {
     "url": "restaurant.html?id=10",
-    "revision": "a95af8390f3d5025aa43afb5db20b2d0"
+    "revision": "2301ebd16455cfceeb3545445fe88c99"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
@@ -497,4 +497,4 @@ workbox.routing.registerRoute(/restaurant\.html.*/, workbox.strategies.networkFi
 workbox.routing.registerRoute(/.*\.json$/, workbox.strategies.cacheFirst({ cacheName: "json-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants[\/]?/, workbox.strategies.networkFirst({ cacheName: "restaurants-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants\/[1,9]/, workbox.strategies.networkFirst({ cacheName: "restaurant-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
-workbox.routing.registerRoute(/^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/, workbox.strategies.staleWhileRevalidate({ cacheName: "googleapis-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":20}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/, workbox.strategies.staleWhileRevalidate({ cacheName: "googleapis-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":15}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
