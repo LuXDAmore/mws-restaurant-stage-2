@@ -8,7 +8,7 @@ let restaurants = null;
 // DB Offline
 const DB = new Dexie( DB_NAME );
 DB
-	.version( 1 )
+	.version( 2 )
 	.stores(
 		{
 			restaurants: '&id,cuisine_type,neighborhood',
@@ -29,13 +29,6 @@ class DBHelper { // eslint-disable-line
 		id = ''
 	) {
 
-		if( restaurants ) {
-
-			callback( null, restaurants );
-			return;
-
-		};
-
 		// Responses
 		function getData( response ) {
 
@@ -53,14 +46,11 @@ class DBHelper { // eslint-disable-line
 			return response.json();
 
 		};
-		function returnData(
-			response = [],
-			fromDB = false
-		) {
+		function returnData( response = [] ) {
 
 			restaurants = response;
 
-			if( ! id && ! fromDB && restaurants && restaurants.length )
+			if( restaurants && restaurants.length )
 				DB.restaurants.bulkAdd( restaurants ).catch( () => DB.restaurants.bulkPut( restaurants ) );
 
 			callback( null, restaurants );
@@ -68,34 +58,35 @@ class DBHelper { // eslint-disable-line
 			return response;
 
 		};
-		function returnError( error = null ) {
+		function returnError( error ) {
 
-			const RESULT = id ? DB.restaurants.get( id ) : DB.restaurants.toArray();
+			window.console.error( error );
 
-			return RESULT.then(
-					response => {
+			callback( error, restaurants );
 
-						restaurants = response;
-						callback( null, restaurants );
+			return error;
 
-						return response;
+		};
 
-					}
-				)
-				.catch( error => callback( error, restaurants ) )
+		// Fetch
+		function fetchData() {
+
+			// Options
+			const options = {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				referrerPolicy: 'no-referrer',
+			};
+			const req = new Request( ( IS_LOCALHOST_OR_DEV ? `${ URL }${ id }` : URL ), options );
+
+			fetch( req )
+				.then( getData )
+				.then( returnData )
+				.catch( returnError )
 			;
 
 		};
-
-		// Options
-		const options = {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			referrerPolicy: 'no-referrer',
-		};
-
-		const req = new Request( ( IS_LOCALHOST_OR_DEV ? `${ URL }${ id }` : URL ), options );
 
 		if( ! id ) {
 
@@ -103,20 +94,31 @@ class DBHelper { // eslint-disable-line
 				restaurants => {
 
 					if( restaurants && restaurants.length )
-						returnData( restaurants, true );
+						callback( null, restaurants );
+					else
+						fetchData();
 
 					return restaurants;
 
 				}
-			);
+			).catch( fetchData );
+
+		} else {
+
+			DB.restaurants.get( parseInt( id ) ).then(
+				restaurant => {
+
+					if( restaurant )
+						callback( null, restaurant );
+					else
+						fetchData();
+
+					return restaurants;
+
+				}
+			).catch( fetchData );
 
 		};
-
-		fetch( req )
-			.then( getData )
-			.then( returnData )
-			.catch( returnError )
-		;
 
 	};
 
