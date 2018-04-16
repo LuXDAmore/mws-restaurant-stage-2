@@ -64,18 +64,11 @@
 		};
 
 		// Async - Defer GMaps
-		function GMapsLoad() {
-
-			window.removeEventListener( 'load', GMapsLoad );
-
-			GMapHelper.load(
-				{
-					callback: 'initMap',
-				}
-			);
-
-		}
-		window.addEventListener( 'load', GMapsLoad, false );
+		GMapHelper.load(
+			{
+				callback: 'initMap',
+			}
+		);
 
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
@@ -98,8 +91,11 @@
 			};
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
+			// Remove listener
+			window.removeEventListener( 'load', domContentLoaded );
+
 		};
-		domContentLoaded();
+		window.addEventListener( 'load', domContentLoaded, false );
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
