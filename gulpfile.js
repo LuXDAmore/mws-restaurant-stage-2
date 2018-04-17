@@ -1,5 +1,5 @@
 'use strict';
-// TODO: muovere Maps loading forse, onload tutto, async defer tutto.
+// TODO: muovere Maps loading forse, onload tutto, async defer tutto, più load immagini per desktop?
 
 var gulp = require( 'gulp' )
 	, sequence = require( 'gulp-sequence' ).use( gulp )
