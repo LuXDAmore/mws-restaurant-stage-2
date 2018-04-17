@@ -801,13 +801,13 @@ gulp.task(
 					options.directory.dist + '/app/styles/vendor-*.css',
 					options.directory.dist + '/app/styles/themes-*.css',
 					options.directory.dist + '/app/styles/app-*.css',
-					options.directory.dist + '/app/scripts/vendor-*.js',
-					options.directory.dist + '/app/scripts/themes-*.js',
 				],
 				options.read
 			)
 			, injectableAsyncDefer = gulp.src(
 				[
+					options.directory.dist + '/app/scripts/vendor-*.js',
+					options.directory.dist + '/app/scripts/themes-*.js',
 					options.directory.dist + '/app/scripts/app-*.js',
 				],
 				options.read

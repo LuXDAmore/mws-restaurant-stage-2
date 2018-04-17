@@ -99,6 +99,9 @@
 
 				updateRestaurants();
 
+				if( ! mapInitialized )
+					gMapsLauncher();
+
 			};
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
@@ -149,8 +152,11 @@
 			// Observe 'restaurant-list'
 			observer.observe( ul );
 
+			// Remove listener
+			window.removeEventListener( 'load', createObserver );
+
 		};
-		createObserver();
+		window.addEventListener( 'load', createObserver, false );
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
@@ -269,9 +275,6 @@
 
 						resetRestaurants( restaurants );
 						fillRestaurantsHTML();
-
-						if( ! mapInitialized )
-							gMapsLauncher();
 
 					};
 

@@ -63,12 +63,21 @@
 
 		};
 
-		// Async - Defer GMaps
-		GMapHelper.load(
-			{
-				callback: 'initMapRestaurantInfo',
-			}
-		);
+		// GMaps Launcher
+		function gMapsLauncher() {
+
+			// Async - Defer GMaps
+			GMapHelper.load(
+				{
+					callback: 'initMapRestaurantInfo',
+				}
+			);
+
+			// Remove listener
+			window.removeEventListener( 'load', gMapsLauncher );
+
+		};
+		window.addEventListener( 'load', gMapsLauncher, false );
 
 		/**
 		 * Get current restaurant from page URL.
