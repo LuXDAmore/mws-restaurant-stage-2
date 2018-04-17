@@ -425,161 +425,181 @@ gulp.task(
 // SERVICE WORKER
 gulp.task(
 	'generate-service-worker',
-	function( done ) {
+	function() {
 
 		var workbox = require( 'workbox-build' );
 
-		return workbox.generateSW(
-			{
-				swDest: options.directory.dist + '/' + options.service_worker.name,
-				importWorkboxFrom: 'local',
-				importScripts: [
-					options.service_worker.toolbox_name,
-				],
-				globDirectory: options.directory.dist + '/',
-				globPatterns: [
-					'**\/*.{html,js,css,json}',
-					'**\/*.{webp,png,jpg,jpeg,svg,ico,cur,bmp}',
-				],
-				globIgnores: [
-					'**\/' + options.service_worker.name,
-				],
-				runtimeCaching: [
-					{
-						urlPattern: new RegExp( /.*\.css$/ ),
-						handler: 'cacheFirst',
-						options: {
-							cacheName: 'styles-cache',
-							expiration: {
-								maxEntries: 10,
-								maxAgeSeconds: 31536000,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
-							},
-						},
-					},
-					{
-						urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico|cur|bmp)$/ ),
-						handler: 'cacheFirst',
-						options: {
-							cacheName: 'images-cache',
-							expiration: {
-								maxEntries: 60,
-								maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
+		return workbox
+			.generateSW(
+				{
+					swDest: options.directory.dist + '/' + options.service_worker.name,
+					importWorkboxFrom: 'local',
+					importScripts: [
+						options.service_worker.toolbox_name,
+					],
+					globDirectory: options.directory.dist + '/',
+					globPatterns: [
+						'**\/*.{html,js,css,json}',
+						'**\/*.{webp,png,jpg,jpeg,svg,ico}',
+					],
+					globIgnores: [
+						'**\/' + options.service_worker.name,
+					],
+					runtimeCaching: [
+						{
+							urlPattern: new RegExp( /.*\.css$/ ),
+							handler: 'cacheFirst',
+							options: {
+								cacheName: 'styles-cache',
+								expiration: {
+									maxEntries: 10,
+									maxAgeSeconds: 31536000,
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
 							},
 						},
-					},
-					{
-						urlPattern: new RegExp( /restaurant\.html.*/ ),
-						handler: 'networkFirst',
-						options: {
-							cacheName: 'restaurant-pages',
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
+						{
+							urlPattern: new RegExp( /.*\.(?:webp|png|jpg|jpeg|svg|ico|cur|bmp)$/ ),
+							handler: 'cacheFirst',
+							options: {
+								cacheName: 'images-cache',
+								expiration: {
+									maxEntries: 60,
+									maxAgeSeconds: 7 * 24 * 60 * 60, //-> One week cache
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
 							},
 						},
-					},
-					{
-						urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants[\/]?/ ),
-						handler: 'networkFirst',
-						options: {
-							cacheName: 'restaurants-cache',
-							expiration: {
-								maxEntries: 10,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
+						{
+							urlPattern: new RegExp( /restaurant\.html.*/ ),
+							handler: 'networkFirst',
+							options: {
+								cacheName: 'restaurant-pages',
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
 							},
 						},
-					},
-					{
-						urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants\/[1,9]/ ),
-						handler: 'networkFirst',
-						options: {
-							cacheName: 'restaurant-cache',
-							expiration: {
-								maxEntries: 10,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
-							},
-						},
-					},
-					{
-						urlPattern: new RegExp( /^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
-						handler: 'staleWhileRevalidate',
-						options: {
-							cacheName: 'googleapis-cache',
-							expiration: {
-								maxEntries: 30,
-							},
-							cacheableResponse: {
-								statuses: [
-									0,
-									200,
-								],
+						{
+							urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants[\/]?/ ),
+							handler: 'networkFirst',
+							options: {
+								cacheName: 'restaurants-cache',
+								expiration: {
+									maxEntries: 10,
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
 							},
 						},
+						{
+							urlPattern: new RegExp( /^http[s]?:\/\/localhost:1337\/restaurants\/[1,9]/ ),
+							handler: 'networkFirst',
+							options: {
+								cacheName: 'restaurant-cache',
+								expiration: {
+									maxEntries: 10,
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
+							},
+						},
+						{
+							urlPattern: new RegExp( /^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/ ),
+							handler: 'staleWhileRevalidate',
+							options: {
+								cacheName: 'googleapis-cache',
+								expiration: {
+									maxEntries: 30,
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
+							},
+						},
+						{
+							urlPattern: new RegExp( /.*\.json$/ ),
+							handler: 'cacheFirst',
+							options: {
+								cacheName: 'json-cache',
+								expiration: {
+									maxEntries: 10,
+								},
+								cacheableResponse: {
+									statuses: [
+										0,
+										200,
+									],
+								},
+							},
+						},
+					],
+					templatedUrls: {
+						'/': [ 'index.html' ],
+						'restaurant.html?id': [ 'restaurant.html' ],
+						'restaurant.html?id=': [ 'restaurant.html' ],
+						'restaurant.html?id=1': [ 'restaurant.html' ],
+						'restaurant.html?id=2': [ 'restaurant.html' ],
+						'restaurant.html?id=3': [ 'restaurant.html' ],
+						'restaurant.html?id=4': [ 'restaurant.html' ],
+						'restaurant.html?id=5': [ 'restaurant.html' ],
+						'restaurant.html?id=6': [ 'restaurant.html' ],
+						'restaurant.html?id=7': [ 'restaurant.html' ],
+						'restaurant.html?id=8': [ 'restaurant.html' ],
+						'restaurant.html?id=9': [ 'restaurant.html' ],
+						'restaurant.html?id=10': [ 'restaurant.html' ],
 					},
-				],
-				templatedUrls: {
-					'/': [ 'index.html' ],
-					'restaurant.html?id': [ 'restaurant.html' ],
-					'restaurant.html?id=': [ 'restaurant.html' ],
-					'restaurant.html?id=1': [ 'restaurant.html' ],
-					'restaurant.html?id=2': [ 'restaurant.html' ],
-					'restaurant.html?id=3': [ 'restaurant.html' ],
-					'restaurant.html?id=4': [ 'restaurant.html' ],
-					'restaurant.html?id=5': [ 'restaurant.html' ],
-					'restaurant.html?id=6': [ 'restaurant.html' ],
-					'restaurant.html?id=7': [ 'restaurant.html' ],
-					'restaurant.html?id=8': [ 'restaurant.html' ],
-					'restaurant.html?id=9': [ 'restaurant.html' ],
-					'restaurant.html?id=10': [ 'restaurant.html' ],
-				},
-				clientsClaim: true,
-				skipWaiting: true,
-			}
-		).then(
-			function( response ) {
+					clientsClaim: true,
+					skipWaiting: true,
+				}
+			)
+			.then(
+				function( response ) {
 
-				// In case there are any warnings from workbox-build, log them.
-				for( var warning of response.warnings )
-					gutil.log( gutil.colors.yellow( warning.toString() ) );
+					// In case there are any warnings from workbox-build, log them.
+					for( var warning of response.warnings )
+						gutil.log( gutil.colors.yellow( warning.toString() ) );
 
-				gutil.log( gutil.colors.green( 'Service worker generation completed.' ) );
+					gutil.log( gutil.colors.green( 'Service worker generation completed.' ) );
 
-				return response;
+					return response;
 
-			}
-		).catch(
-			function( error ) {
+				}
+			)
+			.catch(
+				function( error ) {
 
-				gutil.log( gutil.colors.red( 'Service worker generation failed.', error.toString() ) );
+					gutil.log( gutil.colors.red( 'Service worker generation failed.', error.toString() ) );
 
-				return error;
+					return error;
 
-			}
-		);
+				}
+			)
+		;
 
 	}
 );
@@ -1070,7 +1090,7 @@ gulp.task(
 				sequence(
 					'clean:app:scripts',
 					'build:scripts',
-					'build:inject',
+					'build:inject'
 				)( reload );
 
 			}
