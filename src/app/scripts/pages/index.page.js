@@ -146,6 +146,7 @@
 				}
 			);
 
+			// Observe 'restaurant-list'
 			observer.observe( ul );
 
 		};
