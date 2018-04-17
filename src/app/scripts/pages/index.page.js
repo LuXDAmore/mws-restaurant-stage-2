@@ -14,6 +14,8 @@
 			, cuisines = []
 			, map
 			, markers = []
+			, mapInitialized = false
+			, restaurantsInitialized = false
 		;
 
 		// Self data
@@ -63,35 +65,28 @@
 
 		};
 
-		// Start GMaps only on first scroll
-		function gMapsLoad() {
+		// GMaps Launcher
+		function gMapsLauncher() {
 
-			window.removeEventListener( 'scroll', gMapsLoad );
+			mapInitialized = true;
 
 			// Async - Defer GMaps
-			window.requestAnimationFrame(
-				() => {
-
-					GMapHelper.load(
-						{
-							callback: 'initMap',
-						}
-					);
-
+			GMapHelper.load(
+				{
+					callback: 'initMap',
 				}
 			);
 
 		};
-		window.addEventListener( 'scroll', gMapsLoad, false );
 
 		/**
-		 * Fetch map, restaurants, neighborhoods and cuisines as soon as the page is loaded.
+		 * Fetch map, restaurants, neighborhoods and cuisines after first scroll or if-in-view.
 		 */
-		function domContentLoaded() {
+		function restaurantsLauncher() {
 
-			window.removeEventListener( 'scroll', domContentLoaded );
+			restaurantsInitialized = true;
 
-			// Fetch restaurants
+			// Fetch restaurants callback
 			function restaurantsFetched( error, restaurants ) {
 
 				if( error )
@@ -105,21 +100,56 @@
 				updateRestaurants();
 
 			};
+			DBHelper.fetchRestaurants( restaurantsFetched );
 
+		};
+		function restaurantsLoader() {
+
+			// Remove listener
+			window.removeEventListener( 'scroll', restaurantsLoader );
+
+			// Optimized scoll event
 			window.requestAnimationFrame(
 				() => {
 
-					DBHelper.fetchRestaurants( restaurantsFetched );
+					if( ! restaurantsInitialized )
+						restaurantsLauncher();
 
 				}
 			);
 
-			// Remove listener
-			// window.removeEventListener( 'load', domContentLoaded );
+		};
+		window.addEventListener( 'scroll', restaurantsLoader, false );
+
+		// Observe 'restaurant-list' to launch Db request only if in view and only once
+		function createObserver() {
+
+			const observer = new IntersectionObserver(
+				entries => {
+
+					entries.forEach(
+						entry => {
+
+							if( entry.intersectionRatio * 100 > 1.5 ) {
+
+								observer.unobserve( entry.target );
+								observer.disconnect();
+
+								if( ! restaurantsInitialized )
+									restaurantsLauncher();
+
+							};
+
+						}
+					);
+
+				}
+			);
+
+			observer.observe( ul );
 
 		};
-		// window.addEventListener( 'load', domContentLoaded, false );
-		window.addEventListener( 'scroll', domContentLoaded, false );
+		createObserver();
 
 		/**
 		 * Fetch all neighborhoods and set their HTML.
@@ -226,16 +256,26 @@
 				, neighborhood = nSelect[ nIndex ].value //-> Selected neighborhood
 			;
 
-			// filter by cuisine
-			if( cuisine !== 'all' )
-				self.restaurants = self.restaurants.filter( r => r.cuisine_type === cuisine );
+			DBHelper.fetchRestaurantByCuisineAndNeighborhood(
+				cuisine,
+				neighborhood,
+				( error, restaurants ) => {
 
-			// filter by neighborhood
-			if( neighborhood !== 'all' )
-				self.restaurants = self.restaurants.filter( r => r.neighborhood === neighborhood );
+					// Got an error!
+					if( error )
+						window.console.error( error );
+					else {
 
-			resetRestaurants();
-			fillRestaurantsHTML();
+						resetRestaurants( restaurants );
+						fillRestaurantsHTML();
+
+						if( ! mapInitialized )
+							gMapsLauncher();
+
+					};
+
+				}
+			);
 
 		};
 
