@@ -13,6 +13,7 @@
 			, map
 		;
 
+		// Self
 		const self = {
 			restaurant,
 			map,
