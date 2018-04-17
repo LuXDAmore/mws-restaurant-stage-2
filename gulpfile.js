@@ -1,4 +1,5 @@
 'use strict';
+// TODO: muovere Maps loading forse, onload tutto, async defer tutto.
 
 var gulp = require( 'gulp' )
 	, sequence = require( 'gulp-sequence' ).use( gulp )
@@ -717,10 +718,6 @@ gulp.task(
 				'"start_url": "\/index.html"',
 				'"start_url": "\/' + options.github.name + '\/index.html"',
 			]
-			, replace_preload = [
-				'http:\/\/localhost:1337\/restaurants\/',
-				'data\/restaurants.json',
-			]
 			, replace_sw = [
 				'"\/",',
 				'"\/' + options.github.name + '\/",',
@@ -744,8 +741,6 @@ gulp.task(
 			.pipe( injectString.replace( replace_base[ 0 ], replace_base[ 1 ] ) )
 			.on( 'error', errorManager )
 			.pipe( injectString.replace( replace_canonical[ 0 ], replace_canonical[ 1 ] ) )
-			.on( 'error', errorManager )
-			.pipe( injectString.replace( replace_preload[ 0 ], replace_preload[ 1 ] ) )
 			.on( 'error', errorManager )
 			.pipe( filterHTML.restore )
 			.pipe( filterManifest )
