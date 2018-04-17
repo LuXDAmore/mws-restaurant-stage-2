@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "test",
 		"debug": "node inspect app.js",
+		"prestart": "cross-env NODE_ENV=production gulp sailsjs --silent --no-warnings",
 		"start": "cross-env NODE_ENV=production node app.js",
 		"clean": "gulp clean:all",
 		"clear": "gulp clean:all",
