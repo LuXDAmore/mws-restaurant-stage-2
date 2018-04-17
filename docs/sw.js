@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "revision": "6a1eb83d89fe4795c4e6a1adf063c338"
   },
   {
-    "url": "app/scripts/app-e7380fb314.min.js",
-    "revision": "e7380fb314e81c40eccc724a746c4be7"
+    "url": "app/scripts/app-8aa0053a86.min.js",
+    "revision": "8aa0053a869c22316011dbb0f09d2c6c"
   },
   {
     "url": "app/scripts/vendor-e8bdf4dd5a.min.js",
@@ -49,7 +49,7 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "0cca01ccc04bb73f131d5d062edf1eba"
+    "revision": "20f55d2134bd32d3633554a71d31b20d"
   },
   {
     "url": "manifest.json",
@@ -57,7 +57,7 @@ self.__precacheManifest = [
   },
   {
     "url": "restaurant.html",
-    "revision": "c49d82373c50dea042aa4c8867f26acf"
+    "revision": "2b35173da49c4111f01c78190718158f"
   },
   {
     "url": "sw-toolbox.js",
@@ -437,55 +437,55 @@ self.__precacheManifest = [
   },
   {
     "url": "/mws-restaurant-stage-2/",
-    "revision": "a43840a204b28a0eaedb20f580a61c46"
+    "revision": "fdd3887f4fb1b728c6feddeba5207bb9"
   },
   {
     "url": "restaurant.html?id",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=1",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=2",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=3",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=4",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=5",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=6",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=7",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=8",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=9",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   },
   {
     "url": "restaurant.html?id=10",
-    "revision": "4bf8ec5d225f370dd2fa4eb92a012f1b"
+    "revision": "0b6aa7da7f71d6a8a9ddacbe76614dff"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
@@ -497,3 +497,4 @@ workbox.routing.registerRoute(/restaurant\.html.*/, workbox.strategies.networkFi
 workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants[\/]?/, workbox.strategies.networkFirst({ cacheName: "restaurants-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/^http[s]?:\/\/localhost:1337\/restaurants\/[1,9]/, workbox.strategies.networkFirst({ cacheName: "restaurant-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
 workbox.routing.registerRoute(/^https:\/\/(.*)\.(?:googleapis|gstatic)\.com\/(.*)/, workbox.strategies.staleWhileRevalidate({ cacheName: "googleapis-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":30}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/.*\.json$/, workbox.strategies.cacheFirst({ cacheName: "json-cache", plugins: [new workbox.expiration.Plugin({"maxEntries":10}), new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
