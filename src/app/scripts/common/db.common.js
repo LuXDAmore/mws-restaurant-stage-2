@@ -29,6 +29,14 @@ class DBHelper { // eslint-disable-line
 		id = ''
 	) {
 
+		// Check if already in-js
+		if( restaurants ) {
+
+			callback( null, restaurants );
+			return;
+
+		};
+
 		// Responses
 		function getData( response ) {
 
