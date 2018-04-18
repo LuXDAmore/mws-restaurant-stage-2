@@ -4,16 +4,16 @@
 (
 	function( window ) {
 
-		var observer = new PerformanceObserver(
-			function( list ) {
+		const observer = new PerformanceObserver(
+			list => {
 
 				window.console.groupCollapsed( '%c [ PERFORMANCE TABLE ✌️: longtask ]', 'color:#f1c40f' );
 
-				var entry = list.getEntries();
+				const entry = list.getEntries();
 
-				for( var i = 0; i < entry.length; i ++ ) {
+				for( let i = 0; i < entry.length; i ++ ) {
 
-					for( var j = 0; j < entry[ i ].attribution.length; j ++ )
+					for( let j = 0; j < entry[ i ].attribution.length; j ++ )
 						window.console.table( entry[ i ].attribution[ j ].toJSON() );
 
 				};
@@ -36,17 +36,16 @@
 
 			window.removeEventListener( 'load', measureCRP );
 
-			var t = window.performance.timing
+			const t = window.performance.timing
 				, interactive = t.domInteractive - t.domLoading
 				, dcl = t.domContentLoadedEventStart - t.domLoading
 				, complete = t.domComplete - t.domLoading
+				, result = {
+					interactive,
+					dcl,
+					complete,
+				}
 			;
-
-			var result = {
-				'interactive': interactive,
-				'dcl': dcl,
-				'complete': complete,
-			};
 
 			window.console.debug( '%c [ INTERACTIVE ]', 'color:#f1c40f', result );
 
