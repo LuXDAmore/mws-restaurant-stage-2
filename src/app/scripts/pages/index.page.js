@@ -82,6 +82,7 @@
 
 			// Remove listener
 			window.removeEventListener( 'scroll', mapsLoader );
+			window.removeEventListener( 'resize', mapsLoader );
 
 			// Optimized scoll event
 			window.requestAnimationFrame(
@@ -95,6 +96,7 @@
 
 		};
 		window.addEventListener( 'scroll', mapsLoader, false );
+		window.addEventListener( 'resize', mapsLoader, false );
 
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines after first scroll or if-in-view.
@@ -124,6 +126,7 @@
 
 			// Remove listener
 			window.removeEventListener( 'scroll', restaurantsLoader );
+			window.removeEventListener( 'resize', restaurantsLoader );
 
 			// Optimized scoll event
 			window.requestAnimationFrame(
@@ -137,6 +140,7 @@
 
 		};
 		window.addEventListener( 'scroll', restaurantsLoader, false );
+		window.addEventListener( 'resize', restaurantsLoader, false );
 
 		// Observe 'restaurant-list' to launch Db request only if in view and only once
 		function createObserver() {
