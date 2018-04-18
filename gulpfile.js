@@ -818,6 +818,12 @@ gulp.task(
 				.on( 'error', errorManager )
 				.pipe( uglify( options.uglify ) )
 				.on( 'error', errorManager )
+			, injectablePerformance = gulp.src( options.directory.tools + '/performance.js' )
+				.pipe( eslint.format() )
+				.pipe( babel( options.babel ) )
+				.on( 'error', errorManager )
+				.pipe( uglify( options.uglify ) )
+				.on( 'error', errorManager )
 		;
 
 		return gulp
@@ -852,17 +858,12 @@ gulp.task(
 				gulpif(
 					development(),
 					inject(
-						gulp.src( options.directory.tools + '/performance.js' ),
+						injectablePerformance,
 						{
 							starttag: '<!-- inject:performance:{{ext}} -->',
 							transform: function( filepath, file ) {
 
-								return '<script>'
-									+ file.contents
-										.toString()
-										.replace( /\n|\r|\t/g, '' )
-										.trim()
-									+ '</script>'
+								return '<script>' + file.contents.toString() + '</script>'
 								;
 
 							},
@@ -879,8 +880,7 @@ gulp.task(
 						transform: function( filepath, file ) {
 
 							return '<script>'
-								+ file.contents
-									.toString()
+								+ file.contents.toString()
 									.replace( '[SERVICE-WORKER-NAME]', options.service_worker.name )
 									.replace( '[SERVICE-WORKER-EXCLUDED-PORT]', options.browserSync.port )
 								+ '</script>'
