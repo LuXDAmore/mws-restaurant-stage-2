@@ -7,17 +7,20 @@
 	# Serve Brotli compressed CSS and JS files if they exist and the client accepts Brotli.
 	RewriteCond "%{HTTP:Accept-encoding}" "br"
 	RewriteCond "%{REQUEST_FILENAME}\.br" "-s"
-	RewriteRule "^(.*)\.(js|css|html)" "$1\.$2\.br" [QSA]
+	RewriteRule "^(.*)\.(js|css)" "$1\.$2\.br" [QSA]
 
 	# Serve correct content types, and prevent double compression.
 	RewriteRule "\.css\.br$" "-" [T=text/css,E=no-brotli:1]
 	RewriteRule "\.js\.br$"  "-" [T=text/javascript,E=no-brotli:1]
-	RewriteRule "\.html\.br$"  "-" [T=text/html,E=no-brotli:1]
 
-	# Serve pre-compressed gzip assets
-	RewriteCond %{HTTP:Accept-Encoding} "gzip"
-	RewriteCond %{REQUEST_FILENAME}.gz "-f"
-	RewriteRule ^(.*)$ "$1\.gz" [L]
+	# Serve GZip compressed CSS and JS files if they exist and the client accepts GZip.
+	RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+	RewriteCond "%{REQUEST_FILENAME}\.gz" "-s"
+	RewriteRule "^(.*)\.(js|css)" "$1\.$2\.gz" [QSA]
+
+	# Serve correct content types, and prevent double compression.
+	RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
+	RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
 
 	# Force HTTPS
 	RewriteCond %{HTTPS} !on
@@ -27,8 +30,13 @@
 
 <IfModule mod_filter.c>
 
-	AddOutputFilterByType DEFLATE text/plain text/xml text/css
-	AddOutputFilterByType BROTLI_COMPRESS text/plain text/xml text/css
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml
+
+	<IfModule mod_brotli.c>
+
+		AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml
+
+	</IfModule>
 
 </IfModule>
 
@@ -51,9 +59,19 @@
 	Header set Access-Control-Allow-Origin "*"
 
 	# Specify Brotli assets
-	<FilesMatch "(\.js\.br|\.css\.br|\.html.\br)$">
+	<FilesMatch "(\.js\.br|\.css\.br)$">
 
-		# Force proxies to cache brotli & non-brotli css/js files separately.
+		Header set Content-Encoding br
+
+		Header append Vary Accept-Encoding
+
+	</FilesMatch>
+
+	# Specify GZip assets
+	<FilesMatch "(\.js\.gz|\.css\.gz)$">
+
+		Header set Content-Encoding gzip
+
 		Header append Vary Accept-Encoding
 
 	</FilesMatch>
@@ -61,6 +79,13 @@
 	<FilesMatch "\.html$">
 
 		Header set Cache-Control "no-cache"
+
+	</FilesMatch>
+
+	# Service worker
+	<FilesMatch "\sw\.js$">
+
+		Header set Cache-Control "max-age=0, no-cache"
 
 	</FilesMatch>
 
@@ -73,13 +98,6 @@
 	<FilesMatch "\.(css|json|webp|svg|jpg|jpeg|png|gif|bmp|cur)$">
 
 		Header set Cache-Control "max-age=31536000"
-
-	</FilesMatch>
-
-	# Service worker
-	<FilesMatch "\sw\.js$">
-
-		Header set Cache-Control "max-age=0, no-cache"
 
 	</FilesMatch>
 
