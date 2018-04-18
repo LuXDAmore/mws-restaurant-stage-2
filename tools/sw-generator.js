@@ -12,8 +12,6 @@
 
 			function serviceWorker() {
 
-				window.removeEventListener( 'load', serviceWorker );
-
 				function SWRegistration( registration ) {
 
 					if( typeof registration.update === 'function' )
@@ -47,6 +45,7 @@
 
 				};
 
+				// Start Service Worker
 				window.navigator
 					.serviceWorker
 					.register(
@@ -59,7 +58,11 @@
 					.catch( e => window.console.error( 'Error during service worker registration:', e ) )
 				;
 
+				// Remove listener
+				window.removeEventListener( 'load', serviceWorker );
+
 			};
+			// Register after load, for fast startup
 			window.addEventListener( 'load', serviceWorker, false );
 
 		};
