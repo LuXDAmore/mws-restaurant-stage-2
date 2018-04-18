@@ -78,6 +78,23 @@
 			);
 
 		};
+		function mapsLoader() {
+
+			// Remove listener
+			window.removeEventListener( 'scroll', mapsLoader );
+
+			// Optimized scoll event
+			window.requestAnimationFrame(
+				() => {
+
+					if( ! mapInitialized )
+						gMapsLauncher();
+
+				}
+			);
+
+		};
+		window.addEventListener( 'scroll', mapsLoader, false );
 
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines after first scroll or if-in-view.
@@ -130,13 +147,16 @@
 					entries.forEach(
 						entry => {
 
-							if( entry.intersectionRatio * 100 > 12 ) {
+							if( entry.intersectionRatio * 100 > 15 ) {
 
 								observer.unobserve( entry.target );
 								observer.disconnect();
 
 								if( ! restaurantsInitialized )
-									restaurantsLauncher();
+									restaurantsLoader();
+
+								if( ! mapInitialized )
+									mapsLoader();
 
 							};
 
@@ -269,9 +289,6 @@
 
 						resetRestaurants( restaurants );
 						fillRestaurantsHTML();
-
-						if( ! mapInitialized )
-							gMapsLauncher();
 
 					};
 
