@@ -25,7 +25,8 @@
   ],
   "dependencies": {
     "vanilla-lazyload": "^10.5.2",
-    "dexie": "^2.0.2"
+    "dexie": "^2.0.2",
+    "notie": "^4.3.1"
   },
   "overrides": {
     "vanilla-lazyload": {
