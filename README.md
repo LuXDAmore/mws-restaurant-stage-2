@@ -81,4 +81,4 @@ _Served from `.tmp/public` folder_
 
 _In Chrome: You need to set 'Disable cache' Network option to false, because SW-Toolbox need cache to run._
 
-![Image of 100% on Lighthouse](https://raw.githubusercontent.com/LuXDAmore/mws-restaurant-stage-2/master/100.jpg)
+![Image of 99% on Lighthouse](https://raw.githubusercontent.com/LuXDAmore/mws-restaurant-stage-2/master/performance.png)
