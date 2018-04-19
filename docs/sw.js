@@ -49,7 +49,7 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "dce95fac5e76ea0ffcceeb46aec223e8"
+    "revision": "2a3f24d8861836efae95fe11b995b712"
   },
   {
     "url": "manifest.json",
@@ -437,7 +437,7 @@ self.__precacheManifest = [
   },
   {
     "url": "/mws-restaurant-stage-2/",
-    "revision": "4bf9d382e666bd0b5a90c070326837c7"
+    "revision": "24d7c6e619fdc4e7fbb79b898f1ad8ca"
   },
   {
     "url": "restaurant.html?id",
