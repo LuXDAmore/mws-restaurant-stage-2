@@ -136,7 +136,7 @@
 					entries.forEach(
 						entry => {
 
-							if( entry.intersectionRatio * 100 > 15 )
+							if( entry.intersectionRatio * 100 > 12 )
 								init();
 
 							observer.unobserve( entry.target );
