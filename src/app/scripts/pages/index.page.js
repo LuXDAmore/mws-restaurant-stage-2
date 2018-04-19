@@ -14,8 +14,8 @@
 			, cuisines = []
 			, map
 			, markers = []
-			, mapInitialized = false
-			, restaurantsInitialized = false
+			, isMapInitialized = false
+			, isRestaurantsInitialized = false
 		;
 
 		// Self data
@@ -40,7 +40,7 @@
 
 			const map = document.getElementById( 'map' );
 
-			let loc = {
+			const loc = {
 				lat: 40.722216,
 				lng: - 73.987501,
 			};
@@ -68,7 +68,7 @@
 		// GMaps Launcher
 		function gMapsLauncher() {
 
-			mapInitialized = true;
+			isMapInitialized = true;
 
 			// Async - Defer GMaps
 			GMapHelper.load(
@@ -78,32 +78,13 @@
 			);
 
 		};
-		function mapsLoader() {
-
-			// Remove listener
-			window.removeEventListener( 'scroll', mapsLoader );
-			window.removeEventListener( 'resize', mapsLoader );
-
-			// Optimized scoll event
-			window.requestAnimationFrame(
-				() => {
-
-					if( ! mapInitialized )
-						gMapsLauncher();
-
-				}
-			);
-
-		};
-		window.addEventListener( 'scroll', mapsLoader, false );
-		window.addEventListener( 'resize', mapsLoader, false );
 
 		/**
 		 * Fetch map, restaurants, neighborhoods and cuisines after first scroll or if-in-view.
 		 */
 		function restaurantsLauncher() {
 
-			restaurantsInitialized = true;
+			isRestaurantsInitialized = true;
 
 			// Fetch restaurants callback
 			function restaurantsFetched( error, restaurants ) {
@@ -122,25 +103,29 @@
 			DBHelper.fetchRestaurants( restaurantsFetched );
 
 		};
-		function restaurantsLoader() {
+
+		function init() {
 
 			// Remove listener
-			window.removeEventListener( 'scroll', restaurantsLoader );
-			window.removeEventListener( 'resize', restaurantsLoader );
+			window.removeEventListener( 'scroll', init );
+			window.removeEventListener( 'resize', init );
 
 			// Optimized scoll event
 			window.requestAnimationFrame(
 				() => {
 
-					if( ! restaurantsInitialized )
+					if( ! isRestaurantsInitialized )
 						restaurantsLauncher();
+
+					if( ! isMapInitialized )
+						gMapsLauncher();
 
 				}
 			);
 
 		};
-		window.addEventListener( 'scroll', restaurantsLoader, false );
-		window.addEventListener( 'resize', restaurantsLoader, false );
+		window.addEventListener( 'scroll', init, false );
+		window.addEventListener( 'resize', init, false );
 
 		// Observe 'restaurant-list' to launch Db request only if in view and only once
 		function createObserver() {
@@ -151,18 +136,11 @@
 					entries.forEach(
 						entry => {
 
-							if( entry.intersectionRatio * 100 > 15 ) {
+							if( entry.intersectionRatio * 100 > 15 )
+								init();
 
-								observer.unobserve( entry.target );
-								observer.disconnect();
-
-								if( ! restaurantsInitialized )
-									restaurantsLoader();
-
-								if( ! mapInitialized )
-									mapsLoader();
-
-							};
+							observer.unobserve( entry.target );
+							observer.disconnect();
 
 						}
 					);
@@ -409,9 +387,6 @@
 			);
 
 		};
-
-		// Ready
-		window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
 
 	}
 )( window, document )

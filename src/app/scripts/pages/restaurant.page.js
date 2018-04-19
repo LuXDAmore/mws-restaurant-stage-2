@@ -289,8 +289,5 @@
 
 		};
 
-		// Ready
-		window.console.log( '%c RESTAURANT REVIEWS - Details, ready to rock ✌️', 'color:#2980b9' );
-
 	}
 )( window, document )

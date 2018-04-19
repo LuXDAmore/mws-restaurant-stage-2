@@ -43,5 +43,8 @@ Object.defineProperty( Array.prototype, 'customForEach', { enumerable: false, va
 		};
 		document.addEventListener( 'DOMContentLoaded', OnlineOffline, false );
 
+		// Ready
+		window.console.log( '%c RESTAURANT REVIEWS, ready to rock ✌️', 'color:#2980b9' );
+
 	}
 )( window, document )
